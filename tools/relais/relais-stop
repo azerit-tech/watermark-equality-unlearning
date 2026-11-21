@@ -1,0 +1,18 @@
+#!/bin/bash
+# relais-stop : arrête VOTRE chaîne proprement (fichier STOP.<compte>) et annule votre relais
+# en attente (votre seul job), et seulement lui. Un relais en cours finit ses tâches, n'en prend plus, ne se resoumet pas.
+# relais-stop --tous : fichier STOP, qui arrête aussi les chaînes des coéquipiers (sans annuler leurs jobs).
+set -u
+. "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/relais-lib.sh" || exit 1
+
+if [ "${1:-}" = --tous ]; then
+  touch "$R_STOP" && echo "STOP créé : aucune chaîne de l'équipe ne se resoumettra."
+else
+  touch "$R_STOP.$USER" && echo "STOP.$USER créé : votre chaîne ne se resoumettra plus (relais-start le retire)."
+fi
+for id in $(my_pending_relais); do
+  if [ "$RELAIS_SIM" = 1 ]; then echo "SIMULATION : scancel $id"; else scancel "$id" && echo "Votre relais en attente est annulé : job $id"; fi
+done
+r=$(my_other_running_relais)
+[ -n "$r" ] && echo "Votre relais en cours ($(echo $r)) finit ses tâches puis s'arrête. Arrêt immédiat : scancel <numéro>."
+exit 0
