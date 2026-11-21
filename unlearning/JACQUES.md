@@ -138,3 +138,13 @@ Ce que fait `ext_retrain.sh` : il efface les blocs k..11 + norm + head, puis les
 - Si les variantes `_shuf` oublient nettement moins que les `_ext`, les mosaïques réapprennent les images : ne garder que les `_ext`.
 
 Soumettre en premier le meilleur « PASS ».
+
+### 4b. « Faux comité » (méthode A) et SCRUB + mosaïques (méthode B) (PRIORITÉ 2)
+
+Les membres du comité sont déjà calculés (`runs/ens/`).
+1. Vérifier le test CPU : `cat runs/ens/smoke_jobs.out` doit montrer `==A-exit 0` et `==B-exit 0`, sans Traceback. Si B manque : `CUDA_VISIBLE_DEVICES= ENS_SMOKE=1 bash jobs/ens_B.sh` (~5 min de CPU), puis `rm -rf runs/ens/smoke_job runs/ens/smoke runs/ens/smoke_jobs.out`.
+2. `$R/relais-add $W/jobs/ens_A.sh` (~15–20 min) : lire `runs/ens/A.log` (lignes « ENSEMBLE TARGET », puis FINALIST ou REJECTED).
+3. `$R/relais-add $W/jobs/ens_B.sh` (~20–25 min) : lire `runs/ens/B.log`.
+4. Les finalistes (3 au plus) sont dans `runs/ens/*.pt`, avec leurs notes dans `runs/submit_queue/ens_*.txt`.
+
+À savoir : un comité trop varié « s'annule » (les modèles n'oublient pas les mêmes images), donc la cible retenue est un comité proche de E12/E13/A4. Le classement seul dira si c'est meilleur que E13.
