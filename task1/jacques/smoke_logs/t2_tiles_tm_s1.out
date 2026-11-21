@@ -1,0 +1,4 @@
+[21:07:06 jrlogin01 gpu=none] tiles trustmark s1 start MIN=1 NF=4 NR=4 budget 52
+[21:07:33 jrlogin01 gpu=none] gen done
+test_probs128 (4, 128, 128) mean 0.605
+[21:07:56 jrlogin01 gpu=none] rc=0 DONE
