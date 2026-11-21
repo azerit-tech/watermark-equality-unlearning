@@ -1,0 +1,48 @@
+[trustmark] hole: 85 real images
+[trustmark] transplant: 42 real images
+[trustmark] outpainting: 43 real images
+[trustmark] synthetic pairs available: 200
+[trustmark] synth hole done
+[trustmark] synth transplant done
+[trustmark] synth outpainting done
+=== trustmark / hole
+  med_all     REAL n= 85 mid=-0.42 [-7.17,+5.05] w=4.87 [-8.28,18.59]
+   CAL s-4:+0.21/w3.6 s-2:+0.24/w3.6 s0:+1.48/w4.7 s+2:+0.44/w3.9 s+4:+0.44/w5.0 blur2:-2.92/w4.0
+   => shift(wm zone - mask) = -29.95 px  CI [-234.76,+136.08]  (slope +0.03)
+  med_noedge  REAL n= 85 mid=+3.61 [-4.12,+4.16] w=-5.09 [-5.69,14.00]
+   CAL s-4:+0.07/w-0.6 s-2:+0.06/w-0.6 s0:+1.42/w3.3 s+2:+0.28/w4.0 s+4:+0.30/w5.3 blur2:-1.89/w2.7
+   => shift(wm zone - mask) = +94.86 px  CI [-135.73,+111.34]  (slope +0.03)
+  dog_all     REAL n= 85 mid=-10.31 [-11.10,+7.54] w=15.25 [-2.61,20.12]
+   CAL s-4:+0.70/w6.6 s-2:-0.84/w6.8 s0:-1.91/w7.1 s+2:+0.21/w7.9 s+4:+0.99/wnan blur2:-0.23/w7.2
+   => shift(wm zone - mask) = -124.50 px  CI [-134.16,+94.68]  (slope +0.08)
+  dog_noedge  REAL n= 85 mid=+4.44 [-10.75,+6.09] w=15.19 [-6.30,19.78]
+   CAL s-4:-1.00/w3.7 s-2:-1.22/w2.0 s0:-2.29/w2.9 s+2:-4.29/w5.5 s+4:+4.39/wnan blur2:-1.42/w6.1
+   => shift(wm zone - mask) = +13.82 px  CI [-25.65,+18.12]  (slope +0.38)
+   profile med_noedge x=-11.5..11.5: -0.65 0.01 0.72 1.54 0.74 -0.20 -0.10 0.33 1.65 1.17 0.71 1.07 1.79 0.91 0.61 0.58 -0.20 0.45 0.20 0.94 0.98 1.68 1.48 1.08
+   synth s0              : -0.15 1.13 0.23 1.48 1.42 -0.65 -0.26 -0.58 0.66 -0.05 0.50 2.70 1.62 0.41 1.04 2.44 1.46 1.54 1.34 0.84 0.96 1.13 0.87 1.06
+   synth blur2           : -0.15 1.13 0.23 1.48 1.42 -0.65 -0.26 -0.62 0.79 0.07 0.78 1.76 0.53 0.55 1.14 2.45 1.48 1.56 1.34 0.84 0.96 1.13 0.87 1.06
+=== trustmark / transplant
+  med_all     REAL n= 42 mid=-3.80 [-5.49,+2.90] w=4.96 [-0.33,10.49]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+  med_noedge  REAL n= 42 mid=-3.58 [-8.18,+3.51] w=5.36 [-0.37,11.95]
+   CAL s-4:+3.20/w0.4 s-2:+1.49/w0.6 s0:-0.98/w-1.9 s+2:-0.66/w-0.7 s+4:-2.65/w-2.6 blur2:-4.15/w-5.3
+   => shift(wm zone - mask) = +5.30 px  CI [-4.95,+11.93]  (slope -0.69)
+  dog_all     REAL n= 42 mid=-8.83 [-9.35,+8.95] w=2.92 [-19.15,6.83]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+  dog_noedge  REAL n= 42 mid=-7.81 [-9.30,-4.44] w=3.71 [0.26,4.74]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+   profile med_noedge x=-11.5..11.5: -0.03 -0.10 -0.17 0.04 0.34 0.26 0.10 0.18 0.53 1.17 1.90 2.68 2.67 1.67 1.31 0.86 0.93 1.16 1.86 1.34 1.50 0.74 0.84 0.85
+   synth s0              : -1.19 -1.05 -0.64 -0.46 2.65 3.20 2.38 0.62 0.26 -0.38 -0.51 1.43 1.76 -0.75 -0.27 0.14 -0.07 0.11 0.27 0.58 1.68 0.10 0.32 1.35
+   synth blur2           : -1.19 -1.05 -0.64 -0.46 2.65 3.20 2.38 0.62 0.28 -0.21 -0.09 0.33 0.26 -0.64 -0.22 0.19 -0.05 0.11 0.26 0.58 1.67 0.10 0.32 1.35
+=== trustmark / outpainting
+  med_all     REAL n= 43 mid=+6.96 [-7.47,+9.80] w=-4.73 [-16.21,17.45]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+  med_noedge  REAL n= 43 mid=+5.37 [-6.50,+9.31] w=-3.04 [-15.93,13.92]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+  dog_all     REAL n= 43 mid=+4.31 [-3.35,+9.08] w=14.59 [-4.23,19.50]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+  dog_noedge  REAL n= 43 mid=+1.18 [-4.29,+7.38] w=18.56 [-7.74,20.83]
+   CAL s-4:+nan/wnan s-2:+nan/wnan s0:+nan/wnan s+2:+nan/wnan s+4:+nan/wnan blur2:+nan/wnan
+   profile med_noedge x=-11.5..11.5: 1.26 0.66 2.66 3.00 1.83 -1.22 8.07 2.86 8.82 6.01 2.78 5.32 5.74 5.37 0.52 4.31 4.48 -0.10 -1.29 -1.00 2.85 -0.70 0.03 1.71
+   synth s0              : nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan
+   synth blur2           : nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan nan

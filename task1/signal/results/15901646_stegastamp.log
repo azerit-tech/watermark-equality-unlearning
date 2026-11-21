@@ -1,0 +1,19 @@
+17:24:08 method=stegastamp gpu=NVIDIA A100-SXM4-40GB limit=8 sweep_n=2
+17:24:09 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+17:24:13 [full] stegastamp train: n=8 acc mean 0.7400 L shape (8, 100) range [-14.43,12.11] 357.5 ms/img
+17:24:13    regime full=1: acc mean 0.9475 min 0.8900 max 0.9900
+17:24:13    regime full=0: acc mean 0.5325 min 0.4900 max 0.5800
+17:24:13 [full] stegastamp test: n=8 acc mean 0.6863 L shape (8, 100) range [-14.26,14.64] 3.2 ms/img
+17:24:14 [sweep] stegastamp s=128 stride=32 windows/img=169 0.62 s/img | AUC(acc map) mean 0.367
+17:24:14 [sweep] stegastamp s=256 stride=64 windows/img=25 0.13 s/img | AUC(acc map) mean 0.866
+17:24:16 [occl] stegastamp gray s=64 stride=32 1.02 s/img | AUC(drop map) mean 0.694
+17:24:18 [occl] stegastamp blur s=64 stride=32 0.91 s/img | AUC(drop map) mean 0.482
+17:24:19 [occl] stegastamp gray s=128 stride=64 0.38 s/img | AUC(drop map) mean 0.502
+17:24:20 [occl] stegastamp blur s=128 stride=64 0.38 s/img | AUC(drop map) mean 0.847
+17:24:20    cand (256, 128) AUC 0.868 est 0.05 s/img -> 0.0 min for 16 imgs
+17:24:20    cand (256, 64) AUC 0.864 est 0.13 s/img -> 0.0 min for 16 imgs
+17:24:20    cand ('multi', 's/2') AUC 0.833 est 0.22 s/img -> 0.1 min for 16 imgs
+17:24:20    cand (128, 64) AUC 0.525 est 0.18 s/img -> 0.0 min for 16 imgs
+17:24:20    cand (128, 32) AUC 0.365 est 0.62 s/img -> 0.2 min for 16 imgs
+17:24:20 [choose] best within budget: (256, 128) AUC 0.868
+17:24:20 DONE stegastamp

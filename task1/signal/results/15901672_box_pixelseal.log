@@ -1,0 +1,36 @@
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:22 [P1] pixelseal exact rect by min side: {'<40': {'mean': 0.5605, 'min': 0.4766, 'max': 0.6445, 'n': 2}, '40-80': {'mean': 0.8711, 'min': 0.8711, 'max': 0.8711, 'n': 1}, '80-160': {'n': 0}, '>=160': {'n': 0}}
+17:29:22 [P1] pixelseal variants (mean acc): exact 0.664, whole 0.496, shift_x_0.05 0.660, shift_y_0.05 0.600, enlarge_0.05 0.698, shrink_0.05 0.642, shift_x_0.1 0.656, shift_y_0.1 0.479, enlarge_0.1 0.702, shrink_0.1 0.656, shift_x_0.25 0.581, shift_y_0.25 0.460, enlarge_0.25 0.576, shrink_0.25 0.619
+17:29:22 [P2] pixelseal transplant (mean acc): cover 0.047, asis 0.501, full_out_gray 0.516, full_out_mean 0.518, full_out_blur 0.501, full_out_noise 0.499, bbox 0.510, bbox_grayout 0.496, bbox_square 0.487, bbox_square_grayout 0.531, bbox_aspect2 0.495, bbox_aspect2_grayout 0.490, bbox_plus10 0.500, bbox_plus10_grayout 0.514, bbox_plus25 0.478, bbox_plus25_grayout 0.488, bbox_plus50 0.483, bbox_plus50_grayout 0.495, asis_wrongmsg 0.512
+17:29:22 [P2-ctrl] pixelseal full regime + transplant shape (mean acc): shape_cover 0.047, wm_frac_in_shape 0.835, asis 0.951, full_out_gray 0.549, full_out_mean 0.510, full_out_blur 0.504, full_out_noise 0.501
+17:29:26 [P2-search] pixelseal: {'peak': {'mean': 0.5859, 'min': 0.582, 'max': 0.5898, 'n': 3}, 'null_peak': {'mean': 0.5898, 'min': 0.5547, 'max': 0.6328, 'n': 3}, 'at_orig': {'mean': 0.5156, 'min': 0.5, 'max': 0.543, 'n': 3}, 'peak_minus_null_gt_0.1': 0}
+17:29:26 [P3] pixelseal: {'iou_start': {'mean': 0.3232, 'min': 0.0, 'max': 0.509, 'n': 3}, 'iou_end': {'mean': 0.3278, 'min': 0.0, 'max': 0.5231, 'n': 3}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.5573, 'min': 0.5469, 'max': 0.5664, 'n': 3}, 'sec_per_img': {'mean': 0.1285, 'min': 0.1038, 'max': 0.141, 'n': 3}}
+17:29:27 [P4] pixelseal size 32: mean|res| 0.746 max 5 unchanged px 0.449 decode acc 0.538
+17:29:27 [P4] pixelseal size 64: mean|res| 0.785 max 6 unchanged px 0.442 decode acc 0.810
+17:29:27 [P4] pixelseal size 128: mean|res| 0.852 max 5 unchanged px 0.385 decode acc 0.987
+17:29:27 [P4] pixelseal size 512: mean|res| 0.819 max 6 unchanged px 0.412 decode acc 1.000
+17:29:27 [done] pixelseal 14 s
+17:29:27 DONE
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:37 [P1] pixelseal exact rect by min side: {'<40': {'mean': 0.5552, 'min': 0.4727, 'max': 0.7578, 'n': 25}, '40-80': {'mean': 0.8297, 'min': 0.4766, 'max': 0.9805, 'n': 10}, '80-160': {'mean': 0.9086, 'min': 0.7578, 'max': 1.0, 'n': 5}, '>=160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 3}}
+17:29:37 [P1] pixelseal variants (mean acc): exact 0.691, whole 0.507, shift_x_0.05 0.691, shift_y_0.05 0.628, enlarge_0.05 0.696, shrink_0.05 0.691, shift_x_0.1 0.673, shift_y_0.1 0.606, enlarge_0.1 0.674, shrink_0.1 0.679, shift_x_0.25 0.628, shift_y_0.25 0.536, enlarge_0.25 0.570, shrink_0.25 0.655
+17:29:39 [P2] pixelseal transplant (mean acc): cover 0.137, asis 0.585, full_out_gray 0.541, full_out_mean 0.542, full_out_blur 0.563, full_out_noise 0.586, bbox 0.589, bbox_grayout 0.539, bbox_square 0.586, bbox_square_grayout 0.539, bbox_aspect2 0.590, bbox_aspect2_grayout 0.539, bbox_plus10 0.575, bbox_plus10_grayout 0.530, bbox_plus25 0.582, bbox_plus25_grayout 0.525, bbox_plus50 0.577, bbox_plus50_grayout 0.520, asis_wrongmsg 0.494
+17:29:41 [P2-ctrl] pixelseal full regime + transplant shape (mean acc): shape_cover 0.136, wm_frac_in_shape 0.908, asis 0.984, full_out_gray 0.518, full_out_mean 0.518, full_out_blur 0.537, full_out_noise 0.557
+17:30:12 [P2-search] pixelseal: {'peak': {'mean': 0.6245, 'min': 0.5312, 'max': 0.9414, 'n': 42}, 'null_peak': {'mean': 0.5765, 'min': 0.543, 'max': 0.6328, 'n': 42}, 'at_orig': {'mean': 0.5412, 'min': 0.4453, 'max': 0.8945, 'n': 42}, 'peak_minus_null_gt_0.1': 8}
+17:30:19 [P3] pixelseal: {'iou_start': {'mean': 0.3826, 'min': 0.0, 'max': 0.8258, 'n': 43}, 'iou_end': {'mean': 0.4848, 'min': 0.0, 'max': 0.9512, 'n': 43}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.6603, 'min': 0.4375, 'max': 1.0, 'n': 43}, 'sec_per_img': {'mean': 0.1477, 'min': 0.0299, 'max': 0.2668, 'n': 43}}
+17:30:19 [P4] pixelseal size 32: mean|res| 0.746 max 5 unchanged px 0.449 decode acc 0.538
+17:30:19 [P4] pixelseal size 64: mean|res| 0.785 max 6 unchanged px 0.442 decode acc 0.810
+17:30:19 [P4] pixelseal size 128: mean|res| 0.852 max 5 unchanged px 0.385 decode acc 0.987
+17:30:19 [P4] pixelseal size 512: mean|res| 0.819 max 6 unchanged px 0.412 decode acc 1.000
+17:30:19 [done] pixelseal 48 s
+17:30:19 DONE

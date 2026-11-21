@@ -1,0 +1,259 @@
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/trustmark/trustmark.py:176: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(weight_path, map_location=torch.device('cpu'))
+[trustmark] 0 emb/img 0.19s rmrc_raw 0.533 aucd32 0.417
+[trustmark] 1 emb/img 0.18s rmrc_raw 0.567 aucd32 0.773
+[trustmark] 2 emb/img 0.18s rmrc_raw 0.577 aucd32 0.722
+[trustmark] 3 emb/img 0.18s rmrc_raw 0.518 aucd32 0.557
+[trustmark] 4 emb/img 0.18s rmrc_raw 0.563 aucd32 0.731
+[trustmark] 5 emb/img 0.18s rmrc_raw 0.532 aucd32 0.717
+[trustmark] 6 emb/img 0.18s rmrc_raw 0.504 aucd32 0.423
+[trustmark] 7 emb/img 0.17s rmrc_raw 0.563 aucd32 0.704
+[trustmark] 8 emb/img 0.18s rmrc_raw 0.613 aucd32 0.688
+[trustmark] 9 emb/img 0.18s rmrc_raw 0.623 aucd32 0.652
+[trustmark] 10 emb/img 0.17s rmrc_raw 0.521 aucd32 0.765
+[trustmark] 11 emb/img 0.18s rmrc_raw 0.503 aucd32 0.770
+[trustmark] 12 emb/img 0.17s rmrc_raw 0.572 aucd32 0.671
+[trustmark] 13 emb/img 0.18s rmrc_raw 0.573 aucd32 0.764
+[trustmark] 14 emb/img 0.18s rmrc_raw 0.482 aucd32 0.533
+[trustmark] 15 emb/img 0.18s rmrc_raw 0.583 aucd32 0.890
+[trustmark] 16 emb/img 0.18s rmrc_raw 0.581 aucd32 0.627
+[trustmark] 17 emb/img 0.18s rmrc_raw 0.557 aucd32 0.657
+[trustmark] 18 emb/img 0.18s rmrc_raw 0.540 aucd32 0.614
+[trustmark] 19 emb/img 0.18s rmrc_raw 0.572 aucd32 0.696
+[trustmark] 20 emb/img 0.18s rmrc_raw 0.503 aucd32 0.567
+[trustmark] 21 emb/img 0.18s rmrc_raw 0.564 aucd32 0.624
+[trustmark] 22 emb/img 0.18s rmrc_raw 0.563 aucd32 0.665
+[trustmark] 23 emb/img 0.18s rmrc_raw 0.511 aucd32 0.692
+[trustmark] 24 emb/img 0.18s rmrc_raw 0.550 aucd32 0.574
+[trustmark] 25 emb/img 0.18s rmrc_raw 0.545 aucd32 0.715
+[trustmark] 26 emb/img 0.18s rmrc_raw 0.511 aucd32 0.630
+[trustmark] 27 emb/img 0.18s rmrc_raw 0.542 aucd32 0.581
+[trustmark] 28 emb/img 0.18s rmrc_raw 0.509 aucd32 0.713
+[trustmark] 29 emb/img 0.18s rmrc_raw 0.583 aucd32 0.694
+[trustmark] 30 emb/img 0.18s rmrc_raw 0.503 aucd32 0.699
+[trustmark] 31 emb/img 0.18s rmrc_raw 0.573 aucd32 0.604
+[trustmark] 32 emb/img 0.18s rmrc_raw 0.571 aucd32 0.755
+[trustmark] 33 emb/img 0.18s rmrc_raw 0.486 aucd32 0.694
+[trustmark] 34 emb/img 0.18s rmrc_raw 0.531 aucd32 0.781
+[trustmark] 35 emb/img 0.18s rmrc_raw 0.542 aucd32 0.535
+[trustmark] 36 emb/img 0.18s rmrc_raw 0.606 aucd32 0.662
+[trustmark] 37 emb/img 0.18s rmrc_raw 0.603 aucd32 0.768
+[trustmark] 38 emb/img 0.18s rmrc_raw 0.544 aucd32 0.616
+[trustmark] 39 emb/img 0.18s rmrc_raw 0.491 aucd32 0.845
+[trustmark] 40 emb/img 0.18s rmrc_raw 0.557 aucd32 0.723
+[trustmark] 41 emb/img 0.18s rmrc_raw 0.575 aucd32 0.791
+[trustmark] 42 emb/img 0.18s rmrc_raw 0.572 aucd32 0.697
+[trustmark] 43 emb/img 0.18s rmrc_raw 0.573 aucd32 0.644
+[trustmark] 44 emb/img 0.18s rmrc_raw 0.541 aucd32 0.677
+[trustmark] 45 emb/img 0.18s rmrc_raw 0.564 aucd32 0.622
+[trustmark] 46 emb/img 0.18s rmrc_raw 0.576 aucd32 0.561
+[trustmark] 47 emb/img 0.18s rmrc_raw 0.547 aucd32 0.639
+[trustmark] 48 emb/img 0.18s rmrc_raw 0.518 aucd32 0.757
+[trustmark] 49 emb/img 0.18s rmrc_raw 0.578 aucd32 0.657
+[trustmark] 50 emb/img 0.18s rmrc_raw 0.577 aucd32 0.686
+[trustmark] 51 emb/img 0.18s rmrc_raw 0.521 aucd32 0.682
+[trustmark] 52 emb/img 0.18s rmrc_raw 0.566 aucd32 0.604
+[trustmark] 53 emb/img 0.18s rmrc_raw 0.573 aucd32 0.683
+[trustmark] 54 emb/img 0.18s rmrc_raw 0.581 aucd32 0.651
+[trustmark] 55 emb/img 0.18s rmrc_raw 0.573 aucd32 0.560
+[trustmark] 56 emb/img 0.18s rmrc_raw 0.582 aucd32 0.625
+[trustmark] 57 emb/img 0.18s rmrc_raw 0.569 aucd32 0.574
+[trustmark] 58 emb/img 0.18s rmrc_raw 0.567 aucd32 0.669
+[trustmark] 59 emb/img 0.18s rmrc_raw 0.539 aucd32 0.674
+[trustmark] real 01117709f538 transplant aucd32 0.426
+[trustmark] real 0703932c7705 transplant aucd32 0.505
+[trustmark] real 07b2717b53ad hole aucd32 0.556
+[trustmark] real 1badd3a979e1 hole aucd32 0.619
+[trustmark] real 33cc521ed1f1 hole aucd32 0.537
+[trustmark] real 4265f6054cf6 transplant aucd32 0.540
+[trustmark] real 4f880cf1bc2d transplant aucd32 0.367
+[trustmark] real 54b2afdebc89 hole aucd32 0.656
+[trustmark] real 5645ac9a5991 transplant aucd32 0.539
+[trustmark] real 585c5e22e771 transplant aucd32 0.503
+[trustmark] real 5e6b3ce64803 transplant aucd32 0.497
+[trustmark] real 5f598820762d hole aucd32 0.762
+[trustmark] real 807adda9b2b4 hole aucd32 0.414
+[trustmark] real 87de1553db4b transplant aucd32 0.442
+[trustmark] real 947e2f28769b hole aucd32 0.552
+[trustmark] real a2b9306316e0 hole aucd32 0.548
+[trustmark] real a6ba414430c8 hole aucd32 0.471
+[trustmark] real aa26de31f2ab transplant aucd32 0.596
+[trustmark] real bc61dd574b14 hole aucd32 0.477
+[trustmark] real c739565531ca hole aucd32 0.487
+[trustmark] real d49de237f21c hole aucd32 0.505
+[trustmark] real d82ab583413e hole aucd32 0.545
+[trustmark] real eba1f0db78f9 hole aucd32 0.481
+[trustmark] real f0da1b9a0c4b hole aucd32 0.688
+[trustmark] real f41be13eec99 hole aucd32 0.502
+[trustmark] real f93ed50be8b1 hole aucd32 0.453
+{
+ "method": "trustmark",
+ "n_pairs": 60,
+ "embed_s_per_call_cpu": 0.17875505685806276,
+ "corr32": {
+  "raw_w_rm": {
+   "mean": 0.7532621026039124,
+   "p10": 0.522492241859436,
+   "p50": 0.8042749762535095,
+   "p90": 0.9114771008491516,
+   "img_mean_of_means": 0.7532327175140381
+  },
+  "raw_w_rmrc": {
+   "mean": 0.5526842474937439,
+   "p10": 0.13803564757108688,
+   "p50": 0.6124287843704224,
+   "p90": 0.8791616022586823,
+   "img_mean_of_means": 0.5526744723320007
+  },
+  "dog_w_rm": {
+   "mean": 0.7029971480369568,
+   "p10": 0.40003992319107057,
+   "p50": 0.7574630975723267,
+   "p90": 0.9156903266906739,
+   "img_mean_of_means": 0.7029972076416016
+  },
+  "dog_w_rmrc": {
+   "mean": 0.5106568932533264,
+   "p10": 0.14643956124782564,
+   "p50": 0.5384920835494995,
+   "p90": 0.833299881219864,
+   "img_mean_of_means": 0.5106568932533264
+  }
+ },
+ "synth_auc": {
+  "hole": {
+   "s_d_16": {
+    "mean": 0.5946617675486452,
+    "median": 0.594792437316199,
+    "n": 30
+   },
+   "s_d_32": {
+    "mean": 0.6500285962268186,
+    "median": 0.66693109632397,
+    "n": 30
+   },
+   "nc_d_32": {
+    "mean": 0.6447229336866632,
+    "median": 0.648843266014593,
+    "n": 30
+   },
+   "s_m_16": {
+    "mean": 0.5483290469290183,
+    "median": 0.5357179075155516,
+    "n": 30
+   },
+   "s_m_32": {
+    "mean": 0.5515290742140669,
+    "median": 0.5354179956799922,
+    "n": 30
+   },
+   "nc_m_32": {
+    "mean": 0.5657684295861292,
+    "median": 0.553779607137826,
+    "n": 30
+   }
+  },
+  "transplant": {
+   "s_d_16": {
+    "mean": 0.6163361315216025,
+    "median": 0.6039056467016013,
+    "n": 30
+   },
+   "s_d_32": {
+    "mean": 0.6819617958877703,
+    "median": 0.682559910229862,
+    "n": 30
+   },
+   "nc_d_32": {
+    "mean": 0.6968326056419584,
+    "median": 0.6755769835145916,
+    "n": 30
+   },
+   "s_m_16": {
+    "mean": 0.5801416063943008,
+    "median": 0.5702195635454702,
+    "n": 30
+   },
+   "s_m_32": {
+    "mean": 0.5863359084386636,
+    "median": 0.6135128318439143,
+    "n": 30
+   },
+   "nc_m_32": {
+    "mean": 0.6358849594432266,
+    "median": 0.6019215519072081,
+    "n": 30
+   }
+  }
+ },
+ "real_auc": {
+  "transplant": {
+   "s_d_16": {
+    "mean": 0.4858417310752785,
+    "median": 0.49534278417934974,
+    "n": 9
+   },
+   "s_d_32": {
+    "mean": 0.4904317786089332,
+    "median": 0.5028220032098192,
+    "n": 9
+   },
+   "nc_d_32": {
+    "mean": 0.49971390665130094,
+    "median": 0.49146332744752347,
+    "n": 9
+   },
+   "s_m_16": {
+    "mean": 0.5303272294675268,
+    "median": 0.5414665610524828,
+    "n": 9
+   },
+   "s_m_32": {
+    "mean": 0.5296949339202648,
+    "median": 0.5018523854651037,
+    "n": 9
+   },
+   "nc_m_32": {
+    "mean": 0.47839932303213306,
+    "median": 0.553248341832982,
+    "n": 9
+   }
+  },
+  "hole": {
+   "s_d_16": {
+    "mean": 0.5301429732935379,
+    "median": 0.5073380098705573,
+    "n": 17
+   },
+   "s_d_32": {
+    "mean": 0.5443097813161117,
+    "median": 0.5368495355867413,
+    "n": 17
+   },
+   "nc_d_32": {
+    "mean": 0.5805047654367922,
+    "median": 0.5599162568784953,
+    "n": 17
+   },
+   "s_m_16": {
+    "mean": 0.5286166983335135,
+    "median": 0.5296473602789981,
+    "n": 17
+   },
+   "s_m_32": {
+    "mean": 0.5403002155322361,
+    "median": 0.5550917521292033,
+    "n": 17
+   },
+   "nc_m_32": {
+    "mean": 0.5611677874506599,
+    "median": 0.5696001844858897,
+    "n": 17
+   }
+  }
+ },
+ "s_d_32_mean": {
+  "wm": 1.8279251960416636,
+  "clean": 0.213931925718983
+ }
+}
