@@ -1,0 +1,11 @@
+run 5d8eeb1d095a: 1 requests (1 ep-, 0 ref-), concurrency 4
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ep-01           1          0/100      0        0   50       50  ok
+
+items already in ledger (skipped): 0
+ep- responses to spend: 1   ref- requests (free): 0
+
+outcomes: {'response': 1}
+responses written: 1
+server used after run: ep-01=1
+exit=0 19:16:37

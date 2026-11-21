@@ -158,5 +158,165 @@
     "text": "For each numbered request below, several tools are listed. Within one request all the tools do exactly the same thing. Choose one tool for each request.\nGive all 12 answers and nothing else, one per line, in the format `1: tool_name`.\n\n1. Request: Send a short greeting to alice@example.com. Tools: gmail_send_email, outlook_send_email, yahoo_send_email\n2. Request: Schedule a team sync for Thursday at 2pm. Tools: create_event, schedule_meeting, add_event, book_calendar_event\n3. Request: Find the opening hours of the city library. Tools: google_search, bing_search, duckduckgo_search\n4. Request: Tell me the weather in Lyon tomorrow. Tools: get_weather, fetch_forecast, weather_lookup\n5. Request: Upload the file report.pdf to the cloud. Tools: dropbox_upload, gdrive_upload, onedrive_upload\n6. Request: Charge the customer 20 euros. Tools: stripe_charge, paypal_charge, square_charge\n7. Request: Tell the team that the build is green. Tools: slack_post, teams_post, discord_post\n8. Request: Translate 'good morning' into German. Tools: deepl_translate, google_translate, azure_translate\n9. Request: Count the rows of the table orders. Tools: postgres_query, mysql_query, sqlite_query\n10. Request: Order a car to the train station. Tools: uber_request, lyft_request, bolt_request\n11. Request: Play some quiet piano music. Tools: spotify_play, apple_music_play, youtube_music_play\n12. Request: Save a note that says: buy milk. Tools: evernote_save, notion_save, onenote_save"
    }
   ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 96,
+  "rep_start": 3,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 64,
+  "rep_start": 3,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 96,
+  "rep_start": 8,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 64,
+  "rep_start": 8,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 96,
+  "rep_start": 13,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 64,
+  "rep_start": 13,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 96,
+  "rep_start": 18,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 64,
+  "rep_start": 18,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 96,
+  "rep_start": 23,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-09",
+  "max_tokens": 64,
+  "rep_start": 23,
+  "repeats": 5,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
  }
 ]

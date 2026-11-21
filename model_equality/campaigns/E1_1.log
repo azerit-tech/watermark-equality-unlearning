@@ -1,0 +1,76 @@
+run 773afa862929: 33 requests (33 ep-, 0 ref-), concurrency 4
+ep-01 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-04 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-03 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-02 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-05 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-06 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-07 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-08 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-09 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-10 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-11 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-12 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-13 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-14 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-15 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-16 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-17 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-18 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-19 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-20 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-21 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-22 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-23 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-24 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-25 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-26 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-27 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-28 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-29 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-30 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-31 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-32 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ep-33 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ep-01           1          0/100      0        0   50       50  ok
+ep-02           1          0/100      0        0   50       50  ok
+ep-03           1          0/100      0        0   50       50  ok
+ep-04           1          0/100      0        0   50       50  ok
+ep-05           1          0/100      0        0   50       50  ok
+ep-06           1          0/100      0        0   50       50  ok
+ep-07           1          0/100      0        0   50       50  ok
+ep-08           1          0/100      0        0   50       50  ok
+ep-09           1          0/100      0        0   50       50  ok
+ep-10           1          0/100      0        0   50       50  ok
+ep-11           1          0/100      0        0   50       50  ok
+ep-12           1          0/100      0        0   50       50  ok
+ep-13           1          0/100      0        0   50       50  ok
+ep-14           1          0/100      0        0   50       50  ok
+ep-15           1          0/100      0        0   50       50  ok
+ep-16           1          0/100      0        0   50       50  ok
+ep-17           1          0/100      0        0   50       50  ok
+ep-18           1          0/100      0        0   50       50  ok
+ep-19           1          0/100      0        0   50       50  ok
+ep-20           1          0/100      0        0   50       50  ok
+ep-21           1          0/100      0        0   50       50  ok
+ep-22           1          0/100      0        0   50       50  ok
+ep-23           1          0/100      0        0   50       50  ok
+ep-24           1          0/100      0        0   50       50  ok
+ep-25           1          0/100      0        0   50       50  ok
+ep-26           1          0/100      0        0   50       50  ok
+ep-27           1          0/100      0        0   50       50  ok
+ep-28           1          0/100      0        0   50       50  ok
+ep-29           1          0/100      0        0   50       50  ok
+ep-30           1          0/100      0        0   50       50  ok
+ep-31           1          0/100      0        0   50       50  ok
+ep-32           1          0/100      0        0   50       50  ok
+ep-33           1          0/100      0        0   50       50  ok
+
+items already in ledger (skipped): 0
+ep- responses to spend: 33   ref- requests (free): 0
+
+outcomes: {'rejected_400': 33}
+responses written: 0
+server used after run: ep-01=0, ep-02=0, ep-03=0, ep-04=0, ep-05=0, ep-06=0, ep-07=0, ep-08=0, ep-09=0, ep-10=0, ep-11=0, ep-12=0, ep-13=0, ep-14=0, ep-15=0, ep-16=0, ep-17=0, ep-18=0, ep-19=0, ep-20=0, ep-21=0, ep-22=0, ep-23=0, ep-24=0, ep-25=0, ep-26=0, ep-27=0, ep-28=0, ep-29=0, ep-30=0, ep-31=0, ep-32=0, ep-33=0
+exit=0 19:16:10

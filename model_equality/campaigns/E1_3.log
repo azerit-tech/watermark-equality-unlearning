@@ -1,0 +1,54 @@
+run 54ce877b25f5: 230 requests (230 ep-, 0 ref-), concurrency 4
+20/230 responses (ep-21: server used 1/100)
+40/230 responses (ep-08: server used 2/100)
+60/230 responses (ep-28: server used 2/100)
+80/230 responses (ep-15: server used 3/100)
+100/230 responses (ep-02: server used 4/100)
+120/230 responses (ep-22: server used 4/100)
+140/230 responses (ep-09: server used 5/100)
+160/230 responses (ep-29: server used 5/100)
+180/230 responses (ep-16: server used 6/100)
+200/230 responses (ep-03: server used 7/100)
+220/230 responses (ep-23: server used 7/100)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ep-01           6          1/100      1        1   50       49  ok
+ep-02           7          0/100      0        0   50       50  ok
+ep-03           7          0/100      0        0   50       50  ok
+ep-04           7          0/100      0        0   50       50  ok
+ep-05           7          0/100      0        0   50       50  ok
+ep-06           7          0/100      0        0   50       50  ok
+ep-07           7          0/100      0        0   50       50  ok
+ep-08           7          0/100      0        0   50       50  ok
+ep-09           7          0/100      0        0   50       50  ok
+ep-10           7          0/100      0        0   50       50  ok
+ep-11           7          0/100      0        0   50       50  ok
+ep-12           7          0/100      0        0   50       50  ok
+ep-13           7          0/100      0        0   50       50  ok
+ep-14           7          0/100      0        0   50       50  ok
+ep-15           7          0/100      0        0   50       50  ok
+ep-16           7          0/100      0        0   50       50  ok
+ep-17           7          0/100      0        0   50       50  ok
+ep-18           7          0/100      0        0   50       50  ok
+ep-19           7          0/100      0        0   50       50  ok
+ep-20           7          0/100      0        0   50       50  ok
+ep-21           7          0/100      0        0   50       50  ok
+ep-22           7          0/100      0        0   50       50  ok
+ep-23           7          0/100      0        0   50       50  ok
+ep-24           7          0/100      0        0   50       50  ok
+ep-25           7          0/100      0        0   50       50  ok
+ep-26           7          0/100      0        0   50       50  ok
+ep-27           7          0/100      0        0   50       50  ok
+ep-28           7          0/100      0        0   50       50  ok
+ep-29           7          0/100      0        0   50       50  ok
+ep-30           7          0/100      0        0   50       50  ok
+ep-31           7          0/100      0        0   50       50  ok
+ep-32           7          0/100      0        0   50       50  ok
+ep-33           7          0/100      0        0   50       50  ok
+
+items already in ledger (skipped): 1
+ep- responses to spend: 230   ref- requests (free): 0
+
+outcomes: {'not_sent_budget': 1, 'response': 229}
+responses written: 229
+server used after run: ep-01=7, ep-02=7, ep-03=7, ep-04=7, ep-05=7, ep-06=7, ep-07=7, ep-08=7, ep-09=7, ep-10=7, ep-11=7, ep-12=7, ep-13=7, ep-14=7, ep-15=7, ep-16=7, ep-17=7, ep-18=7, ep-19=7, ep-20=7, ep-21=7, ep-22=7, ep-23=7, ep-24=7, ep-25=7, ep-26=7, ep-27=7, ep-28=7, ep-29=7, ep-30=7, ep-31=7, ep-32=7, ep-33=6
+exit=0 19:32:06

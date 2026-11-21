@@ -1,3 +1,39 @@
 run 82c87a6f0ffe: 405 requests (0 ep-, 405 ref-), concurrency 4
 20/405 responses (ref-02: server used 123/1000000)
 40/405 responses (ref-04: server used 125/1000000)
+60/405 responses (ref-06: server used 127/1000000)
+80/405 responses (ref-08: server used 129/1000000)
+100/405 responses (ref-01: server used 134/1000000)
+120/405 responses (ref-02: server used 134/1000000)
+140/405 responses (ref-05: server used 136/1000000)
+160/405 responses (ref-07: server used 138/1000000)
+180/405 responses (ref-09: server used 140/1000000)
+200/405 responses (ref-02: server used 143/1000000)
+220/405 responses (ref-04: server used 145/1000000)
+240/405 responses (ref-06: server used 147/1000000)
+260/405 responses (ref-08: server used 149/1000000)
+280/405 responses (ref-01: server used 154/1000000)
+300/405 responses (ref-03: server used 154/1000000)
+320/405 responses (ref-05: server used 156/1000000)
+340/405 responses (ref-07: server used 158/1000000)
+360/405 responses (ref-09: server used 160/1000000)
+380/405 responses (ref-02: server used 163/1000000)
+400/405 responses (ref-04: server used 165/1000000)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01         45    122/1000000    122      122    -        -  free (ref)
+ref-02         45    120/1000000    120      120    -        -  free (ref)
+ref-03         45    120/1000000    120      120    -        -  free (ref)
+ref-04         45    120/1000000    120      120    -        -  free (ref)
+ref-05         45    120/1000000    120      120    -        -  free (ref)
+ref-06         45    120/1000000    120      120    -        -  free (ref)
+ref-07         45    120/1000000    120      120    -        -  free (ref)
+ref-08         45    120/1000000    120      120    -        -  free (ref)
+ref-09         45    120/1000000    120      120    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 405
+
+outcomes: {'response': 405}
+responses written: 405
+server used after run: ref-01=167, ref-02=165, ref-03=165, ref-04=165, ref-05=165, ref-06=165, ref-07=165, ref-08=165, ref-09=165
+exit=0 19:01:32
