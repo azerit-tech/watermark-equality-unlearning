@@ -1,0 +1,6 @@
+[21:36:22 jrlogin05 gpu=none] cloud pixelseal train start budget 27 min
+train: searched 2, newly >= 0.9: 0 [] | total conf>=0.9: 5
+train outpaintings searched 1: newly >= 0.9: 0, mean IoU of those nan, rect score (miou) of those nan
+train non-outpaintings searched 1: FALSE POSITIVES conf >= 0.9: []
+by fold (newly found outpaintings): {0: 0, 1: 0, 2: 0, 3: 0, 4: 0}
+[21:37:06 jrlogin05 gpu=none] rc=0 DONE -> /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/jacques2/smoke/cloud_pixelseal_train/pixelseal_train_boxes.json

@@ -1,0 +1,4 @@
+[21:34:11 jrlogin05 gpu=none] holes trustmark start MIN=1 budget 52
+wrote fold0_probs128.npz (2) and test_probs128.npz (2) mean 0.521
+fold0 all          {"n": 2, "base": 0.667, "new": 0.667, "diff": 0.0, "ci95": [0.0, 0.0]}
+[21:34:44 jrlogin05 gpu=none] rc=0 DONE

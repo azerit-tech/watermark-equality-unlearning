@@ -1,0 +1,6 @@
+[21:34:11 jrlogin05 gpu=none] cloud stegastamp test start budget 52 min
+0 032902f3762e  old 0.66 -> 0.67 [183, 273, 98, 355]  170 dec 16.07 s
+1 0510c2785a82  old 0.70 -> 0.70 [158, 400, 328, 464]  265 dec 24.68 s
+elapsed 41s, done 2/2
+test: searched 2, newly >= 0.9: 0 [] | total conf>=0.9: 37
+[21:34:56 jrlogin05 gpu=none] rc=0 DONE -> /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/jacques2/smoke/cloud_stegastamp_test/stegastamp_test_boxes.json
