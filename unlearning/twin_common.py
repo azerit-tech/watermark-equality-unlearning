@@ -121,11 +121,33 @@ def logits_on(model, images_u8, fn=None, seed=0, bs=125):
     return torch.cat(out)
 
 
-def score_views(model, f_img, t_img):
-    """The logits the server formula needs: F clean, F under each alteration recipe, T (control set)."""
-    out = {"F": logits_on(model, f_img), "T": logits_on(model, t_img)}
+def fixed_alterations(f_img_u8):
+    """The altered copies of F used by the scorer, as preprocessed tensors on the images' device.
+
+    They are generated on the CPU with a CPU generator, so they are the same on every machine. (A first version
+    drew them with a CUDA generator: the stream differs between GPU models, so a checkpoint scored on an A100
+    against gold logits cached on another card was compared on different crops, which deflated the altered-copy
+    prediction score. Cache file renamed to score_cache_v2.pt when this was fixed.)
+    """
+    x = preprocess(f_img_u8.cpu())
+    out = {}
     for i, name in enumerate(ALTER_RECIPES):
-        out[f"F_{name}"] = logits_on(model, f_img, VIEW_FNS[name], seed=4321 + i)
+        g = torch.Generator().manual_seed(4321 + i)
+        out[name] = torch.cat([VIEW_FNS[name](x[j:j + 125], g) for j in range(0, len(x), 125)]).to(f_img_u8.device)
+    return out
+
+
+@torch.no_grad()
+def _logits_pre(model, x, bs=125):
+    return torch.cat([server_logits(model, x[i:i + bs]) for i in range(0, len(x), bs)])
+
+
+def score_views(model, f_img, t_img, alt=None):
+    """The logits the server formula needs: F clean, F under each alteration recipe, T (control set)."""
+    alt = fixed_alterations(f_img) if alt is None else alt
+    out = {"F": logits_on(model, f_img), "T": logits_on(model, t_img)}
+    for name in ALTER_RECIPES:
+        out[f"F_{name}"] = _logits_pre(model, alt[name])
     return {k: v.float().cpu() for k, v in out.items()}
 
 
@@ -196,16 +218,19 @@ class Bench:
         self.f_img, self.t_img = images[self.split["f_idx"]].to(self.dev), images[self.split["t_idx"]].to(self.dev)
         self.y_f, self.y_t = self.split["labels"][self.split["f_idx"]], self.split["labels"][self.split["t_idx"]]
         self.gold_files = sorted(self.dir.glob("gold*.pt"))
-        cache = self.dir / "score_cache.pt"
+        self.alt = fixed_alterations(self.f_img)
+        cache = self.dir / "score_cache_v2.pt"
         names = ["orig.pt"] + [f.name for f in self.gold_files]
         ref = torch.load(cache, weights_only=True) if cache.exists() and not rebuild else {}
         if list(ref) != names:
             ref = {n: self.views(self.dir / n) for n in names}
-            torch.save(ref, cache)
+            tmp = cache.with_name(f"{cache.name}.{os.getpid()}.tmp")   # atomic: two tasks may build it at once
+            torch.save(ref, tmp)
+            os.replace(tmp, cache)
         self.orig, self.golds = ref["orig.pt"], [ref[f.name] for f in self.gold_files]
 
     def views(self, path):
-        return score_views(load_ckpt(self.arch, path, self.dev), self.f_img, self.t_img)
+        return score_views(load_ckpt(self.arch, path, self.dev), self.f_img, self.t_img, self.alt)
 
     def score(self, sub_views, golds=None):
         """{recipe: components} for each alteration recipe, plus 'mean' = average final over the recipes."""

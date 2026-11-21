@@ -9,6 +9,8 @@ trained to reproduce the ORIGINAL model's outputs (KL at T=1 and T=2) on inputs 
   bank    a stored bank (npz, key "images" uint8 [N,224,224,3], e.g. runs/retain_synth/bank_shuf.npz); the teacher's
           outputs are recomputed here. The last --bank-val images are never trained on (a retain proxy).
   noise   augment.smooth_noise (no image content)
+  fields  data-free colour fields (no image content): a third linear colour gradients, a third random colour
+          blocks (2-16 cells, nearest upsampling), a third patch-shuffled smooth noise (16x16 patches permuted)
   strong  augment.strong views of the source images (these ARE forget-image views: memorisation can leak)
   comp    augment.composite of strong views (CutMix / mosaic / MixUp of forget images)
 `--mix mosaic:0.6,bank:0.3,noise:0.1` sets each input kind's share of a batch.
@@ -46,7 +48,7 @@ from augment import alter, composite, smooth_noise, strong
 from common import (FORGET_IMAGES_FILE, MODEL_FILE, build_model, check_submission, get_device, kl_T,
                     load_forget_images, preprocess, server_logits, state_dict_for_submission)
 
-KINDS = ("mosaic", "bank", "noise", "strong", "comp")
+KINDS = ("mosaic", "bank", "noise", "fields", "strong", "comp")
 
 
 def parse_args():
@@ -124,6 +126,34 @@ def mosaics(x_u8, n, g, dev):
         x = torch.where(torch.rand(n, 1, 1, 1, generator=g, device=dev) < 0.7, amp_phase(a, x), x)
     x = torch.where(torch.rand(n, 1, 1, 1, generator=g, device=dev) < 0.6, colour(x, g), x)
     return ((x + 1) * 127.5).round() / 127.5 - 1  # on the uint8 grid, like a stored bank image
+
+
+def fields(n, g, dev, size=224):
+    """Data-free inputs: gradients / colour blocks / patch-shuffled smooth noise, one third each, in [-1, 1]."""
+    n1, n2 = n // 3, n // 3
+    n3 = n - n1 - n2
+    out = []
+    if n1:  # linear gradient between two random colours along a random direction
+        c0 = torch.rand(n1, 3, 1, 1, generator=g, device=dev) * 2 - 1
+        c1 = torch.rand(n1, 3, 1, 1, generator=g, device=dev) * 2 - 1
+        ang = torch.rand(n1, 1, 1, 1, generator=g, device=dev) * 2 * math.pi
+        lin = torch.linspace(-1, 1, size, device=dev)
+        yy, xx = lin.view(1, 1, size, 1), lin.view(1, 1, 1, size)
+        t = ((ang.cos() * xx + ang.sin() * yy) / 2 ** 0.5 + 1) / 2
+        out.append(c0 + (c1 - c0) * t)
+    if n2:  # random colour blocks
+        c = [2, 4, 8, 16][int(torch.randint(0, 4, (1,), generator=g, device=dev))]
+        z = torch.rand(n2, 3, c, c, generator=g, device=dev) * 2 - 1
+        out.append(F.interpolate(z, size=(size, size), mode="nearest"))
+    if n3:  # smooth noise with its 16x16 grid of 14-px patches permuted per image
+        z = smooth_noise(n3, g, dev, size)
+        p = size // 16
+        tiles = z.unfold(2, p, p).unfold(3, p, p).permute(0, 2, 3, 1, 4, 5).reshape(n3, 256, 3, p, p)
+        perm = torch.argsort(torch.rand(n3, 256, generator=g, device=dev), dim=1)
+        tiles = tiles[torch.arange(n3, device=dev)[:, None], perm]
+        out.append(tiles.view(n3, 16, 16, 3, p, p).permute(0, 3, 1, 4, 2, 5).reshape(n3, 3, size, size))
+    x = torch.cat(out).clamp(-1, 1)
+    return ((x + 1) * 127.5).round() / 127.5 - 1
 
 
 # --------------------------------------------------------------- model pieces
@@ -299,6 +329,8 @@ def main():
                 parts.append(preprocess(bank[torch.randint(0, len(bank), (c,), generator=g, device=dev)]))
             elif kind == "noise":
                 parts.append(smooth_noise(c, g, dev))
+            elif kind == "fields":
+                parts.append(fields(c, g, dev))
             elif kind == "strong":
                 parts.append(strong(preprocess(src[torch.randint(0, len(src), (c,), generator=g, device=dev)]), g))
             elif kind == "comp":

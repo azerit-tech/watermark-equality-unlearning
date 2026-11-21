@@ -103,7 +103,7 @@ def main():
             for a in args.alphas:
                 model = build(bench.arch)
                 model.load_state_dict({k: (v + a * (sd1[k] - v) if v.is_floating_point() else v) for k, v in sd0.items()})
-                s = bench.score(score_views(model.to(bench.dev).eval(), bench.f_img, bench.t_img))
+                s = bench.score(score_views(model.to(bench.dev).eval(), bench.f_img, bench.t_img, bench.alt))
                 results[f"{f}@{a}"] = s
                 name = f"{str(f).replace(str(TWIN_DIR / args.regime) + '/', '')} a={a}"
                 for r in ALTER_RECIPES:
@@ -112,7 +112,7 @@ def main():
         sds = [torch.load(f, map_location="cpu", weights_only=True) for f in group]
         model = build(bench.arch)
         model.load_state_dict({k: (sum(sd[k] for sd in sds) / len(sds) if v.is_floating_point() else v) for k, v in sds[0].items()})
-        s = bench.score(score_views(model.to(bench.dev).eval(), bench.f_img, bench.t_img))
+        s = bench.score(score_views(model.to(bench.dev).eval(), bench.f_img, bench.t_img, bench.alt))
         name = "soup(" + ",".join(Path(f).parent.name for f in group) + ")"
         results[name] = s
         print("\nweight average of " + ", ".join(str(f) for f in group) + "\n" + f"{'':<44} " + HEAD)
