@@ -7,6 +7,9 @@ Differences from scrub.py:
     on and give an honest drift measure ("bank kl").
   * max-steps see harsher views: each image of a max-step batch is kept clean with prob --p-clean, otherwise it
     gets one view kind drawn uniformly from --max-views (default alter, strong and the four alter_unseen kinds).
+With --delta-every N, the weight change theta - theta0 is also saved in float16 (delta_sNNNNN.pt, ~170 MB) every N
+optimizer steps and at the end of every max phase, indexed in deltas.jsonl (for weight-space extrapolation scans,
+scrubx_scan.py); --no-epoch-ckpt then skips the float32 epoch checkpoints.
 Every epoch is saved (ckpt_epXX.pt) and scored: forget CE on clean / alter / unseen kinds (metrics.TargetEvaluator),
 T=2 entropy on the clean forget images, noise and composite drift, held-out bank KL, and the clean CE of the
 weight-space extrapolations theta0 + a * Delta for a in --extrap (SCRUB checkpoints were best used extrapolated).
@@ -52,6 +55,8 @@ def parse_args():
     p.add_argument("--limit", type=int, default=None)
     p.add_argument("--no-amp", action="store_true")
     p.add_argument("--seed", type=int, default=0)
+    p.add_argument("--delta-every", type=int, default=0, help="save fp16 delta every N optimizer steps (0 = off)")
+    p.add_argument("--no-epoch-ckpt", action="store_true")
     return p.parse_args()
 
 
@@ -146,6 +151,24 @@ def main():
               f"ent2 {row['ent2']:.3f} | ret {row['ret_kl']:.3f} noise {row['noise_kl']:.4f} bank {row['bank_kl']:.4f}/"
               f"{row['bank_agree']:.3f} | {xs}", flush=True)
 
+    gstep = [0]
+    dlog = (args.out / "deltas.jsonl").open("w") if args.delta_every else None
+
+    @torch.no_grad()
+    def save_delta(epoch, phase):
+        f = args.out / f"delta_s{gstep[0]:05d}.pt"
+        if f.exists():
+            return
+        sd = student.state_dict()
+        torch.save({k: (sd[k].float() - v0.float()).half().cpu() for k, v0 in sd0.items() if v0.is_floating_point()}, f)
+        dlog.write(json.dumps({"file": str(f), "step": gstep[0], "epoch": epoch, "phase": phase}) + "\n")
+        dlog.flush()
+
+    def tick(epoch, phase):
+        gstep[0] += 1
+        if args.delta_every and gstep[0] % args.delta_every == 0:
+            save_delta(epoch, phase)
+
     log = (args.out / "metrics.jsonl").open("w")
     row = score(teacher, 0)
     log.write(json.dumps(row) + "\n")
@@ -164,6 +187,9 @@ def main():
                 kl = distill_kl(s, t, args.temperature)
                 step(opt_max, -kl)
                 max_loss = kl.item()
+                tick(epoch, "max")
+            if args.delta_every:
+                save_delta(epoch, "max_end")
         for _ in range(retain_steps):
             j = torch.randint(0, len(bank), (args.batch_size,), generator=g, device=dev)
             xb = preprocess(bank[j])
@@ -173,11 +199,15 @@ def main():
             loss = args.alpha * distill_kl(s, t, args.temperature)
             step(opt_min, loss)
             min_loss = loss.item()
+            tick(epoch, "min")
+        if args.delta_every:
+            save_delta(epoch, "min_end")
         row = {**score(student, epoch), "max_kl": max_loss, "min_loss": min_loss, "seconds": time.time() - t0}
         log.write(json.dumps(row) + "\n")
         log.flush()
         show(row)
-        torch.save(state_dict_for_submission(student), args.out / f"ckpt_ep{epoch:02d}.pt")
+        if not args.no_epoch_ckpt:
+            torch.save(state_dict_for_submission(student), args.out / f"ckpt_ep{epoch:02d}.pt")
     print("done")
 
 
