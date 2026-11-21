@@ -1,0 +1,6 @@
+pixelseal: real 0.620  permuted-label AUCs mean 0.481 max 0.545
+   cells with p<0.01: 3/256 (expected 2.6); row means train [125. 132. 128. 120. 117. 110.] test [136. 133. 129. 120. 117. 113.]
+trustmark: real 0.488  permuted-label AUCs mean 0.487 max 0.510
+   cells with p<0.01: 3/256 (expected 2.6); row means train [140. 131. 125. 123. 118. 119.] test [130. 129. 124. 117. 116. 111.]
+stegastamp: real 0.460  permuted-label AUCs mean 0.476 max 0.549
+   cells with p<0.01: 5/256 (expected 2.6); row means train [128. 128. 124. 119. 118. 107.] test [136. 137. 130. 118. 115. 109.]

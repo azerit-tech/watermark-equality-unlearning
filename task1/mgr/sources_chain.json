@@ -1,0 +1,36 @@
+{
+ "_doc": "chaine figee (agent chain)",
+ "stegastamp": [
+  {
+   "name": "chain_stegastamp",
+   "val": [
+    "t1/out/chain/stegastamp/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/chain/stegastamp/test_probs128.npz"
+   ]
+  }
+ ],
+ "trustmark": [
+  {
+   "name": "chain_trustmark",
+   "val": [
+    "t1/out/chain/trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/chain/trustmark/test_probs128.npz"
+   ]
+  }
+ ],
+ "pixelseal": [
+  {
+   "name": "chain_pixelseal",
+   "val": [
+    "t1/out/chain/pixelseal/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/chain/pixelseal/test_probs128.npz"
+   ]
+  }
+ ]
+}

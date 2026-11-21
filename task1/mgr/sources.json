@@ -1,0 +1,135 @@
+{
+ "_doc": "Par m\u00e9thode, liste de sources. val = fichiers de validation concat\u00e9n\u00e9s (folds), test = fichiers moyenn\u00e9s (mod\u00e8les). Chemins relatifs \u00e0 TASK. Source dont un fichier manque = ignor\u00e9e.",
+ "stegastamp": [
+  {
+   "name": "v0",
+   "val": [
+    "t1/out/train/v0/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/train/v0/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "agent_stega",
+   "val": [
+    "t1/out/stega/best/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/stega/best/test_probs128.npz"
+   ]
+  }
+ ],
+ "trustmark": [
+  {
+   "name": "v0",
+   "val": [
+    "t1/out/train/v0/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/train/v0/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "smoke_gpu_tm",
+   "val": [
+    "t1/out/mgr/smoke_gpu/tm/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/mgr/smoke_gpu/tm/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "dense_login_tm",
+   "val": [
+    "t1/out/dense/login/tm/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/dense/login/tm/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "frozen_tm",
+   "val": [
+    "t1/out/frozen/trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/frozen/trustmark/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "refine_trustmark",
+   "val": [
+    "t1/out/refine/trustmark_fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/refine/trustmark_test_probs128.npz"
+   ]
+  },
+  {
+   "name": "agent_tmdense",
+   "val": [
+    "t1/out/tmdense/best/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/tmdense/best/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "tiles_tm",
+   "val": [
+    "t1/out/tiles/trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/tiles/trustmark/test_probs128.npz"
+   ]
+  }
+ ],
+ "pixelseal": [
+  {
+   "name": "v0",
+   "val": [
+    "t1/out/train/v0/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/train/v0/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "smoke_gpu_ps",
+   "val": [
+    "t1/out/mgr/smoke_gpu/ps/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/mgr/smoke_gpu/ps/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "dense_login_ps",
+   "val": [
+    "t1/out/dense/login/ps/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/dense/login/ps/test_probs128.npz"
+   ]
+  },
+  {
+   "name": "refine_pixelseal",
+   "val": [
+    "t1/out/refine/pixelseal_fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/refine/pixelseal_test_probs128.npz"
+   ]
+  },
+  {
+   "name": "tiles_ps",
+   "val": [
+    "t1/out/tiles/pixelseal/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/tiles/pixelseal/test_probs128.npz"
+   ]
+  }
+ ]
+}
