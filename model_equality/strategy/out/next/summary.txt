@@ -1,0 +1,29 @@
+Créneaux : 2 utilisés ; prochain possible à 20:39 (garde 32 min) ; 29 restants avant 22/11 12:00.
+Décodage : approché (aucun score n'a plus de 6 décimales : scores supposés arrondis, tolérance 5.1e-03)
+Référence (retenue par le serveur) : #2, score public 0.350000. comptes publics : 1797 décodages possibles, FP entre 0 et 6, FN entre 0 et 47
+PROPOSITION écrite : /Users/jacquesmougeot/Desktop/Azerit-hack/model_equality/strategy/out/next/partition.csv
+Ce que la soumission teste (par rapport à la référence) :
+  - réunit {ep-06, ep-08, ep-20} + ep-30
+  probabilité a posteriori que ce changement soit juste : 0.38
+Lecture du résultat :
+  - score > 0.350000 (probabilité 0.21) : changement confirmé sur les paires publiques, la soumission devient la référence ; gain privé attendu alors +0.0587 ; risque que le privé baisse quand même 18%.
+  - score identique (probabilité 0.33) : aucune paire publique touchée, rien d'appris.
+  - score plus bas (probabilité 0.46) : changement rejeté, la référence reste ; le décodage dit quand même combien de paires publiques étaient justes.
+  valeur du test (gain privé espéré) : +0.01255
+Autres tests possibles (valeur, P(le public monte), P(juste)) :
+  +0.01255  0.21  0.38  réunit {ep-06, ep-08, ep-20} + ep-30
+  +0.00983  0.18  0.34  réunit {ep-10, ep-16, ep-29} + ep-31
+  +0.00427  0.11  0.22  réunit ep-03 + {ep-06, ep-08, ep-20}
+  +0.00387  0.10  0.21  réunit {ep-10, ep-16, ep-29} + ep-15
+  +0.00385  0.08  0.18  réunit {ep-06, ep-08, ep-20} + ep-21
+Doutes restants les plus forts (probabilité a posteriori) :
+  0.59  ep-23 distinct de sa grappe (2 endpoints)
+  0.59  ep-04 distinct de sa grappe (2 endpoints)
+  0.49  ep-16 distinct de sa grappe (3 endpoints)
+  0.49  ep-29 distinct de sa grappe (3 endpoints)
+  0.48  ep-33 en réalité le même modèle que ep-04
+  0.48  ep-10 distinct de sa grappe (3 endpoints)
+  0.46  ep-20 distinct de sa grappe (3 endpoints)
+  0.46  ep-06 distinct de sa grappe (3 endpoints)
+Croyances à jour par paire : /Users/jacquesmougeot/Desktop/Azerit-hack/model_equality/strategy/out/next/posterior_pairs.csv
+Envoi (après accord) : python3.12 -m model_equality.scoring.submit /Users/jacquesmougeot/Desktop/Azerit-hack/model_equality/strategy/out/next/partition.csv   puis --confirm-submit ; ensuite : python3.12 -m model_equality.strategy update
