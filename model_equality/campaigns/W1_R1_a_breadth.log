@@ -1,0 +1,35 @@
+run 5238fcfb56b6: 324 requests (0 ep-, 324 ref-), concurrency 4
+20/324 responses (ref-02: server used 87/1000000)
+40/324 responses (ref-04: server used 89/1000000)
+60/324 responses (ref-06: server used 91/1000000)
+80/324 responses (ref-08: server used 93/1000000)
+100/324 responses (ref-09: server used 95/1000000)
+120/324 responses (ref-03: server used 98/1000000)
+140/324 responses (ref-05: server used 100/1000000)
+160/324 responses (ref-07: server used 102/1000000)
+180/324 responses (ref-09: server used 104/1000000)
+200/324 responses (ref-02: server used 107/1000000)
+220/324 responses (ref-04: server used 109/1000000)
+240/324 responses (ref-06: server used 111/1000000)
+260/324 responses (ref-08: server used 113/1000000)
+280/324 responses (ref-01: server used 118/1000000)
+300/324 responses (ref-03: server used 118/1000000)
+320/324 responses (ref-04: server used 120/1000000)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01         36     86/1000000     86       86    -        -  free (ref)
+ref-02         36     84/1000000     84       84    -        -  free (ref)
+ref-03         36     84/1000000     84       84    -        -  free (ref)
+ref-04         36     84/1000000     84       84    -        -  free (ref)
+ref-05         36     84/1000000     84       84    -        -  free (ref)
+ref-06         36     84/1000000     84       84    -        -  free (ref)
+ref-07         36     84/1000000     84       84    -        -  free (ref)
+ref-08         36     84/1000000     84       84    -        -  free (ref)
+ref-09         36     84/1000000     84       84    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 324
+
+outcomes: {'response': 324}
+responses written: 324
+server used after run: ref-01=122, ref-02=120, ref-03=120, ref-04=120, ref-05=120, ref-06=120, ref-07=120, ref-08=120, ref-09=120
+exit=0 18:30:00

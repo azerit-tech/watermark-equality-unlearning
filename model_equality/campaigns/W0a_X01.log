@@ -1,0 +1,27 @@
+run 00fdd2d56e80: 9 requests (0 ep-, 9 ref-), concurrency 4
+ref-01 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-04 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-02 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-03 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-07 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-06 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-05 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-08 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+ref-09 X01_oversize#0: HTTP 400 {'detail': 'Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of a
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01          1     26/1000000     26       26    -        -  free (ref)
+ref-02          1     24/1000000     24       24    -        -  free (ref)
+ref-03          1     24/1000000     24       24    -        -  free (ref)
+ref-04          1     24/1000000     24       24    -        -  free (ref)
+ref-05          1     24/1000000     24       24    -        -  free (ref)
+ref-06          1     24/1000000     24       24    -        -  free (ref)
+ref-07          1     24/1000000     24       24    -        -  free (ref)
+ref-08          1     24/1000000     24       24    -        -  free (ref)
+ref-09          1     24/1000000     24       24    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 9
+
+outcomes: {'rejected_400': 9}
+responses written: 0
+server used after run: ref-01=26, ref-02=24, ref-03=24, ref-04=24, ref-05=24, ref-06=24, ref-07=24, ref-08=24, ref-09=24

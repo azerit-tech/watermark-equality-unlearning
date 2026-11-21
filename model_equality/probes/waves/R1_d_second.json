@@ -1,0 +1,218 @@
+[
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL05_dice_long",
+    "text": "Below is a log of rolls of a six-sided die (1 to 6), separated by commas.\n\n5, 3, 5, 1, 1, 3, 5, 5, 3, 3, 2, 3, 2, 2, 1, 6, 4, 3, 2, 4, 5, 4, 4, 4, 6, 2, 6, 2, 5, 3, 5, 3, 1, 3, 5, 1, 3, 6, 6, 2, 6, 4, 5, 5, 5, 6, 6, 4, 5, 5, 4, 5, 3, 5, 6, 1, 5, 4, 3, 3, 6, 3, 5, 2, 1, 5, 4, 4, 3, 5, 1, 5, 2, 2, 1, 5, 2, 3, 6, 4, 4, 5, 5, 2, 6, 1, 1, 6, 6, 1, 3, 5, 3, 3, 6, 2, 6, 3, 4, 3, 1, 1, 1, 4, 2, 4, 5, 3, 1, 2, 1, 3, 2, 2, 1, 3, 2, 6, 5, 2, 5, 3, 3, 1, 4, 6, 5, 5, 4, 1, 5, 2, 6, 2, 2, 5, 6, 1, 6, 6, 4, 3, 2, 6, 3, 3, 3, 1, 2, 3, 6, 4, 3, 6, 1, 2, 2, 3, 1, 3, 1, 6, 2, 1, 6, 1, 5, 1, 3, 6, 1, 6, 3, 6, 4, 4, 4, 6, 4, 2, 4, 1, 1, 6, 2, 3, 4, 6, 2, 2, 5, 2, 1, 6, 1, 3, 2, 4, 5, 6\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S11_digits_lines",
+    "text": "Write 100 random digits from 0 to 9, one digit per line, with no numbering. Output only the digits."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 230,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F15_truefalse",
+    "text": "Mark each statement as true (T) or false (F).\nGive all 30 answers and nothing else, one per line, in the format `1: T`.\n\n1. The Great Wall of China is visible from the Moon with the naked eye.\n2. Bats are blind.\n3. Lightning never strikes the same place twice.\n4. A group of crows is called a murder.\n5. Honey never spoils.\n6. Humans use only ten percent of their brains.\n7. Mount Everest is the tallest mountain measured from base to peak.\n8. Sharks are mammals.\n9. The capital of Australia is Sydney.\n10. Venus is hotter than Mercury.\n11. Glass is made mostly of sand.\n12. Goldfish have a three-second memory.\n13. The Sahara is the largest desert on Earth.\n14. Sound travels faster in water than in air.\n15. Napoleon was unusually short.\n16. An octopus has three hearts.\n17. Bananas grow on trees.\n18. The Atlantic is the largest ocean.\n19. Spiders are insects.\n20. Tomatoes are fruits.\n21. Diamonds are made of carbon.\n22. The human body has 206 bones.\n23. Light takes eight minutes to reach Earth from the Sun.\n24. Vikings wore horned helmets.\n25. A day on Venus is longer than its year.\n26. Camels store water in their humps.\n27. Antibiotics kill viruses.\n28. The Nile flows north.\n29. Chameleons change colour mainly to hide.\n30. Russia has eleven time zones."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 200,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F04_sentiment",
+    "text": "Classify each review as positive (P) or negative (N).\nGive all 25 answers and nothing else, one per line, in the format `1: P`.\n\n1. The food was fine but I would not hurry back.\n2. Not bad at all, though the ending dragged.\n3. It does the job, I suppose.\n4. I expected worse.\n5. Loud, crowded, and oddly charming.\n6. The staff tried their best.\n7. Cheap, and it shows, but it works.\n8. I have seen better and I have seen worse.\n9. A strange film that I keep thinking about.\n10. The battery lasts a day, barely.\n11. Pretty, but uncomfortable after an hour.\n12. It arrived late but in perfect condition.\n13. My kids loved it; I did not.\n14. Simple, slow, honest cooking.\n15. Too long, yet I finished it in a weekend.\n16. The view makes up for the room.\n17. Nothing special, nothing wrong.\n18. It broke once and was replaced quickly.\n19. Ambitious and messy.\n20. The plot is thin but the music is wonderful.\n21. Works as described, no more.\n22. Friendly service, forgettable meal.\n23. Smaller than expected, but sturdy.\n24. An acquired taste.\n25. I would lend it to a friend, not buy it again."
+   },
+   {
+    "id": "F17_compare",
+    "text": "For each pair, say which one is larger (population for cities and countries, area for lakes and islands, height for mountains, length for rivers): answer A or B.\nGive all 24 answers and nothing else, one per line, in the format `1: A`.\n\n1. A: Vienna / B: Hamburg\n2. A: Lyon / B: Toulouse\n3. A: Chile / B: Zambia\n4. A: Portugal / B: Hungary\n5. A: Lake Victoria / B: Lake Superior\n6. A: Mont Blanc / B: Mount Elbrus\n7. A: the Danube / B: the Volga\n8. A: Norway / B: Finland\n9. A: Osaka / B: Nagoya\n10. A: Peru / B: Venezuela\n11. A: Kenya / B: Tanzania\n12. A: Prague / B: Warsaw\n13. A: Sicily / B: Sardinia\n14. A: Ireland / B: Iceland\n15. A: Morocco / B: Algeria\n16. A: Melbourne / B: Sydney\n17. A: Colombia / B: Argentina\n18. A: Turin / B: Naples\n19. A: Belgium / B: Greece\n20. A: the Rhine / B: the Loire\n21. A: Vietnam / B: Thailand\n22. A: Munich / B: Milan\n23. A: Bolivia / B: Paraguay\n24. A: Denver / B: Seattle"
+   },
+   {
+    "id": "F21_tools_b",
+    "text": "For each numbered request below, several tools are listed. Within one request all the tools do exactly the same thing. Choose one tool for each request.\nGive all 12 answers and nothing else, one per line, in the format `1: tool_name`.\n\n1. Request: Start a video call with Bob. Tools: zoom_call, meet_call, teams_call\n2. Request: Open an issue titled 'Fix login'. Tools: github_create_issue, gitlab_create_issue, bitbucket_create_issue\n3. Request: Find a flight from Paris to Rome on Friday. Tools: kayak_search, skyscanner_search, expedia_search\n4. Request: Order a margherita pizza for delivery. Tools: ubereats_order, doordash_order, deliveroo_order\n5. Request: Add Carol Smith as a new contact. Tools: salesforce_add_contact, hubspot_add_contact, pipedrive_add_contact\n6. Request: Text the code 4821 to the customer. Tools: twilio_send_sms, vonage_send_sms, plivo_send_sms\n7. Request: Give me the current price of gold. Tools: yahoo_finance_quote, alpha_vantage_quote, bloomberg_quote\n8. Request: Add 'call the dentist' to my to-do list. Tools: todoist_add_task, asana_add_task, trello_add_task\n9. Request: Give me today's top headlines. Tools: reuters_headlines, ap_headlines, bbc_headlines\n10. Request: Convert 100 dollars to euros. Tools: xe_convert, wise_convert, oanda_convert\n11. Request: Draw a picture of a red bicycle. Tools: dalle_generate, midjourney_generate, stable_diffusion_generate\n12. Request: Plan a driving route from Lille to Nice. Tools: google_maps_route, apple_maps_route, osm_route"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL05_dice_long",
+    "text": "Below is a log of rolls of a six-sided die (1 to 6), separated by commas.\n\n5, 3, 5, 1, 1, 3, 5, 5, 3, 3, 2, 3, 2, 2, 1, 6, 4, 3, 2, 4, 5, 4, 4, 4, 6, 2, 6, 2, 5, 3, 5, 3, 1, 3, 5, 1, 3, 6, 6, 2, 6, 4, 5, 5, 5, 6, 6, 4, 5, 5, 4, 5, 3, 5, 6, 1, 5, 4, 3, 3, 6, 3, 5, 2, 1, 5, 4, 4, 3, 5, 1, 5, 2, 2, 1, 5, 2, 3, 6, 4, 4, 5, 5, 2, 6, 1, 1, 6, 6, 1, 3, 5, 3, 3, 6, 2, 6, 3, 4, 3, 1, 1, 1, 4, 2, 4, 5, 3, 1, 2, 1, 3, 2, 2, 1, 3, 2, 6, 5, 2, 5, 3, 3, 1, 4, 6, 5, 5, 4, 1, 5, 2, 6, 2, 2, 5, 6, 1, 6, 6, 4, 3, 2, 6, 3, 3, 3, 1, 2, 3, 6, 4, 3, 6, 1, 2, 2, 3, 1, 3, 1, 6, 2, 1, 6, 1, 5, 1, 3, 6, 1, 6, 3, 6, 4, 4, 4, 6, 4, 2, 4, 1, 1, 6, 2, 3, 4, 6, 2, 2, 5, 2, 1, 6, 1, 3, 2, 4, 5, 6\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S11_digits_lines",
+    "text": "Write 100 random digits from 0 to 9, one digit per line, with no numbering. Output only the digits."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 230,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F15_truefalse",
+    "text": "Mark each statement as true (T) or false (F).\nGive all 30 answers and nothing else, one per line, in the format `1: T`.\n\n1. The Great Wall of China is visible from the Moon with the naked eye.\n2. Bats are blind.\n3. Lightning never strikes the same place twice.\n4. A group of crows is called a murder.\n5. Honey never spoils.\n6. Humans use only ten percent of their brains.\n7. Mount Everest is the tallest mountain measured from base to peak.\n8. Sharks are mammals.\n9. The capital of Australia is Sydney.\n10. Venus is hotter than Mercury.\n11. Glass is made mostly of sand.\n12. Goldfish have a three-second memory.\n13. The Sahara is the largest desert on Earth.\n14. Sound travels faster in water than in air.\n15. Napoleon was unusually short.\n16. An octopus has three hearts.\n17. Bananas grow on trees.\n18. The Atlantic is the largest ocean.\n19. Spiders are insects.\n20. Tomatoes are fruits.\n21. Diamonds are made of carbon.\n22. The human body has 206 bones.\n23. Light takes eight minutes to reach Earth from the Sun.\n24. Vikings wore horned helmets.\n25. A day on Venus is longer than its year.\n26. Camels store water in their humps.\n27. Antibiotics kill viruses.\n28. The Nile flows north.\n29. Chameleons change colour mainly to hide.\n30. Russia has eleven time zones."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 200,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F04_sentiment",
+    "text": "Classify each review as positive (P) or negative (N).\nGive all 25 answers and nothing else, one per line, in the format `1: P`.\n\n1. The food was fine but I would not hurry back.\n2. Not bad at all, though the ending dragged.\n3. It does the job, I suppose.\n4. I expected worse.\n5. Loud, crowded, and oddly charming.\n6. The staff tried their best.\n7. Cheap, and it shows, but it works.\n8. I have seen better and I have seen worse.\n9. A strange film that I keep thinking about.\n10. The battery lasts a day, barely.\n11. Pretty, but uncomfortable after an hour.\n12. It arrived late but in perfect condition.\n13. My kids loved it; I did not.\n14. Simple, slow, honest cooking.\n15. Too long, yet I finished it in a weekend.\n16. The view makes up for the room.\n17. Nothing special, nothing wrong.\n18. It broke once and was replaced quickly.\n19. Ambitious and messy.\n20. The plot is thin but the music is wonderful.\n21. Works as described, no more.\n22. Friendly service, forgettable meal.\n23. Smaller than expected, but sturdy.\n24. An acquired taste.\n25. I would lend it to a friend, not buy it again."
+   },
+   {
+    "id": "F17_compare",
+    "text": "For each pair, say which one is larger (population for cities and countries, area for lakes and islands, height for mountains, length for rivers): answer A or B.\nGive all 24 answers and nothing else, one per line, in the format `1: A`.\n\n1. A: Vienna / B: Hamburg\n2. A: Lyon / B: Toulouse\n3. A: Chile / B: Zambia\n4. A: Portugal / B: Hungary\n5. A: Lake Victoria / B: Lake Superior\n6. A: Mont Blanc / B: Mount Elbrus\n7. A: the Danube / B: the Volga\n8. A: Norway / B: Finland\n9. A: Osaka / B: Nagoya\n10. A: Peru / B: Venezuela\n11. A: Kenya / B: Tanzania\n12. A: Prague / B: Warsaw\n13. A: Sicily / B: Sardinia\n14. A: Ireland / B: Iceland\n15. A: Morocco / B: Algeria\n16. A: Melbourne / B: Sydney\n17. A: Colombia / B: Argentina\n18. A: Turin / B: Naples\n19. A: Belgium / B: Greece\n20. A: the Rhine / B: the Loire\n21. A: Vietnam / B: Thailand\n22. A: Munich / B: Milan\n23. A: Bolivia / B: Paraguay\n24. A: Denver / B: Seattle"
+   },
+   {
+    "id": "F21_tools_b",
+    "text": "For each numbered request below, several tools are listed. Within one request all the tools do exactly the same thing. Choose one tool for each request.\nGive all 12 answers and nothing else, one per line, in the format `1: tool_name`.\n\n1. Request: Start a video call with Bob. Tools: zoom_call, meet_call, teams_call\n2. Request: Open an issue titled 'Fix login'. Tools: github_create_issue, gitlab_create_issue, bitbucket_create_issue\n3. Request: Find a flight from Paris to Rome on Friday. Tools: kayak_search, skyscanner_search, expedia_search\n4. Request: Order a margherita pizza for delivery. Tools: ubereats_order, doordash_order, deliveroo_order\n5. Request: Add Carol Smith as a new contact. Tools: salesforce_add_contact, hubspot_add_contact, pipedrive_add_contact\n6. Request: Text the code 4821 to the customer. Tools: twilio_send_sms, vonage_send_sms, plivo_send_sms\n7. Request: Give me the current price of gold. Tools: yahoo_finance_quote, alpha_vantage_quote, bloomberg_quote\n8. Request: Add 'call the dentist' to my to-do list. Tools: todoist_add_task, asana_add_task, trello_add_task\n9. Request: Give me today's top headlines. Tools: reuters_headlines, ap_headlines, bbc_headlines\n10. Request: Convert 100 dollars to euros. Tools: xe_convert, wise_convert, oanda_convert\n11. Request: Draw a picture of a red bicycle. Tools: dalle_generate, midjourney_generate, stable_diffusion_generate\n12. Request: Plan a driving route from Lille to Nice. Tools: google_maps_route, apple_maps_route, osm_route"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 2,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL05_dice_long",
+    "text": "Below is a log of rolls of a six-sided die (1 to 6), separated by commas.\n\n5, 3, 5, 1, 1, 3, 5, 5, 3, 3, 2, 3, 2, 2, 1, 6, 4, 3, 2, 4, 5, 4, 4, 4, 6, 2, 6, 2, 5, 3, 5, 3, 1, 3, 5, 1, 3, 6, 6, 2, 6, 4, 5, 5, 5, 6, 6, 4, 5, 5, 4, 5, 3, 5, 6, 1, 5, 4, 3, 3, 6, 3, 5, 2, 1, 5, 4, 4, 3, 5, 1, 5, 2, 2, 1, 5, 2, 3, 6, 4, 4, 5, 5, 2, 6, 1, 1, 6, 6, 1, 3, 5, 3, 3, 6, 2, 6, 3, 4, 3, 1, 1, 1, 4, 2, 4, 5, 3, 1, 2, 1, 3, 2, 2, 1, 3, 2, 6, 5, 2, 5, 3, 3, 1, 4, 6, 5, 5, 4, 1, 5, 2, 6, 2, 2, 5, 6, 1, 6, 6, 4, 3, 2, 6, 3, 3, 3, 1, 2, 3, 6, 4, 3, 6, 1, 2, 2, 3, 1, 3, 1, 6, 2, 1, 6, 1, 5, 1, 3, 6, 1, 6, 3, 6, 4, 4, 4, 6, 4, 2, 4, 1, 1, 6, 2, 3, 4, 6, 2, 2, 5, 2, 1, 6, 1, 3, 2, 4, 5, 6\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S11_digits_lines",
+    "text": "Write 100 random digits from 0 to 9, one digit per line, with no numbering. Output only the digits."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 230,
+  "rep_start": 2,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F15_truefalse",
+    "text": "Mark each statement as true (T) or false (F).\nGive all 30 answers and nothing else, one per line, in the format `1: T`.\n\n1. The Great Wall of China is visible from the Moon with the naked eye.\n2. Bats are blind.\n3. Lightning never strikes the same place twice.\n4. A group of crows is called a murder.\n5. Honey never spoils.\n6. Humans use only ten percent of their brains.\n7. Mount Everest is the tallest mountain measured from base to peak.\n8. Sharks are mammals.\n9. The capital of Australia is Sydney.\n10. Venus is hotter than Mercury.\n11. Glass is made mostly of sand.\n12. Goldfish have a three-second memory.\n13. The Sahara is the largest desert on Earth.\n14. Sound travels faster in water than in air.\n15. Napoleon was unusually short.\n16. An octopus has three hearts.\n17. Bananas grow on trees.\n18. The Atlantic is the largest ocean.\n19. Spiders are insects.\n20. Tomatoes are fruits.\n21. Diamonds are made of carbon.\n22. The human body has 206 bones.\n23. Light takes eight minutes to reach Earth from the Sun.\n24. Vikings wore horned helmets.\n25. A day on Venus is longer than its year.\n26. Camels store water in their humps.\n27. Antibiotics kill viruses.\n28. The Nile flows north.\n29. Chameleons change colour mainly to hide.\n30. Russia has eleven time zones."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 200,
+  "rep_start": 2,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "F04_sentiment",
+    "text": "Classify each review as positive (P) or negative (N).\nGive all 25 answers and nothing else, one per line, in the format `1: P`.\n\n1. The food was fine but I would not hurry back.\n2. Not bad at all, though the ending dragged.\n3. It does the job, I suppose.\n4. I expected worse.\n5. Loud, crowded, and oddly charming.\n6. The staff tried their best.\n7. Cheap, and it shows, but it works.\n8. I have seen better and I have seen worse.\n9. A strange film that I keep thinking about.\n10. The battery lasts a day, barely.\n11. Pretty, but uncomfortable after an hour.\n12. It arrived late but in perfect condition.\n13. My kids loved it; I did not.\n14. Simple, slow, honest cooking.\n15. Too long, yet I finished it in a weekend.\n16. The view makes up for the room.\n17. Nothing special, nothing wrong.\n18. It broke once and was replaced quickly.\n19. Ambitious and messy.\n20. The plot is thin but the music is wonderful.\n21. Works as described, no more.\n22. Friendly service, forgettable meal.\n23. Smaller than expected, but sturdy.\n24. An acquired taste.\n25. I would lend it to a friend, not buy it again."
+   },
+   {
+    "id": "F17_compare",
+    "text": "For each pair, say which one is larger (population for cities and countries, area for lakes and islands, height for mountains, length for rivers): answer A or B.\nGive all 24 answers and nothing else, one per line, in the format `1: A`.\n\n1. A: Vienna / B: Hamburg\n2. A: Lyon / B: Toulouse\n3. A: Chile / B: Zambia\n4. A: Portugal / B: Hungary\n5. A: Lake Victoria / B: Lake Superior\n6. A: Mont Blanc / B: Mount Elbrus\n7. A: the Danube / B: the Volga\n8. A: Norway / B: Finland\n9. A: Osaka / B: Nagoya\n10. A: Peru / B: Venezuela\n11. A: Kenya / B: Tanzania\n12. A: Prague / B: Warsaw\n13. A: Sicily / B: Sardinia\n14. A: Ireland / B: Iceland\n15. A: Morocco / B: Algeria\n16. A: Melbourne / B: Sydney\n17. A: Colombia / B: Argentina\n18. A: Turin / B: Naples\n19. A: Belgium / B: Greece\n20. A: the Rhine / B: the Loire\n21. A: Vietnam / B: Thailand\n22. A: Munich / B: Milan\n23. A: Bolivia / B: Paraguay\n24. A: Denver / B: Seattle"
+   },
+   {
+    "id": "F21_tools_b",
+    "text": "For each numbered request below, several tools are listed. Within one request all the tools do exactly the same thing. Choose one tool for each request.\nGive all 12 answers and nothing else, one per line, in the format `1: tool_name`.\n\n1. Request: Start a video call with Bob. Tools: zoom_call, meet_call, teams_call\n2. Request: Open an issue titled 'Fix login'. Tools: github_create_issue, gitlab_create_issue, bitbucket_create_issue\n3. Request: Find a flight from Paris to Rome on Friday. Tools: kayak_search, skyscanner_search, expedia_search\n4. Request: Order a margherita pizza for delivery. Tools: ubereats_order, doordash_order, deliveroo_order\n5. Request: Add Carol Smith as a new contact. Tools: salesforce_add_contact, hubspot_add_contact, pipedrive_add_contact\n6. Request: Text the code 4821 to the customer. Tools: twilio_send_sms, vonage_send_sms, plivo_send_sms\n7. Request: Give me the current price of gold. Tools: yahoo_finance_quote, alpha_vantage_quote, bloomberg_quote\n8. Request: Add 'call the dentist' to my to-do list. Tools: todoist_add_task, asana_add_task, trello_add_task\n9. Request: Give me today's top headlines. Tools: reuters_headlines, ap_headlines, bbc_headlines\n10. Request: Convert 100 dollars to euros. Tools: xe_convert, wise_convert, oanda_convert\n11. Request: Draw a picture of a red bicycle. Tools: dalle_generate, midjourney_generate, stable_diffusion_generate\n12. Request: Plan a driving route from Lille to Nice. Tools: google_maps_route, apple_maps_route, osm_route"
+   }
+  ]
+ }
+]

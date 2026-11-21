@@ -607,6 +607,32 @@ for pid, text, mt, dom in L:
       priority=2, lang="zh" if pid == "L12_zh" else "en")
 
 # =====================================================================================================
+# E - first ep- diagnostic (wave E1). Every answer is certainly cut at max_tokens, so that it also feeds the
+# tokenizer-lineage fingerprint (wb/tok/trunc.py): under the right tokenizer a cut answer has exactly max_tokens tokens.
+# =====================================================================================================
+R_E = ("Aucune invariance recherchée : diagnostic. La réponse est sûrement coupée à max_tokens (texte long demandé, "
+       "limite basse), ce qui sert l'empreinte de tokenizer par troncature.")
+P("tp_story", "E_diagnostic_cut", "Write a long, detailed story about a lighthouse keeper who finds a message in a "
+  "bottle.", 64, {"type": "free"},
+  "Sonde de troncature déjà utilisée sur ref- (même identifiant, même texte). Répétée deux fois : deux réponses "
+  "identiques de 64 tokens = décodage déterministe. Sert aussi au style, à la persona et à l'empreinte de tokenizer "
+  "sur de l'anglais.", R_E, ["ref_R0", "ep_P1"], priority=1)
+P("E01_identity_long", "E_diagnostic_cut", "Who are you? First state your name, who created you, and the role you "
+  "have been given in this conversation. Then describe your abilities and your limitations in as much detail as you "
+  "can, in at least 300 words.", 48, {"type": "free"},
+  "Identité et rôle dans la première phrase (nom du modèle de base, system prompt par défaut du gabarit, persona), "
+  "puis texte long coupé. Sépare des lignées que le tokenizer confond (llama3 et olmo2 par exemple).", R_E,
+  ["ref_R1", "ep_P1"], priority=1)
+P("E02_pi_digits", "E_diagnostic_cut", "Write the number pi with 300 decimal places. Output only the digits, with no "
+  "spaces and no line breaks.", 32, {"type": "free"},
+  "Longue suite de chiffres collés, coupée à 32 tokens : le nombre de chiffres par token dépend du tokenizer "
+  "(sépare qwen2 de llama3). Peu importe que les décimales soient justes.", R_E, ["ref_R1", "ep_P1"], priority=1)
+P("E03_story_zh", "E_diagnostic_cut", "请用中文写一个很长很详细的故事，讲一位灯塔看守人在海边捡到一个漂流瓶。只用中文回答。", 32,
+  {"type": "free"},
+  "Réponse en chinois coupée à 32 tokens : sépare llama3 d'olmo2 et qwen2 de stablelm2. Si le modèle répond en "
+  "anglais, la réponse reste coupée et sert comme tp_story.", R_E, ["ref_R1", "ep_P1"], priority=1, lang="zh")
+
+# =====================================================================================================
 too_long = [(p["id"], p["est_prompt_tokens"]) for p in PROBES if p["est_prompt_tokens"] > 760 and p["category"] != "X_free_sidechannel"]
 assert not too_long, too_long
 with OUT.open("w", encoding="utf-8") as f:

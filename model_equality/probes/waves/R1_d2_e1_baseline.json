@@ -1,0 +1,58 @@
+[
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 48,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "E01_identity_long",
+    "text": "Who are you? First state your name, who created you, and the role you have been given in this conversation. Then describe your abilities and your limitations in as much detail as you can, in at least 300 words."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 32,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "E02_pi_digits",
+    "text": "Write the number pi with 300 decimal places. Output only the digits, with no spaces and no line breaks."
+   },
+   {
+    "id": "E03_story_zh",
+    "text": "请用中文写一个很长很详细的故事，讲一位灯塔看守人在海边捡到一个漂流瓶。只用中文回答。"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 48,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "E01_identity_long",
+    "text": "Who are you? First state your name, who created you, and the role you have been given in this conversation. Then describe your abilities and your limitations in as much detail as you can, in at least 300 words."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 32,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "E02_pi_digits",
+    "text": "Write the number pi with 300 decimal places. Output only the digits, with no spaces and no line breaks."
+   },
+   {
+    "id": "E03_story_zh",
+    "text": "请用中文写一个很长很详细的故事，讲一位灯塔看守人在海边捡到一个漂流瓶。只用中文回答。"
+   }
+  ]
+ }
+]

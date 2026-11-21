@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
 import io
 import itertools
 import json
@@ -14,6 +15,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -387,6 +389,45 @@ class TestPartition(unittest.TestCase):
             r = metrics.score_files(out, write(tmp, "t.csv", csv_text(TRUE_F, TRUE_M)))
             self.assertAlmostEqual(r["score"], 1.0)
 
+    # fix 6: columns are read by name; analysis files without p_model are refused
+    def test_load_pairs_by_name(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            bad = write(tmp, "z.csv", "a,b,z_raw,z_temp\nep-01,ep-02,3.2,-1.0\n")
+            with self.assertRaisesRegex(ValueError, "p_model"):
+                partition.load_pairs(bad)
+            nohead = write(tmp, "nh.csv", "ep-01,ep-02,0.9\nep-01,ep-03,0.1\n")
+            with self.assertRaisesRegex(ValueError, "header"):
+                partition.load_pairs(nohead)
+            out_of_range = write(tmp, "r.csv", "a,b,p_model\nep-01,ep-02,3.2\n")
+            with self.assertRaisesRegex(ValueError, r"outside \[0, 1\]"):
+                partition.load_pairs(out_of_range)
+            dup = write(tmp, "d.csv", "a,b,p_model\nep-01,ep-02,0.2\nep-02,ep-01,0.3\n")
+            with self.assertRaisesRegex(ValueError, "twice"):
+                partition.load_pairs(dup)
+            # reordered columns + extra columns: read by name
+            ok = write(tmp, "ok.csv", "z_raw,p_family,b,p_model,a\n9,1.0,ep-02,0.8,ep-01\n-3,0.0,ep-03,0.1,ep-01\n")
+            eps, M, F = partition.load_pairs(ok)
+            self.assertEqual(eps, ["ep-01", "ep-02", "ep-03"])
+            self.assertEqual((M[0, 1], M[0, 2], M[1, 2]), (0.8, 0.1, 0.0))
+            self.assertEqual((F[0, 1], F[0, 2]), (1.0, 0.0))
+            rc = subprocess.run([sys.executable, "-m", "model_equality.scoring.partition", "--pairs", bad,
+                                 "--threshold", "0.5", "--out", os.path.join(tmp, "o.csv")],
+                                cwd=REPO, capture_output=True, text=True)
+            self.assertEqual(rc.returncode, 1)
+            self.assertIn("p_model", rc.stderr)
+            self.assertFalse(os.path.exists(os.path.join(tmp, "o.csv")))
+
+    # fix 7: families file = first two columns endpoint,family; short rows refused
+    def test_read_families(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            two = write(tmp, "f2.csv", "endpoint,family\nep-01,A\nep-02,B\n")
+            self.assertEqual(partition.read_families(two), {"ep-01": "A", "ep-02": "B"})
+            three = write(tmp, "f3.csv", "ep-01,A,A1\nep-02,B,B1\n")
+            self.assertEqual(partition.read_families(three), {"ep-01": "A", "ep-02": "B"})
+            short = write(tmp, "f1.csv", "ep-01,A\nep-02\n")
+            with self.assertRaisesRegex(ValueError, "line 2"):
+                partition.read_families(short)
+
     def test_sweep(self):
         S, F = self.truth_matrix(noise=0.1)
         res = partition.sweep(EPS, S, {e: (TRUE_F[e], TRUE_M[e]) for e in EPS}, [0.2, 0.7], family_sim=F)
@@ -403,9 +444,12 @@ class FakeResp:
 
 
 class TestSubmit(unittest.TestCase):
+    T0 = dt.datetime(2026, 11, 21, 12, 0, tzinfo=dt.timezone.utc)
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.dir = Path(self.tmp.name) / "subs"
+        self.ledger = Path(self.tmp.name) / "ledger.jsonl"   # absent unless a test creates it
         self.csv = write(self.tmp.name, "sub.csv", csv_text(TRUE_F, TRUE_M))
         self.env = mock.patch.dict(os.environ, {"MODEL_EQUALITY_API_KEY": "SECRET-TEST-KEY"})
         self.env.start()
@@ -422,15 +466,21 @@ class TestSubmit(unittest.TestCase):
         self.calls.append((url, headers, files, timeout))
         return FakeResp()
 
-    def run_submit(self, confirm, now, csv=None):
+    def run_submit(self, confirm, now=None, csv=None, poster=None, **kw):
         buf = io.StringIO()
-        rc = submit.submit(csv or self.csv, confirm, log_dir=self.dir, poster=self.poster, now=now,
-                           out=lambda s: buf.write(s + "\n"))
+        kw.setdefault("ledger_path", self.ledger)
+        rc = submit.submit(csv or self.csv, confirm, log_dir=self.dir, poster=poster or self.poster,
+                           now=now or self.T0, out=lambda s: buf.write(s + "\n"), **kw)
         return rc, buf.getvalue()
 
+    def other_csv(self, name, tweak):
+        m = dict(TRUE_M)
+        m["ep-01"] = "fam0m" + tweak  # different content -> different sha256
+        return write(self.tmp.name, name, csv_text(TRUE_F, m))
+
     def test_dry_run_sends_nothing(self):
-        rc, out = self.run_submit(False, dt.datetime(2026, 11, 21, 12, tzinfo=dt.timezone.utc))
-        self.assertEqual(rc, 0)
+        rc, out = self.run_submit(False)
+        self.assertEqual(rc, 0, out)
         self.assertEqual(self.calls, [])
         self.assertIn("DRY RUN", out)
         self.assertNotIn("SECRET-TEST-KEY", out)
@@ -438,13 +488,13 @@ class TestSubmit(unittest.TestCase):
 
     def test_invalid_csv_refused(self):
         bad = write(self.tmp.name, "bad.csv", "ref-01,A,A1\n")
-        rc, _ = self.run_submit(True, dt.datetime(2026, 11, 21, 12, tzinfo=dt.timezone.utc), bad)
+        rc, _ = self.run_submit(True, csv=bad)
         self.assertEqual(rc, 1)
         self.assertEqual(self.calls, [])
 
     def test_no_key_refused(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            rc, out = self.run_submit(True, dt.datetime(2026, 11, 21, 12, tzinfo=dt.timezone.utc))
+            rc, out = self.run_submit(True)
         self.assertEqual(rc, 3)
         self.assertEqual(self.calls, [])
 
@@ -454,8 +504,69 @@ class TestSubmit(unittest.TestCase):
         with mock.patch.dict(os.environ, {"API_KEY_BOARD": "B", "MODEL_EQUALITY_API_KEY": "M"}, clear=True):
             self.assertEqual(submit.get_api_key()[0], "MODEL_EQUALITY_API_KEY")
 
-    def test_submit_logs_and_30min_guard(self):
-        t0 = dt.datetime(2026, 11, 21, 12, 0, tzinfo=dt.timezone.utc)
+    # fix 8: which variable provides the key, warning on the override
+    def test_dry_run_names_key_variable(self):
+        rc, out = self.run_submit(False)
+        self.assertIn("$MODEL_EQUALITY_API_KEY (shell environment)", out)
+        self.assertIn("WARNING: $MODEL_EQUALITY_API_KEY overrides $API_KEY_BOARD", out)
+        with mock.patch.dict(os.environ, {"API_KEY_BOARD": "BOARD-SECRET"}, clear=True):
+            rc, out = self.run_submit(False)
+        self.assertIn("$API_KEY_BOARD", out)
+        self.assertNotIn("WARNING: $MODEL_EQUALITY_API_KEY", out)
+        self.assertNotIn("BOARD-SECRET", out)
+
+    # fix 1: degenerate partitions
+    def test_degenerate_refused_unless_flag(self):
+        one_fam = write(self.tmp.name, "onefam.csv", csv_text({e: "A" for e in EPS},
+                                                             {e: "A" + TRUE_M[e] for e in EPS}))
+        all_diff = write(self.tmp.name, "alldiff.csv", csv_text(TRUE_F, {e: e + "m" for e in EPS}))
+        for path in (one_fam, all_diff):
+            rc, out = self.run_submit(True, csv=path)
+            self.assertEqual(rc, 5, out)
+            self.assertIn("degenerate", out)
+        self.assertEqual(self.calls, [])
+        rc, out = self.run_submit(True, csv=all_diff, allow_degenerate=True)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(len(self.calls), 1)
+
+    # fix 2: CSV older than the ledger
+    def test_stale_csv_refused_unless_flag(self):
+        self.ledger.write_text('{"a": 1}\n{"a": 2}\n')
+        t = time.time()
+        os.utime(self.csv, (t - 3600, t - 3600))
+        os.utime(self.ledger, (t - 60, t - 60))
+        rc, out = self.run_submit(True)
+        self.assertEqual(rc, 5, out)
+        self.assertIn("older than the ledger", out)
+        self.assertIn("age", out)
+        self.assertEqual(self.calls, [])
+        rc, out = self.run_submit(True, allow_stale=True)
+        self.assertEqual(rc, 0, out)
+        # fresh CSV passes without the flag
+        os.utime(self.ledger, (t - 7200, t - 7200))
+        rc, out = self.run_submit(False, now=self.T0 + dt.timedelta(hours=1), csv=self.other_csv("n.csv", "9"))
+        self.assertEqual(rc, 0, out)
+
+    # fix 3: provenance in the attempt entry + side files
+    def test_provenance_logged(self):
+        self.ledger.write_text('{"a": 1}\n{"a": 2}\n{"a": 3}\n')
+        os.utime(self.ledger, (time.time() - 600,) * 2)
+        Path(self.tmp.name, "summary.txt").write_text("method X, threshold 0.7\n")
+        Path(self.tmp.name, "labels.csv").write_text("endpoint,label\n")
+        rc, out = self.run_submit(True, repo=REPO)
+        self.assertEqual(rc, 0, out)
+        att = submit.read_log(self.dir / "log.jsonl")[0]
+        self.assertEqual(att["kind"], "attempt")
+        self.assertEqual(att["ledger_lines"], 3)
+        self.assertEqual(att["ledger_sha256"], hashlib.sha256(self.ledger.read_bytes()).hexdigest())
+        self.assertRegex(att["git_head"], r"^[0-9a-f]{40}$")
+        self.assertIsInstance(att["git_dirty"], bool)
+        self.assertEqual(set(att["side_files"]), {"summary.txt", "labels.csv"})
+        self.assertEqual((self.dir / att["side_files"]["summary.txt"]).read_text(), "method X, threshold 0.7\n")
+
+    # fix 4: 32-minute guard
+    def test_submit_logs_and_32min_guard(self):
+        t0 = self.T0
         rc, out = self.run_submit(True, t0)
         self.assertEqual(rc, 0, out)
         self.assertEqual(len(self.calls), 1)
@@ -463,7 +574,7 @@ class TestSubmit(unittest.TestCase):
         self.assertEqual(url, submit.URL)
         self.assertEqual(headers, {"X-API-Key": "SECRET-TEST-KEY"})
         self.assertIn("file", files)
-        self.assertGreaterEqual(timeout[1], 500)
+        self.assertEqual(timeout, (600, 600))
         self.assertNotIn("SECRET-TEST-KEY", out)
         log = submit.read_log(self.dir / "log.jsonl")
         self.assertEqual([e["kind"] for e in log], ["attempt", "result"])
@@ -473,33 +584,45 @@ class TestSubmit(unittest.TestCase):
         self.assertEqual(copy.read_bytes(), Path(self.csv).read_bytes())
         self.assertNotIn("SECRET-TEST-KEY", (self.dir / "log.jsonl").read_text())
 
-        # 29 min later: refused, nothing sent, log unchanged
-        rc, out = self.run_submit(True, t0 + dt.timedelta(minutes=29, seconds=59))
-        self.assertEqual(rc, 2)
-        self.assertIn("30-minute", out)
+        other = self.other_csv("other.csv", "7")
+        for minutes in (30, 31, 31.99):   # still inside the 32-minute guard
+            rc, out = self.run_submit(True, t0 + dt.timedelta(minutes=minutes), csv=other)
+            self.assertEqual(rc, 2, out)
+            self.assertIn("32-minute", out)
         self.assertEqual(len(self.calls), 1)
         self.assertEqual(len(submit.read_log(self.dir / "log.jsonl")), 2)
-        # dry run is also refused inside the window
-        rc, _ = self.run_submit(False, t0 + dt.timedelta(minutes=10))
+        rc, _ = self.run_submit(False, t0 + dt.timedelta(minutes=10), csv=other)
         self.assertEqual(rc, 2)
-        # 30 min later: allowed, log is appended (not rewritten)
-        rc, _ = self.run_submit(True, t0 + dt.timedelta(minutes=30))
-        self.assertEqual(rc, 0)
+        rc, out = self.run_submit(True, t0 + dt.timedelta(minutes=32), csv=other)
+        self.assertEqual(rc, 0, out)
         self.assertEqual(len(self.calls), 2)
         self.assertEqual(len(submit.read_log(self.dir / "log.jsonl")), 4)
 
+    # fix 5: resending the same file
+    def test_resend_same_file_refused_unless_force(self):
+        self.assertEqual(self.run_submit(True)[0], 0)
+        rc, out = self.run_submit(True, self.T0 + dt.timedelta(hours=1))
+        self.assertEqual(rc, 5, out)
+        self.assertIn("already submitted", out)
+        self.assertEqual(len(self.calls), 1)
+        rc, out = self.run_submit(True, self.T0 + dt.timedelta(hours=1), force=True)
+        self.assertEqual(rc, 0, out)
+        self.assertEqual(len(self.calls), 2)
+        self.assertTrue(submit.read_log(self.dir / "log.jsonl")[2]["flags"]["force"])
+
     def test_rejected_and_failed_responses(self):
-        t = dt.datetime(2026, 11, 21, 12, 0, tzinfo=dt.timezone.utc)
         cases = ((422, {"detail": "bad file"}), (200, {"status": "error", "message": "x"}),
                  (200, {"status": "success", "score": 0.5, "message": "first"}))  # no previous_best
         for i, (code, body) in enumerate(cases):
             class R(FakeResp):
                 status_code = code
                 text = json.dumps(body)
-            buf = io.StringIO()
-            rc = submit.submit(self.csv, True, log_dir=self.dir, poster=lambda *a, **k: R(),
-                               now=t + dt.timedelta(hours=i), out=lambda s: buf.write(s + "\n"))
-            self.assertEqual(rc, 4 if i < 2 else 0, buf.getvalue())
+            rc, out = self.run_submit(True, self.T0 + dt.timedelta(hours=i), poster=lambda *a, **k: R(),
+                                      csv=self.other_csv(f"c{i}.csv", str(i)))
+            self.assertEqual(rc, 4 if i < 2 else 0, out)
+            if i == 1:
+                self.assertIn("status='error'", out)
+                self.assertNotIn("Score", out)
         log = submit.read_log(self.dir / "log.jsonl")
         self.assertEqual(log[1]["detail"], "bad file")
         self.assertEqual(log[3]["status"], "error")
@@ -509,11 +632,9 @@ class TestSubmit(unittest.TestCase):
     def test_network_error_still_blocks(self):
         def boom(*a, **k):
             raise TimeoutError("read timed out")
-        t0 = dt.datetime(2026, 11, 21, 12, 0, tzinfo=dt.timezone.utc)
-        buf = io.StringIO()
-        rc = submit.submit(self.csv, True, log_dir=self.dir, poster=boom, now=t0, out=lambda s: buf.write(s))
+        rc, _ = self.run_submit(True, poster=boom)
         self.assertEqual(rc, 4)
-        ok, _ = submit.guard(self.dir / "log.jsonl", t0 + dt.timedelta(minutes=5))
+        ok, _ = submit.guard(self.dir / "log.jsonl", self.T0 + dt.timedelta(minutes=5))
         self.assertFalse(ok)
 
     def test_dotenv_does_not_override(self):

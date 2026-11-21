@@ -1,8 +1,8 @@
 # Model Equality Testing : sondes et méthode statistique
 
-Ce document suffit à exécuter la campagne sans autre contexte. Il accompagne `probes.jsonl` (138 sondes, générées par `build_probes.py`).
+Ce document suffit à exécuter la campagne sans autre contexte. Il accompagne `probes.jsonl` (142 sondes, générées par `build_probes.py`) et les plans de `waves/` (générés par `build_waves.py`).
 
-Statut : conception faite sans aucun appel aux endpoints. Tout seuil chiffré est une valeur par défaut à régler sur `ref-` ; les points non vérifiés sont marqués « à vérifier ».
+Statut : conception faite sans aucun appel aux endpoints. Tout seuil chiffré est une valeur par défaut à régler sur `ref-` ; les points non vérifiés sont marqués « à vérifier ». Révision du samedi 17 h 45 : le débit mesuré de l'API a imposé de réduire la campagne `ref-` ; les sections 6, 13 et 14 donnent les volumes, le calendrier et les abandons.
 
 ## 1. Le problème en bref
 
@@ -64,7 +64,16 @@ Source : `starter/task_template.py`, `starter/query_reference.py`, description d
 
 Deux déductions à vérifier : la température par défaut n'est pas 1,0 (sinon ref-08 serait identique à ref-01) ; `ref-` ne contient ni décodage déterministe ni beam search, alors que la consigne les cite.
 
-À journaliser pour chaque requête (le client le fait déjà) : corps complet de la réponse, `finish_reason`, `usage` s'il existe, `elapsed_s`, et pour les rejets le code HTTP et le champ `detail`.
+Mesuré sur 218 requêtes `ref-` :
+- latence ≈ 6,2 s fixes + 0,053 s par token généré, identique à concurrence 1 et 4 ; à concurrence 4, 34 requêtes par minute à 16 tokens, 25 à 64, 12 à 256 ;
+- pas de champ `usage` ; `finish_reason` vaut toujours `stop`, même quand la réponse est coupée à `max_tokens` ;
+- aucun `ref-` n'est déterministe : le décodage par défaut est échantillonné ;
+- à l'œil, ref-05 (persona), ref-08 (température) et ref-07 (LoRA 1,5) se voient ; ref-03 (system prompt), ref-02 (fp8) et ref-09 (LoRA 0,3) ne se distinguent pas de la base ;
+- le petit modèle est peu fiable même en version plain : les parseurs doivent tolérer du bruit de format ;
+- message de rejet de X01, identique sur les 9 `ref-` : « Invalid request (not counted). Send 1 to 32 messages, each with role "user" or "assistant" (no system messages) and string content, at most 1,024 input tokens in total, and max_tokens of at least 1. » Il ne donne aucun compte de tokens. Il indique en revanche que le serveur accepte jusqu'à 32 messages de rôle `user` ou `assistant` : un historique de conversation fabriqué est possible (non exploité ici, le client n'envoie qu'un message) ;
+- sur ref-05, les textes de rôle obtenus par D03 et D06 changent d'une requête à l'autre (professeur, conseiller technique, étymologiste, voitures anciennes) : la persona semble tirée à chaque requête dans un ensemble. À confirmer.
+
+À journaliser pour chaque requête (le client le fait déjà) : corps complet de la réponse, `elapsed_s`, et pour les rejets le code HTTP et le champ `detail`.
 
 ## 3. Idée directrice
 
@@ -105,15 +114,16 @@ Les trois articles cités par les organisateurs vont dans ce sens :
 | `est_prompt_tokens` | estimation pessimiste (1 token pour 2,6 caractères) ; tout est sous 760 sauf X01, volontairement invalide |
 | `parser` | comment transformer la réponse en événements (ci-dessous) |
 | `wm_block` | contextes qui partagent le même contexte de hachage de watermark |
-| `phases` | `ref_R0`, `ref_R1`, `ref_R2`, `ep_P0`, `ep_P1`, `ep_battery` (candidat), `ep_det` (une fois sur un endpoint déterministe), `ep_domain` |
+| `phases` | usage prévu à l'origine : `ref_R0`, `ref_R1`, `ref_R2`, `ep_P0`, `ep_P1`, `ep_battery` (candidat), `ep_det` (une fois sur un endpoint déterministe), `ep_domain`. Pour `ref-`, ce sont les plans de `waves/` qui font foi (section 6) |
 | `priority` | 1 = à lancer d'abord |
 | `hypothesis`, `resists` | ce que la sonde doit révéler, et à quel leurre elle doit résister |
 
 | Catégorie | Nombre | Rôle |
 |---|---|---|
 | `D_diagnostic` | 15 | identité, fuite du system prompt, persona, signature de tokenizer |
+| `E_diagnostic_cut` | 4 | premier diagnostic `ep-` : réponses coupées à coup sûr (`tp_story`, identité, chiffres, chinois) |
 | `X_free_sidechannel` | 1 | prompt trop long, rejeté sans coût : lire le message d'erreur |
-| `K_single` | 42 | réponse d'un mot, par blocs à options communes ; calibration massive sur `ref-` |
+| `K_single` | 42 | réponse d'un mot, par blocs à options communes. Abandonnées sur `ref-` pour cause de débit (section 14) ; gardées dans la banque |
 | `S_stream` | 12 | flux courts sur alphabet fermé |
 | `S_stream_open` | 8 | listes à vocabulaire ouvert, dont trois hors anglais |
 | `SL_stream_diluted` | 8 | flux précédés de 150 à 200 exemples en contexte (dilution du system prompt) |
@@ -166,10 +176,10 @@ L'unité « écart-type du bruit de l'endpoint lui-même » est ce qui se transp
 
 ### 5.3 Grandeurs par endpoint
 
-- **Déterminisme** : deux réponses identiques à un même prompt long (D08, C01, chacun répété deux fois). Étiquette DET.
+- **Déterminisme** : deux réponses identiques de 64 tokens à `tp_story` (vague E1), confirmé ensuite par toute sonde de batterie répétée. Étiquette DET.
 - **Diversité** : nombre de premiers mots distincts, entropie des tables de flux, longueur du préfixe commun entre réponses à un même prompt.
-- **Compte de tokens** : `usage.prompt_tokens` si l'API le renvoie, ou le nombre de tokens cité dans le message de rejet de X01. À texte égal, un écart constant entre deux endpoints d'une famille est la longueur d'un system prompt caché.
-- **Latence** : `elapsed_s` divisé par 256 pour les réponses coupées à la longueur maximale (`finish_reason = length`). Beam search et adaptateur non fusionné ralentissent. Signal d'appoint, jamais décisif seul.
+- **Compte de tokens** : l'API ne renvoie pas `usage` et le message de rejet ne cite aucun nombre. Seul le seuil de rejet à 1 024 tokens peut révéler la longueur d'un system prompt caché (section 7, vague E2).
+- **Latence** : pente de `elapsed_s` en fonction de la longueur de la réponse, par endpoint (0,053 s par token sur `ref-`). `finish_reason` ne signale pas la troncature : on la déduit du nombre d'items parsés. Beam search et adaptateur non fusionné ralentissent. Signal d'appoint, jamais décisif seul.
 
 ### 5.4 Étiquettes de leurre
 
@@ -180,7 +190,7 @@ Chaque étiquette se lit sur la paire (X, référence de la famille), la référ
 | DET | réponses répétées identiques |
 | TEMP | intervalle de confiance bootstrap de ln κ̂ hors de [−0,15 ; 0,15], et z_temp ≤ 2 |
 | WM | z_temp > 4 et z_inv ≤ 2, et les écarts par option b_i^Y − κ̂ b_i^X prennent deux valeurs : après un 2-means à une dimension, écart entre centres δ̂ ≥ 1, variance résiduelle inférieure à 20 % de la variance initiale (une loi normale en laisse 36 %), δ̂ stable à ±30 % d'un bloc à l'autre, au moins 8 options au total. Les flux de chiffres, de lettres et de dés sont les détecteurs |
-| SP | texte de fuite propre à l'endpoint (D03 à D06, D09, D10), ou écart de compte de tokens, ou contraste de dilution : z > 4 sur les sondes courtes et z ≤ 2 sur les sondes longues (SL, formulaires, C09) |
+| SP | texte de fuite propre à l'endpoint (D03, D06), en particulier deux textes de rôle cohérents et différents d'une requête à l'autre ; ou seuil de rejet à 1 024 tokens plus bas que celui des voisins ; ou contraste de dilution : z > 4 sur les sondes courtes et z ≤ 2 sur les sondes longues (SL, formulaires, C09) |
 | NONE | aucune des précédentes |
 
 ### 5.5 Endpoint déterministe contre endpoint échantillonné
@@ -195,69 +205,145 @@ Ces deux mesures séparent G d'un LoRA fort, pas d'un fp8. La décision par déf
 
 ## 6. Sélection sur `ref-`
 
-Mesurer le débit en R0 et ajuster les répétitions : les nombres ci-dessous supposent 5 000 à 8 000 réponses longues par heure.
+### Ce que le débit impose
 
-| Étape | Sondes | Répétitions par endpoint | Volume | But |
+Le coût fixe de 6,2 s par requête domine. Une réponse de flux de 256 tokens occupe un créneau pendant 20 s et donne environ 128 tirages ; une réponse d'un mot occupe 6,4 s et en donne un. Par minute d'API, le flux rapporte 40 fois plus. Les blocs K sont donc abandonnés sur `ref-` : les questions de machinerie se lisent sur les flux et les formulaires.
+
+Plafond de temps d'API pour `ref-` : 7 h. Prévu : 5 h 50.
+
+| Vague | Plans | Contenu | Réponses | Durée d'API |
 |---|---|---|---|---|
-| R0 | toutes, sur ref-01 seul ; X01 sur les 9 | 2 | 300 | conformité des formats, débit, contenu des rejets, présence de `usage` |
-| R1 | K priorité 1 (12 sondes), puis les 30 autres | 300, puis 100 | 32 000 + 27 000 courtes | machinerie des leurres et taille des effets |
-| R2 | S, SL, F, C priorité 1 (19) ; autres S, F, C (37) ; D (15) ; L (24) | 40 ; 12 ; 6 ; 8 | 13 400 | criblage |
-| R3 | les 10 meilleures sondes | compléter à 150 | 10 000 | 10 budgets disjoints de 12 à 15 réponses pour l'évaluation finale |
+| 0 (lancée) | hors `waves/` | X01, toutes les sondes D × 2, toutes les sondes C × 3 | ≈ 550 | 40 min |
+| R1 | `waves/R1_a` à `R1_d` | 12 sondes candidates, profondeur sur les flux de chiffres | 1 281 | ≈ 100 min |
+| remplissage | `waves/R1_e_filler.json` | optionnel, pendant l'analyse de R1 | 225 | ≈ 17 min |
+| R2 | à écrire après l'analyse de R1 | profondeur sur les sondes retenues, validation de bout en bout | ≈ 2 500 | 3 h 30 |
 
-### R1 : ce qu'il faut en tirer
+Les durées supposent que chaque réponse atteint `max_tokens` ; ce sont des majorants.
 
-1. **Température par défaut.** Pente κ̂ entre ref-01 et ref-08 sur les blocs KD, KB, KY : T_défaut ≈ κ̂ si ref-08 est à 1,0. Vérifier que z_temp(01, 08) ≤ 2 : c'est la validation de l'invariance à la température.
-2. **Troncature.** Sur KW, la queue de ref-08 contient-elle des mots absents de ref-01 ? Si oui, top-k ou top-p par défaut.
-3. **Watermark.** Sur KD (10 options) et KW, les écarts par option entre ref-06 et ref-01 prennent-ils deux valeurs ? Relever δ̂ et la part d'options favorisées. Les options favorisées sont-elles les mêmes dans les 8 prompts de KD ? Si oui, le contexte de hachage du premier token est la fin du template. Puis, sur les flux de R2 : l'effet du watermark dépend-il de l'item précédent seulement (contexte 1) ou de plus loin ? Cela fixe la profondeur de contexte à tenir constante, donc l'ordre des tables et le choix entre F01 et F01k. Si le watermark rend les réponses déterministes (schéma de type Gumbel), il se traite comme DET.
-4. **Taille des effets.** Écart quadratique moyen des log-cotes centrées, après ajustement de κ, entre ref-01 et ref-02 (fp8), ref-09, ref-04, ref-07 : ε_fp8, ε_0,3, ε_0,7, ε_1,5. Même mesure pour ref-03 et ref-05 : ε_SP en contexte court.
+### R1 : six fichiers, par ordre de priorité
+
+Les plans sont générés par `build_waves.py`. Chaque fichier est découpé en tours de 1 à 5 répétitions : une interruption laisse toutes les sondes et tous les endpoints couverts également. Tous portent sur `ref-01`..`ref-09` seulement.
+
+| Fichier | Contenu | Répétitions par endpoint | Réponses | Question |
+|---|---|---|---|---|
+| `R1_a_breadth.json` | SL02, S02, SL01, S01, SL06, S05, F01, F02, F11, F03, F20, F05 | 3 | 324 | le petit modèle tient-il chaque format ? premier regard sur tout |
+| `R1_b_core.json` | SL02 et S02 ; F01, F03, F20 | portées à 20 ; portées à 12 | 549 | taille des effets, température, watermark, dilution du system prompt |
+| `R1_c_hardpairs.json` | SL02 et S02, sur ref-01, ref-02, ref-09 seulement | portées à 40 | 120 | ε de fp8 et du LoRA 0,3 ; bruit propre de ref-01 par moitiés |
+| `R1_d2_e1_baseline.json` | E01, E02, E03 (sondes coupées de la vague E1) | 2 | 54 | référence `ref-` avant de les envoyer aux `ep-` ; passe avant `R1_d_second` |
+| `R1_d_second.json` | SL01 et S01 ; SL06 et F02 | portées à 12 ; portées à 10 | 288 | flux binaires et à 4 lettres, second formulaire |
+| `R1_e_filler.json` | F05, F11, S05 ; F21 ; SL03 | portées à 8 ; 6 ; 4 | 225 | candidats de repli. À supprimer si le plan R2 est prêt avant |
+
+Si `R1_a` montre qu'un format n'est pas tenu (moins de 60 % de réponses parsables sur ref-01), retirer cette sonde des fichiers suivants avant que l'exécutant ne les atteigne.
+
+**Révision du samedi 18 h 15 (point de contrôle `R1_a`, appliquée avant le démarrage de `R1_b`).** Le tableau ci-dessus décrit le plan d'origine ; les fichiers `R1_b` à `R1_e` ont été régénérés par `build_waves.py`. Mesuré sur les deux premiers tours de `R1_a` (2 réponses par sonde et par endpoint, banc = SmolLM2-360M) :
+
+| Sonde | Parsables / 18 | Constat | Décision |
+|---|---|---|---|
+| S02, S01, S05 (flux courts avec exemple « like this: 4, 0, 7 ») | 0, 3, 3 | le modèle recopie l'exemple et s'arrête | retirées |
+| F11 | 0 | traduit ou recopie les noms, aucun M/F | retirée |
+| F01 | 2 | s'arrête après « 1: A » ou recopie les items | retirée |
+| F03 | 4 / 13 | s'arrête après la ligne 1 ; sinon « 4 » partout (entropie nulle) | retirée |
+| SL02 | 15 | parsable, mais c'est la copie mot pour mot du journal du prompt (aucun tirage) sur les endpoints proches de la base | retirée |
+| SL01, SL06 | 16, 16 | copie de 10 à 20 items puis vrai flux aléatoire | gardées |
+| F05, F20 | 9 / 9, 8 / 9 | tenues, réponses variées | gardées |
+| F02 | 14 | tenue aux deux tiers (sinon arrêt après « 1: Yes ») | gardée |
+
+Nouveau contenu : `R1_b` = SL01, SL06, F05, F20, F02 portées à 12 sur les 9 endpoints (405 réponses) ; `R1_c` = SL01, SL06, F05 portées à 40 puis F02, F20 portées à 30 sur ref-01, ref-02, ref-09 (360) ; `R1_d2` inchangé ; `R1_d` = second criblage, 3 répétitions de SL11, SL05, S11, S24, S21, S22, F15, F04, F17, F21 (270) ; `R1_e` = les cinq sondes tenues portées à 16 (180, optionnel). Ces constats de conformité valent pour un modèle de 360 M de paramètres : ils ne se transportent pas aux `ep-`, où la conformité se remesure par famille.
+
+### Analyse de R1 : ce qu'il faut en tirer
+
+1. **Conformité** par sonde et par endpoint.
+2. **Température par défaut.** Pente κ̂ entre ref-01 et ref-08 sur les tables de S02 et SL02 : T_défaut ≈ κ̂ si ref-08 est à 1,0. Vérifier que z_temp(01, 08) ≤ 2 : c'est la validation de l'invariance à la température.
+3. **Watermark.** Sur S02, SL02 et S05 (10 et 6 options), les écarts par option entre ref-06 et ref-01 prennent-ils deux valeurs ? Relever δ̂ et la part d'options favorisées. L'effet dépend-il de l'item précédent ? Si non, le contexte de hachage est le séparateur seul (contexte 1) et le double centrage d'ordre 1 suffit. Sur F03, même question entre les lignes. Si le watermark rend les réponses déterministes, il se traite comme DET.
+4. **Taille des effets.** Écart quadratique moyen des log-cotes centrées, après ajustement de κ, entre ref-01 et ref-02 (fp8), ref-09, ref-04, ref-07 : ε_fp8, ε_0,3, ε_0,7, ε_1,5. Avec 40 réponses, les deux moitiés de ref-01 donnent le plancher de bruit.
 5. **Faisabilité.** Un écart ε se voit à 4 écarts-types avec environ 50/ε² tirages par table de 10 options : 1 300 tirages pour ε = 0,2 (10 réponses de flux), 5 000 pour ε = 0,1 (40 réponses), 20 000 pour ε = 0,05 (hors budget). Si ε_fp8 < 0,07, la boîte noire ne séparera pas fp8 de la base : passer à la piste B ou s'en remettre au prior.
-6. **Colinéarité du LoRA.** Les écarts de ref-09, ref-04, ref-07 à ref-01 doivent être alignés et ordonnés 0,3 < 0,7 < 1,5. Si c'est vrai, un alignement de ce type dans une famille notée signale une série de forces d'un même LoRA.
+6. **System prompt et persona.** z(01, 03) et z(01, 05) sur S02 contre SL02, et sur S01 contre SL01. Le system prompt de ref-03 est invisible à l'œil : vérifier qu'il l'est aussi pour z_temp. La persona de ref-05 se dilue-t-elle en contexte long ?
+7. **Colinéarité du LoRA.** Les écarts de ref-09, ref-04, ref-07 à ref-01 doivent être alignés et ordonnés 0,3 < 0,7 < 1,5.
+8. **Fuites.** Sur la vague 0 : quelles formulations D03 à D06, D09, D10 font sortir le texte de ref-03 et de ref-05.
 
-### R2 : critère pour garder une sonde
+### Critère pour garder une sonde
 
-Calculer, pour chaque sonde et chaque paire parmi les 36, z_raw, z_temp, z_inv sur des sous-échantillons de 12 réponses par endpoint (20 tirages bootstrap). Une sonde est gardée si elle remplit les trois conditions :
+Calculer, pour chaque sonde et chaque paire parmi les 36, z_raw, z_temp, z_inv sur des sous-échantillons de 12 réponses par endpoint (20 tirages bootstrap quand le stock le permet, sinon l'échantillon entier). Une sonde est gardée si elle remplit les trois conditions :
 
-1. **Conformité** : au moins 85 % de réponses parsables sur chacun des 9 endpoints (70 % toléré pour ref-05, la persona).
+1. **Conformité** : au moins 85 % de réponses parsables sur chacun des 9 endpoints (70 % toléré pour ref-05, la persona). Vu la fragilité du petit modèle, un flux reste utilisable à 60 % si les items valides sont nombreux.
 2. **Sûreté face aux leurres** : pour les 10 paires « même modèle », la statistique prévue pour la paire (5.2 et 5.4) vaut z ≤ 2,5 dans au moins 90 % des tirages. Une sonde qui échoue sur un seul type de leurre reste utilisable si ce leurre est étiquetable et qu'on l'exclut alors de la sonde.
 3. **Sensibilité** : z > 3 dans au moins 50 % des tirages pour au moins une paire difficile : (01, 02) fp8, (01, 09) LoRA 0,3, (09, 04) LoRA 0,3 contre 0,7.
 
-La sûreté est obligatoire, la sensibilité peut être partielle : deux sondes se complètent. Garder au moins trois classes de sondes différentes, et préférer une sonde qui a une justification mécanique à une sonde qui gagne de peu sur 36 paires.
+La sûreté est obligatoire, la sensibilité peut être partielle : deux sondes se complètent. Garder au moins deux classes de sondes différentes, et préférer une sonde qui a une justification mécanique à une sonde qui gagne de peu sur 36 paires.
 
-Relever aussi, pour la section 9 : la paire de sondes courte et diluée qui donne le meilleur contraste pour ref-03 et ref-05 ; les formulations de fuite qui marchent ; les sondes L où ref-07 s'écarte le plus (nature du LoRA).
+### R2 : composition, à fixer après R1
 
-### R3 : validation de bout en bout
+Environ 2 500 réponses, 280 par endpoint. Répartition par défaut :
 
-Rejouer le protocole `ep-` complet (sections 7 à 9) sur 10 budgets disjoints de 100 réponses par endpoint tirés du stock, et scorer chaque partition avec `score_practice.py`. Régler les seuils (2 ; 4 pour les zones, et la table de poids) pour maximiser le MCC moyen, pas le meilleur. Objectif : MCC moyen ≥ 0,7 et aucun tirage sous 0,5. Noter la puissance sur fp8 à ce budget, π_fp8 : elle sert en 9.3.
+| Bloc | Contenu | Réponses |
+|---|---|---|
+| Profondeur | les 3 meilleures sondes portées à 80 répétitions sur les 9 endpoints | ≈ 1 600 |
+| Seconds | les 2 suivantes portées à 40 | ≈ 500 |
+| Domaine | 8 sondes L × 3, sur des domaines que D et C ne couvrent pas : L01, L02, L03, L06, L08, L09, L12, L13 | ≈ 220 |
+| Repli | si les flux échouent : F20, F21, F05, S21, S25 à 12 répétitions | ≈ 200 |
 
-**Greedy simulé.** `ref-` n'a pas d'endpoint déterministe. Construire un pseudo-greedy de ref-01, ref-04 et ref-02 : pour chaque ligne de formulaire, la réponse majoritaire sur 150 réponses. Vérifier que l'accord modal de 5.5 rattache le pseudo-greedy de ref-01 au groupe S et celui de ref-04 à ref-04.
+Si R1 montre que ε_fp8 est sous le seuil de faisabilité, remplacer le bloc « seconds » par 80 répétitions de plus sur ref-01 et ref-02 pour la meilleure sonde : il faut savoir si 100 réponses concentrées sur une sonde suffisent.
+
+**Validation de bout en bout.** Rejouer le protocole `ep-` complet (sections 7 à 9) sur 5 budgets disjoints tirés du stock (80 répétitions donnent 5 lots de 14 à 16), complétés par 20 tirages bootstrap, et scorer chaque partition avec `score_practice.py`. Régler les seuils (zones de z*, table de poids) pour maximiser le MCC moyen, pas le meilleur. Objectif : MCC moyen ≥ 0,7 et aucun tirage sous 0,5. Noter la puissance sur fp8 à ce budget, π_fp8 : elle sert en 9.3.
+
+**Greedy simulé.** `ref-` n'a pas d'endpoint déterministe. Construire un pseudo-greedy de ref-01, ref-04 et ref-02 : pour chaque ligne de formulaire, la réponse majoritaire sur toutes les réponses disponibles (au moins 40). Vérifier que l'accord modal de 5.5 rattache le pseudo-greedy de ref-01 au groupe S et celui de ref-04 à ref-04.
 
 ## 7. Campagne sur `ep-`
 
 Avant tout appel `ep-` : le client plafonne par défaut à 50 réponses par endpoint (`DEFAULT_EP_CAP`), il faudra relever ce plafond pour la vague B et la réserve.
 
-### Phase 0 : gratuite
+### Vague E1 : premier diagnostic, 9 réponses par endpoint
 
-1. Envoyer X01 (trop long) à un seul `ep-`, relire le budget : `used` ne doit pas avoir bougé. Si c'est confirmé, l'envoyer aux 33.
-2. Lire `detail`. S'il contient un nombre de tokens : regrouper les endpoints par nombre (tokenizer et template, donc famille) ; un endpoint qui dépasse ses voisins d'une constante porte un system prompt.
-3. Si `detail` ne dit rien, chercher par dichotomie sur `ref-` si la limite de 1 024 tokens porte sur le message seul ou sur l'entrée complète, system prompt compris (comparer ref-01 et ref-03 avec un prompt fait de N répétitions de `hello `). Si elle porte sur l'entrée complète : sur `ep-`, trouver N* sur un endpoint par famille (au plus 6 réponses acceptées, `max_tokens` = 1), puis envoyer N* + 1 et N* aux autres. Un rejet de N* signale un system prompt, sans coût.
+Les plans sont dans `waves/ep_pending/`, et non dans `waves/` : « E1 » se classe avant « R1 », et un exécutant qui balaie `waves/` pour le banc `ref-` ne doit pas atteindre les endpoints notés par accident. Les remonter dans `waves/` au moment d'envoyer.
 
-### Phase 1 : 12 réponses par endpoint
+| Ordre | Fichier | Contenu | Coût par endpoint | Total | Durée |
+|---|---|---|---|---|---|
+| 1 | `E1_1_free_oversize.json` | X01 (prompt trop long) sur les 33 | 0 (rejet non décompté) | 0 | 1 min |
+| 2 | `E1_2_canary.json` | `tp_story`, une réponse, sur ep-01 seul | 1 sur ep-01 | 1 | < 1 min |
+| 3 | `E1_3_cut.json` | `tp_story` × 2, `E01_identity_long` × 1, `E02_pi_digits` × 2, `E03_story_zh` × 2 | 7 | 231, dont celle du canari | 8 min |
+| 4 | `E1_4_leak.json` | `D03_leak_repeat` × 2 | 2 | 66 | 5 min |
 
-| Sonde | Réponses | Sert à |
-|---|---|---|
-| D01, D03, D04, D06, D11 | 1 chacune | famille, fuite du system prompt, persona, tokenizer |
-| D08 | 2 | déterminisme, style, persona |
-| C01 | 2 | déterminisme, test brut, famille |
-| flux principal retenu en R3 (par défaut SL02) | 2 | conformité dans la famille ; compte dans la batterie |
-| formulaire principal retenu en R3 (par défaut F01) | 1 | conformité ; compte dans la batterie |
+Coût exact : 9 réponses par endpoint, 297 au total. Le canari a la même clé de registre que la première requête de `E1_3` ; celle-ci est donc sautée et non payée deux fois.
 
-Envoyer D08 et C01 en premier : un endpoint dont les deux réponses sont identiques est déterministe, et on remplace alors ses 2 réponses de flux par 2 sondes `ep_det`. Les trois dernières lignes du tableau sont déjà des réponses de batterie ; le coût propre du diagnostic est de 7 réponses.
+Ce que chaque sonde apporte :
+
+| Sonde | `max_tokens` | Coupée à coup sûr | Sert à |
+|---|---|---|---|
+| `tp_story` × 2 | 64 | oui | déterminisme (deux réponses identiques), style, persona, tokenizer sur de l'anglais ; même sonde que sur `ref-` |
+| `E01_identity_long` | 48 | oui | nom du modèle, créateur, rôle reçu : départage des lignées que le tokenizer confond |
+| `E02_pi_digits` × 2 | 32 | oui | suite de chiffres collés : sépare qwen2 de llama3 |
+| `E03_story_zh` × 2 | 32 | oui | texte chinois : sépare llama3 d'olmo2, qwen2 de stablelm2 |
+| `D03_leak_repeat` × 2 | 200 | souvent | fuite du system prompt ; deux textes de rôle cohérents mais différents = persona tirée à chaque requête |
+
+Sept réponses sont coupées à coup sûr, et les deux fuites le sont souvent (sur `ref-`, la plupart débordent). L'empreinte de tokenizer demande 8 à 10 réponses coupées : elle est donc à la limite après E1, et devient large dès les 3 réponses de batterie qui suivent. Si l'on préfère 8 coupes sûres tout de suite, remplacer la seconde répétition de D03 par une troisième de `tp_story`.
+
+D03 est la seule formulation de fuite retenue : sur la vague 0 `ref-`, elle fait réciter à ref-09 le system prompt par défaut du gabarit et à ref-05 des textes de persona, alors que D04, D05 et D10 ne donnent que des inventions.
+
+**Vérification avant l'envoi.**
+1. `R1_d2_e1_baseline.json` a tourné sur `ref-` : E02 donne bien des chiffres collés, E03 une réponse coupée, et `wb/tok/trunc.py` désigne toujours la lignée SmolLM avec ces réponses.
+2. `python -m model_equality.api budget` : les 33 `ep-` sont à 0 utilisé.
+3. Essai à blanc de chaque fichier (`run --plan …` sans `--execute`) : dépense annoncée 33, 1, 231, 66 ; aucun endpoint bloqué ; uniquement des `ep-`. Les 33 du premier fichier sont une réservation, le coût réel attendu est 0.
+4. Envoyer `E1_1` (`--confirm-spend 33`), relire le budget : toujours 0 partout, 33 rejets HTTP 400 « not counted ». Si un seul endpoint a bougé, arrêter.
+5. Envoyer `E1_2` (`--confirm-spend 1`), relire : ep-01 à 1, les autres à 0, réponse non vide et coupée.
+6. Envoyer `E1_3` : l'essai à blanc annonce alors 230. Puis `E1_4` (66). Budget final attendu : 9 partout.
+
+**Longueur d'un system prompt caché (vague E2, à décider).** Le rejet de X01 est générique : « at most 1,024 input tokens in total », sans compte. La longueur d'un system prompt ne se mesure donc que par le seuil de rejet. Sur `ref-`, où c'est gratuit : avec le message de remplissage que `wb/tok/promptcount.py --filler 1024` calcule pour la lignée, vérifier si ref-03 et ref-05 rejettent un message que ref-01 accepte. Si oui, la limite compte le system prompt, et sur `ep-`, une fois la lignée connue, un message à la limite exacte de la famille est rejeté sans coût par un endpoint à system prompt et accepté pour 1 réponse (`max_tokens` = 1) par les autres. Une persona tirée à chaque requête donnerait un seuil qui change d'un essai à l'autre.
+
+### Fin de la phase 1 : 3 réponses par endpoint
+
+Flux principal retenu en R2 (par défaut SL02) × 2 et formulaire principal (par défaut F01) × 1. Ce sont déjà des réponses de batterie. Un endpoint que `tp_story` a montré déterministe reçoit à la place 3 sondes `ep_det`. Cumul : 12.
 
 ### Familles
 
-Variables, par ordre de fiabilité : point de coupure de D11 et comportement sur D12 (tokenizer) ; compte de tokens de la phase 0 ; auto-identification D01 ; profil de réponses de F05 ; stylométrie (cosinus TF-IDF de trigrammes de caractères) sur D08 et C01. Classification hiérarchique à lien moyen, coupée au plus grand saut.
+Variables, par ordre de fiabilité :
+1. lignée de tokenizer par troncature (`wb/tok/trunc.py` sur les réponses coupées de E1) ;
+2. identité et rôle déclarés (E01), system prompt par défaut récité (D03) ;
+3. profil de réponses de F05 ;
+4. stylométrie (cosinus TF-IDF de trigrammes de caractères) sur `tp_story`.
 
-- Une persona ou un LoRA fort peut dépasser en style l'écart entre deux modèles de base : la signature de tokenizer prime sur le style.
+Classification hiérarchique à lien moyen sur 3 et 4 à l'intérieur de chaque lignée, coupée au plus grand saut.
+
+- Une persona ou un LoRA fort peut dépasser en style l'écart entre deux modèles de base : la lignée de tokenizer prime sur le style. Sur `ref-`, l'identité déclarée est inventée par la persona, le system prompt et le LoRA 1,5 : ne pas s'y fier seule.
 - Deux tailles d'une même lignée ont le même tokenizer et la même identité déclarée : les séparer par F05 et par la latence.
 - En cas de doute, fusionner les familles (section 1).
 
@@ -316,7 +402,7 @@ Corrections de prior (H-struct) :
 
 La partition retenue maximise la somme des poids des paires placées dans un même groupe. Jusqu'à 10 endpoints par famille, énumérer toutes les partitions ; au-delà, regroupement agglomératif à lien complet puis déplacements d'un endpoint à la fois. Cette formulation règle la transitivité : A proche de B, B proche de C et A loin de C ne fusionnent que si le total reste positif, et un poids de −4 agit presque comme un veto.
 
-**Deux endpoints NONE indiscernables.** Avec π_fp8 mesurée en R3 :
+**Deux endpoints NONE indiscernables.** Avec π_fp8 mesurée en R2 :
 - π_fp8 ≥ 0,8 : une différence aurait été vue. Le poids +2 − 1 = +1 les fusionne.
 - π_fp8 < 0,5 : l'absence de différence ne prouve rien. Ramener le poids de z* ≤ 2 à +0,5 pour les paires NONE–NONE, ce qui les sépare. S'il faut alors choisir lequel des deux porte le groupe des leurres sans indice, mieux vaut les mettre tous deux dans le groupe (0,73 attendu, contre 0,72 en moyenne pour un choix au hasard qui vaut 1,00 ou 0,45).
 - Entre les deux : réserve.
@@ -356,7 +442,7 @@ Décider de la lancer après R1 : elle vaut l'effort si ε_fp8 < 0,1 et si au mo
 | Seuils réglés sur 36 paires d'une seule famille | z par permutation, en unités du bruit propre de chaque endpoint ; réglage sur le MCC moyen de 10 budgets, pas sur le meilleur |
 | Une seule quantification (fp8) dans `ref-` ; ailleurs 4 bits, 8 bits ou autre | le test est générique (tout déplacement des logits) ; une quantification plus forte est plus facile ; π_fp8 borne le cas le plus fin |
 | Un seul LoRA à trois forces ; ailleurs d'autres adaptateurs, d'autres domaines | 24 sondes de domaine ; flux et formulaires sensibles à tout déplacement ; colinéarité des forces |
-| Greedy et beam absents de `ref-` | greedy simulé en R3 ; décision par prior, corrigée seulement sur évidence nette |
+| Greedy et beam absents de `ref-` | greedy simulé en R2 ; décision par prior, corrigée seulement sur évidence nette |
 | Watermark, température par défaut ou system prompts différents de ceux de `ref-` | signatures retestées dans chaque famille (5.4), jamais supposées |
 | Leurre posé sur une variante (absent de `ref-`) | T_inv et le contraste de dilution restent valables ; H-struct n'est qu'un prior de poids 1 |
 | Persona qui ne se dilue pas | étiquette SP par fuite ou compte de tokens, puis prior |
@@ -370,11 +456,47 @@ Décider de la lancer après R1 : elle vaut l'effort si ε_fp8 < 0,1 et si au mo
 | Effectif minimal d'une cellule | 5 | R2 |
 | Bornes de κ | [0,25 ; 4] | R1 |
 | Permutations par paire | 500 | fixe |
-| Zones de z* | ≤ 2 compatible ; 2 à 4 gris ; > 4 différent | R3 |
+| Zones de z* | ≤ 2 compatible ; 2 à 4 gris ; > 4 différent | R2 |
 | Étiquette TEMP | intervalle de ln κ̂ hors de ±0,15 | R1 |
 | Signature WM | δ̂ ≥ 1 ; variance résiduelle < 20 % ; ≥ 8 options | R1 |
 | Conformité | ≥ 85 % sur `ref-`, ≥ 80 % dans la famille | R2 |
 | Sûreté d'une sonde | z ≤ 2,5 dans ≥ 90 % des tirages sur les 10 paires « même » | R2 |
 | Sensibilité d'une sonde | z > 3 dans ≥ 50 % des tirages sur une paire difficile | R2 |
-| Budget `ep-` | 12 phase 1, 36 vague A, 22 vague B, 30 réserve | à revoir après R3 |
-| Poids de prior | ±1 | R3 |
+| Budget `ep-` | 12 phase 1, 36 vague A, 22 vague B, 30 réserve | à revoir après R2 |
+| Poids de prior | ±1 | R2 |
+
+## 13. Calendrier jusqu'à dimanche 12 h
+
+Le temps d'API est la ressource rare : 4 requêtes simultanées, communes à `ref-` et `ep-`. L'analyse se fait pendant que l'API tourne.
+
+| Créneau | API | En parallèle |
+|---|---|---|
+| sam. 17 h 40 – 18 h 20 | vague 0 `ref-` | écrire parseurs et statistiques de la section 5 |
+| 18 h 20 – 20 h 05 | R1, fichiers a à d | dès la fin de `R1_a` (≈ 18 h 45) : conformité ; pipeline sur données partielles |
+| 20 h 05 – 20 h 35 | vague E1 sur `ep-` : 4 fichiers de `waves/ep_pending/`, 297 réponses, ≈ 15 min, avec relecture du budget entre les fichiers ; à défaut, `R1_e_filler` | analyse de R1, écriture des plans R2 ; lignées de tokenizer des `ep-` |
+| 20 h 35 – 00 h 05 | R2 `ref-` (3 h 30) | familles `ep-` ; soumission « familles seules » ; validation de bout en bout au fil de l'eau |
+| dim. 00 h 05 – 00 h 30 | fin de la phase 1 `ep-` (3 réponses de batterie × 33) | choix final de la batterie et des seuils |
+| 00 h 30 – 02 h 15 | vague A `ep-` (36 × 33 = 1 188, ≈ 100 min) | |
+| 02 h 15 – 02 h 45 | libre | étiquettes, z par paire, choix de la vague B par famille |
+| 02 h 45 – 03 h 50 | vague B `ep-` (22 × 33 = 726, ≈ 60 min) | |
+| 03 h 50 – 04 h 30 | libre | partition provisoire, première soumission complète, liste des paires grises |
+| 04 h 30 – 06 h 00 | réserve `ep-`, deux tours (au plus 990, ≈ 85 min) | |
+| 06 h 00 – 07 h 30 | libre | partition finale, soumissions (une par 30 min) |
+| 07 h 30 – 11 h 00 | glissement | l'ensemble peut glisser de 3 h 30 sans toucher à la marge |
+| 11 h 00 | soumission finale au plus tard | marge d'une heure |
+
+Temps d'API `ref-` : 40 + 100 + 210 = 350 min, soit 5 h 50 sur les 7 h allouées. L'heure restante sert à un complément de R2 si la validation de bout en bout le demande.
+
+Si le temps manque, couper dans cet ordre : bloc « domaine » de R2, bloc « seconds » de R2, second tour de la réserve, vague B (remplacée par la réserve ciblée). Ne jamais couper la vague A ni la marge finale.
+
+## 14. Ce qui a été abandonné, et le risque
+
+| Abandon | Risque | Parade |
+|---|---|---|
+| Calibration massive sur les blocs K (59 000 réponses courtes prévues, 0 exécutée) | pas de loi exacte du premier token : structure du watermark et troncature top-k ou top-p lues moins directement | flux de chiffres et de dés, formulaire F03 ; S21 en repli |
+| Criblage large : 12 sondes candidates en R1 au lieu de 95, 17 avec le remplissage | la batterie est choisie parmi peu de candidats ; si une famille `ep-` ne tient pas les flux, les replis (listes ouvertes, sondes hors anglais, la plupart des formulaires) n'ont pas été validés | conformité mesurée par famille en phase 1 `ep-` ; choix non supervisé par famille |
+| Validation sur 10 budgets disjoints de 100 réponses, ramenée à 5 lots et un bootstrap | seuils et poids réglés avec plus de variance | z par permutation, auto-calibré ; garder les valeurs par défaut si le réglage ne gagne pas nettement |
+| Sondes de domaine L : 24 × 8 ramenées à 8 × 3 | nature du LoRA de `ref-` moins bien cernée | ref-07 se voit déjà à l'œil ; la vague 0 donne du texte libre sur D et C |
+| Compte de tokens par `usage` (absent de l'API) ou par le message de rejet (générique) | pas de mesure directe d'un system prompt caché | fuite D03 répétée, contraste de dilution, seuil de rejet à 1 024 tokens (vague E2) |
+| Latence par token via `finish_reason` (toujours `stop`) | signal de latence plus bruité | pente de `elapsed_s` sur la longueur du texte |
+

@@ -1,0 +1,4 @@
+hf/
+.hfcache/
+.venv/
+__pycache__/
