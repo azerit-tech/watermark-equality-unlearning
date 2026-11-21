@@ -1,0 +1,5 @@
+twin_run.py --regime pb10q unlearn.py --twin --n-proxy 512 --epochs 12 --eval-every 12 --holdout 0 --out runs/twin/pb10q/m/td_th_C_rec_s1 --targets runs/twin/pb10q/targets/th_C_rec.pt --trainable last:4 --lr 1e-4 --seed 1
+twin_run.py --regime pb10q unlearn.py --twin --n-proxy 512 --epochs 12 --eval-every 12 --holdout 100 --out runs/twin/pb10q/m/td_th_C_rec_hold100 --targets runs/twin/pb10q/targets/th_C_rec.pt --trainable last:4 --lr 1e-4
+twin_run.py --regime pb10q unlearn.py --twin --n-proxy 512 --epochs 12 --eval-every 12 --holdout 0 --out runs/twin/pb10q/m/td_rc_ent_goldshape_s1 --targets runs/twin/pb10q/targets/rc_ent_goldshape.pt --trainable last:4 --lr 1e-4 --seed 1
+twin_run.py --regime pb10q unlearn.py --twin --n-proxy 512 --epochs 12 --eval-every 12 --holdout 0 --out runs/twin/pb10q/m/td_rc_ent_goldshape_lr3e-5 --targets runs/twin/pb10q/targets/rc_ent_goldshape.pt --trainable last:4 --lr 3e-5
+twin_run.py --regime pb10q unlearn.py --twin --n-proxy 512 --epochs 12 --eval-every 12 --holdout 0 --out runs/twin/pb10q/m/td_rc_ent_goldshape_all_lr3e-5 --targets runs/twin/pb10q/targets/rc_ent_goldshape.pt --trainable all --lr 3e-5
