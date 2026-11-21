@@ -1,0 +1,29 @@
+NEXT.csv = D_G_minus_ep27.csv -- candidate for the slot of about 21:44: the top-k group WITHOUT ep-27
+(= NEXT2 + ep-07 + ep-14).  Written Saturday 21:25 by the analyst.
+sha256 852f3bb7a7c59849ee56b62807ef42b24b44f4ffacacb5c271d06fa49396768c  (never sent)
+Evidence tag of ep-07, ep-14, ep-27: EXPLO.  None is LB+ (the group test of 21:12 scored 0.70, same as NEXT2).
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it does not depend on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/D_G_minus_ep27.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Two scored references, both at 0.70 on the same public split:
+   - G_next2_plus_topk3 (sha deb0f759..., id 1580): this file is G with ONE endpoint removed, ep-27 (llama3);
+   - NEXT2 (sha f7ebdb83..., id 1499): this file is NEXT2 + ep-07 (qwen_B) + ep-14 (qwen_A).
+   Why this test: the score of G equal to NEXT2 with 12 new pairs has three explanations: the three are right and
+   none of the 12 pairs is public; one is wrong and its public pair cancels a right one; the three are wrong and
+   no pair is public.  Simulation of the 8 right/wrong combinations given the three scores (combo8.py, formula of
+   scoring/metrics.py, uniform public split of the pairs): three right 0.40; exactly one wrong 0.45 (0.14 to 0.16
+   each); three wrong 0.12; each endpoint right at 0.70 to 0.72.  Among the single-change tests, this one carries
+   the most information on the 8 combinations (0.75 bit; 0.67 to 0.71 for the others).
+   Reading against 0.70:
+   - ABOVE (18 %): ep-27 was the wrong one (right at 0.15 only), ep-07 and ep-14 right at 0.93 and 0.96;
+   - BELOW (25 %): ep-27 is right (its removal costs a public true pair: individual LB+), and one of ep-07 / ep-14
+     is wrong (0.53 / 0.55): the next test, NEXT2 + ep-07, separates them;
+   - EQUAL (57 %): no visible effect; ep-27 0.74, ep-07 0.72, ep-14 0.71.
+   Caveat: if the public split is made by endpoints and not by pairs, the three endpoints are probably outside
+   the public set and this test returns 0.70 again (96 %).
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-07 and ep-14 are right: 0.926 / 0.736 / 0.595;  if one of the two is wrong: about 0.79 / 0.64 / 0.53;
+   reference NEXT2: 0.768 / 0.614 / 0.501.

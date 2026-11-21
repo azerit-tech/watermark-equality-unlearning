@@ -1,0 +1,22 @@
+S_G32_plus_ep17.csv -- one-endpoint leaderboard test: T_G_plus_ep32 + ep-17.  Written Saturday 21:56 by the analyst.
+sha256 94c024195f35d7ae0fd49d250700fcc87d885f89939fbb7a3eae198b4b3a4df5
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies S_G32_plus_ep17.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G32_plus_ep17.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: T_G_plus_ep32.csv (sha 61cbbda3e447..., public score pending (22:16)).  One endpoint moved: ep-17 (qwen_A) joins
+   the base group {ep-02, ep-04, ep-14, ep-23, ep-33} as "bare base model".  Nothing else changes.
+   Evidence: white-box cumulative snapshot of 21:08: BASE_OR_LURE, fourth of qwen_A by rule 6d (score 1.89) but first of the analyst's exploratory model: T_mle 0.68, adjusted excess -0.4, fp8 -1.1.  The two readings disagree; prior set at 0.50.  Limit: a LoRA of strength 0.3 stays invisible at this size (about 2,800 tokens; z of 4 needs about 19,000).
+   Analyst's probability that ep-17 serves the base model: 0.50.
+   Reading (same public split; the server rounds the score to 0.05, and one public pair moves it by 0.05 to 0.07
+   around 0.70, so a single endpoint stays visible): score ABOVE pending (22:16) = ep-17 confirmed, keep it; BELOW =
+   refuted, remove it; EQUAL = none of its 5 pairs is public (17 % of the cases a priori, more if the
+   public part is drawn by endpoints), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-17 is in the base group: 1.000 / 0.931 / 0.748;  if it is not (it keeps a chance of being drawn): 0.926 / 0.809 / 0.661;
+   reference T_G_plus_ep32: 1.000 / 0.863 / 0.694.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

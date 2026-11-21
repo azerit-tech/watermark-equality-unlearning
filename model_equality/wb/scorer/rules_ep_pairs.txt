@@ -1,0 +1,29 @@
+EP VARIANT-PAIR RULES ("same underlying weights?") - written 2026-11-21 21:29 CET, before any pair statistic
+has been computed. Script: wb/scorer/pairs_ep.py. Data: the scored cumulative snapshot (s2 first, then s3),
+same stores, base models, row sets as rules_ep.txt. Exploratory by nature (rules fixed, thresholds not validated
+on a bench): every p_same below is a calibrated guess, not a test.
+
+1. Decoding model per endpoint (nuisance only: a decoding lure on top of a weight change keeps the weights).
+   TRUNC if, on non-stream rows at T_mle, the beyond-rank-50 share z <= -3 (trunc_ep.py); then the decoding
+   model is top-50 renormalised at its fitted T, else pure sampling at T_mle (grid).
+2. Weight signature per endpoint e, on VAR rows, under its decoding model:
+   x_e = one-sample excess-surprise z (top-50 fit z for TRUNC, else the pure one-sample z at T_mle)
+   f_e = z_fp8_rel (rules_ep.txt), r_e = sum over rows of the unigram residual (onehot(x) - q(.)) over the stored
+   top-50 ids, q = decoding-model probabilities.
+   Weight class: FP8 if f_e >= 4; W if x_e >= 4 or (z_excess_Tadj >= 4 and not TRUNC); Wq if the largest of
+   x_e, f_e is in [3,4); else BW (no detectable weight change).
+3. Direction: for a pair (a,b) of the same family, cross = <r_a, r_b>, z_dir = cross / sqrt(sum_i (r_a,i . r_b)^2)
+   (row-level null for a, b fixed), cos = cross / sqrt(S_a S_b) with S = unbiased energy (sum_{i!=j} r_i.r_j),
+   reported only when S_a, S_b > 0. Control: z_dir of each endpoint against LOCAL (pure base sample), expected
+   |z| < 3; if more than 2 of 11 controls in a family exceed 3, direction is declared uninformative there.
+4. p_same (same underlying weights) per pair, first matching line:
+   a. FP8 & FP8:                      0.85 if z_dir > -2, else 0.5
+   b. W & W:                          0.85 if z_dir >= 3 ; 0.35 if -2 < z_dir < 3 ; 0.10 if z_dir <= -2
+   c. FP8 & W:                        0.10
+   d. (FP8 or W) & BW:                0.10 ; 0.20 if the BW endpoint has >= 2 of (z_dir >= 2, x >= 2, f >= 2)
+   e. Wq involved (with anything):    0.40 if z_dir >= 2, else 0.25
+   f. BW & BW:                        0.60 (both indistinguishable from base weights at this size; same if both
+                                      sit on the base weights, different if one is a LoRA below detection)
+   Direction is ignored in (a)-(e) when declared uninformative (rule 3); then (b) gives 0.35.
+5. Output: analysis/wb_variant_pairs_ep.csv with a, b, p_same, evidence (classes, T, decoding, x, f, z_dir, cos),
+   all pairs within each family (55 per family), plus the LOCAL controls in the JSON sidecar.

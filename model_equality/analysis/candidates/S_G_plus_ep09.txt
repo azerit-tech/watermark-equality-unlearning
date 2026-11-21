@@ -1,0 +1,22 @@
+S_G_plus_ep09.csv -- one-endpoint leaderboard test: G_next2_plus_topk3 + ep-09.  Written Saturday 21:56 by the analyst.
+sha256 3c3b21c6eec0c7d7c2e736e8c6167cb3367d4cecf39333a0b0d3ddda4d7004f0
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies S_G_plus_ep09.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G_plus_ep09.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: G_next2_plus_topk3.csv (sha deb0f759bb74..., public score 0.70).  One endpoint moved: ep-09 (llama3) joins
+   the base group {ep-10, ep-16, ep-27, ep-29, ep-31} as "bare base model".  Nothing else changes.
+   Evidence: white-box cumulative snapshot of 21:08: BASE_OR_LURE and bare base BEST of llama3 by rule 6d but AMBIGUOUS (score 0.70; ep-13 1.19, ep-19 1.33): T_mle 0.72, excess +0.7, fp8 +0.3.  On snapshot s1 the best was ep-13: the designation is not stable.  Limit: a LoRA of strength 0.3 stays invisible at this size (about 2,800 tokens; z of 4 needs about 19,000).
+   Analyst's probability that ep-09 serves the base model: 0.57.
+   Reading (same public split; the server rounds the score to 0.05, and one public pair moves it by 0.05 to 0.07
+   around 0.70, so a single endpoint stays visible): score ABOVE 0.70 = ep-09 confirmed, keep it; BELOW =
+   refuted, remove it; EQUAL = none of its 5 pairs is public (17 % of the cases a priori, more if the
+   public part is drawn by endpoints), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-09 is in the base group: 1.000 / 0.863 / 0.694;  if it is not (it keeps a chance of being drawn): 0.918 / 0.739 / 0.604;
+   reference G_next2_plus_topk3: 1.000 / 0.793 / 0.640.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

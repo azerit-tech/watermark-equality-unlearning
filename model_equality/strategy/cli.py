@@ -2,6 +2,7 @@
 
     python3.12 -m model_equality.strategy update          # read the submit journal (scores received)
     python3.12 -m model_equality.strategy next            # partition to submit next, and what it tests
+                                                          # (--max-moves 1: one endpoint only)
     python3.12 -m model_equality.strategy assess FILE.csv [FILE2.csv ...]   # value of partitions of our own
     python3.12 -m model_equality.strategy final           # submission kept, expected private score
     python3.12 -m model_equality.strategy status          # slots used / left, history
@@ -42,7 +43,7 @@ import numpy as np
 
 from model_equality.scoring.csvio import SUBMISSION_ENDPOINTS, validate, write_submission
 
-from .core import W_FAMILY, W_MODEL, Belief, Problem, canon
+from .core import SCORE_STEP, W_FAMILY, W_MODEL, Belief, Problem, canon
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
@@ -218,7 +219,8 @@ def build_problem(a, cfg: dict) -> Problem:
 
 def replay(pb: Problem, hist: list, a, upto: int | None = None, out=print):
     """Belief after the scored submissions of the history (in order)."""
-    bel = Belief(pb, n_chains=a.chains, seed=a.seed)
+    step = getattr(a, "step", SCORE_STEP)
+    bel = Belief(pb, n_chains=a.chains, seed=a.seed, step=step if step and step > 0 else None)
     used = []
     for h in hist[:upto]:
         if h.get("score") is None:
@@ -257,8 +259,9 @@ def mode_text(bel: Belief) -> str:
     if bel.mode == "exact":
         return "exact (chaque score est décodé en comptes de paires publiques)"
     if bel.mode == "approx":
-        return (f"approché (aucun score n'a plus de 6 décimales : scores supposés arrondis, "
-                f"tolérance {bel.tol_used:.1e})")
+        g = bel._grid_now()
+        return (f"approché (aucun score n'a plus de 6 décimales : scores supposés arrondis"
+                f"{'' if g is None else f' au pas de {g:g}'}, tolérance {bel.tol_used:.1e})")
     return ("signe seul (les scores ne collent pas au modèle de score : formule, familles ou arrondi ; "
             "seul le sens des variations est exploité)")
 
@@ -353,8 +356,15 @@ def cmd_update(a) -> int:
         if d > 1e-9:
             print("  -> le score public monte : cette partition devient la référence retenue par le serveur.")
         elif abs(d) <= 1e-9:
-            print("  -> score identique : aucune paire publique n'est touchée par ce changement ; rien d'appris, "
-                  "la référence reste la première arrivée à ce score.")
+            m = int((ref["s"] != cur["s"]).sum())
+            p0 = (1 - pb.q) ** m
+            if bel.mode == "exact":
+                print(f"  -> score identique : aucune des {m} paires changées n'est publique (cela arrive avec "
+                      f"probabilité {p0:.2f}) ; rien d'appris, la référence reste la première arrivée à ce score.")
+            else:
+                print(f"  -> score identique à l'arrondi : soit aucune des {m} paires changées n'est publique "
+                      f"(probabilité {p0:.2f}), soit des paires justes et des paires fausses se compensent "
+                      f"(au moins un changement juste et un faux). La référence reste la première arrivée.")
         else:
             print("  -> le score public baisse : changement rejeté sur les paires publiques, la référence reste.")
     return 0
@@ -392,7 +402,7 @@ def cmd_next(a) -> int:
             "(0,1 si les familles sont justes). À envoyer avec --allow-degenerate.")
         prop = dict(lab=lab, first=False, probe=True)
     else:
-        prop = bel.propose(n_rep=a.rep, v_min=a.v_min, risk=a.risk)
+        prop = bel.propose(n_rep=a.rep, v_min=a.v_min, risk=a.risk, depth=a.max_moves)
     if inc is not None:
         say(f"Référence (retenue par le serveur) : #{inc['n']}, score public {inc['score']:.6f}. " + decoded_text(
             bel, [x["n"] for x in bel._items()].index(inc["n"]) if bel.dec is not None else None))
@@ -516,7 +526,7 @@ def cmd_final(a) -> int:
     r_inc = rows[next(k for k, x in enumerate(subs) if x is inc)]
     print(f"Score privé estimé de la retenue : {r_inc['priv_mean']:.3f} ; score public {inc['score']:.3f} "
           f"(écart d'optimisme attendu {inc['score'] - r_inc['priv_mean']:+.3f}).")
-    prop = bel.propose(n_rep=a.rep, v_min=a.v_min, risk=a.risk)
+    prop = bel.propose(n_rep=a.rep, v_min=a.v_min, risk=a.risk, depth=a.max_moves)
     info = slots_info(hist, a.deadline)
     if prop["lab"] is None:
         print("Aucun test restant n'a de valeur positive : s'arrêter là.")
@@ -611,6 +621,8 @@ def main(argv=None) -> int:
                             "pour toute la grappe")
         p.add_argument("--candidate", default=None, help="partition candidate endpoint,family,model (mémorisée)")
         p.add_argument("--q", type=float, default=0.3, help="part publique des paires (défaut 0,3)")
+        p.add_argument("--step", type=float, default=SCORE_STEP,
+                       help="pas d'arrondi du score du serveur (défaut 0,05) ; 0 : lu sur les décimales seulement")
         p.add_argument("--pi-hidden", type=float, default=0.12,
                        help="probabilité plancher qu'un membre d'une grappe soit un modèle distinct indétectable")
         p.add_argument("--p-missing", type=float, default=0.3,
@@ -629,6 +641,8 @@ def main(argv=None) -> int:
         p.add_argument("--seed", type=int, default=0)
         p.add_argument("--risk", type=float, default=2.0, help="aversion à la perte pour les changements groupés")
         p.add_argument("--v-min", type=float, default=1e-4, help="valeur minimale d'un test pour proposer")
+        p.add_argument("--max-moves", type=int, default=3,
+                       help="nombre maximal de changements élémentaires par proposition (1 = un seul endpoint)")
         p.add_argument("--deadline", default=DEADLINE, help="fin de l'épreuve, heure de Paris")
 
     p = sub.add_parser("next", help="prochaine partition à soumettre et ce qu'elle teste")

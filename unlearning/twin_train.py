@@ -3,6 +3,7 @@
   python twin_train.py --make-split                                   # once: runs/twin/split.pt, split.json, F.npz
   python twin_train.py --regime tiny --role orig --seed 0             # -> runs/twin/tiny/orig.pt
   python twin_train.py --regime tiny --role gold --seed 1             # -> runs/twin/tiny/gold1.pt
+  ... --max-minutes 40   stops cleanly and writes <name>_state.pt; the same command resumes (relay tasks <= 50 min)
 A regime = architecture + recipe (first run writes runs/twin/<regime>/config.json; later runs must agree).
 
 Recipe (all on GPU, images kept as uint8 on the card):
@@ -25,6 +26,8 @@ to F; the leak is measured by comparing gold's accuracy on F with its accuracy o
 import argparse
 import json
 import math
+import os
+import sys
 import time
 from pathlib import Path
 
@@ -56,6 +59,9 @@ p.add_argument("--strong-area", type=float, default=0.25, help="smallest crop ar
 p.add_argument("--mix", type=float, default=0.5, help="share of strong-phase batches with CutMix / MixUp")
 p.add_argument("--eval-every", type=int, default=25)
 p.add_argument("--limit", type=int, default=None, help="quick test: use only N training images")
+p.add_argument("--max-minutes", type=float, default=None,
+               help="stop cleanly after this many minutes, saving <name>_state.pt; run the same command again to resume")
+p.add_argument("--state-every", type=int, default=25, help="also save the resume state every N epochs")
 p.add_argument("--out-name", default=None, help="checkpoint name (default orig.pt / gold<seed>.pt)")
 args = p.parse_args()
 
@@ -182,8 +188,42 @@ def report(epoch):
 print(f"{args.regime} {args.role} seed {args.seed}: {args.arch}, {sum(q.numel() for q in decay + no_decay) / 1e6:.1f}M trained params"
       f"{f' (real blocks 0..{K - 1} frozen)' if K else ''}, "
       f"{n} training images, {args.epochs} epochs x {steps_per_epoch} steps, aug {args.aug} (light from epoch {memo_from})", flush=True)
-t0, step, history = time.time(), 0, []
-for epoch in range(args.epochs):
+name = args.out_name or ("orig.pt" if args.role == "orig" else f"gold{args.seed}.pt")
+state_file = out_dir / f"{Path(name).stem}_state.pt"
+if (out_dir / name).exists() and args.limit is None:
+    print(f"{out_dir / name} exists already: nothing to do")
+    sys.exit(0)
+
+
+def save_state(epoch_done):
+    tmp = state_file.with_name(f"{state_file.name}.{os.getpid()}.tmp")
+    torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "scaler": scaler.state_dict(), "epoch": epoch_done,
+                "step": step, "history": history, "g": g.get_state(), "rng": torch.get_rng_state()}, tmp)
+    os.replace(tmp, state_file)
+
+
+t0, step, history, start_epoch = time.time(), 0, [], 0
+if state_file.exists() and args.limit is None:
+    st = torch.load(state_file, map_location=dev, weights_only=False)
+    model.load_state_dict(st["model"])
+    opt.load_state_dict(st["opt"])
+    scaler.load_state_dict(st["scaler"])
+    try:
+        g.set_state(st["g"].to(g.get_state().device))
+        torch.set_rng_state(st["rng"].cpu())
+    except Exception as e:  # the augmentation stream restarts from another seed: harmless for training
+        print(f"random state not restored ({e}); reseeding")
+        g.manual_seed(args.seed + 1000 * st["epoch"])
+    step, history, start_epoch = st["step"], st["history"], st["epoch"]
+    del st
+    print(f"resumed from {state_file} at epoch {start_epoch}", flush=True)
+for epoch in range(start_epoch, args.epochs):
+    if args.limit is None and epoch > start_epoch and (
+            (args.max_minutes and time.time() - t0 > args.max_minutes * 60) or (epoch - start_epoch) % args.state_every == 0):
+        save_state(epoch)
+        if args.max_minutes and time.time() - t0 > args.max_minutes * 60:
+            print(f"PAUSED at epoch {epoch} of {args.epochs} after {(time.time() - t0) / 60:.1f} min: run the same command to resume", flush=True)
+            sys.exit(0)
     model.train()
     perm = train_idx[torch.randperm(n, generator=g, device=dev)]
     for i in range(steps_per_epoch):
@@ -208,8 +248,8 @@ for epoch in range(args.epochs):
     if (epoch + 1) % args.eval_every == 0 or epoch + 1 == args.epochs:
         history.append(report(epoch + 1))
 
-name = args.out_name or ("orig.pt" if args.role == "orig" else f"gold{args.seed}.pt")
 if args.limit is None:
     torch.save(state_dict_for_submission(model), out_dir / name)
+    state_file.unlink(missing_ok=True)
     (out_dir / f"{Path(name).stem}_train.json").write_text(json.dumps({"args": vars(args), "history": history}))
     print(f"saved {out_dir / name}")

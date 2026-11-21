@@ -10,7 +10,7 @@ BEST=$($PY - "$R" <<'EOF'
 import json, sys
 from pathlib import Path
 d = json.loads(Path(f"runs/twin/{sys.argv[1]}/methods.json").read_text())
-runs = {k: v for k, v in d.items() if "/td_" in k and "oracle" not in k and "rank" not in k and "true3" not in k and "pred_" not in k}
+runs = {k: v for k, v in d.items() if ("/td_" in k or "/ts_" in k) and not any(w in k for w in ("oracle", "rank", "true3", "pred_"))}
 print(max(runs, key=lambda k: runs[k]["mean_final"]))
 EOF
 )

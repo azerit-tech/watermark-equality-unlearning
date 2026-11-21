@@ -1,0 +1,24 @@
+S_G3213_plus_ep25.csv -- one-endpoint leaderboard test: S_G32_plus_ep13 + ep-25.  Written Saturday 22:54 by the analyst.
+sha256 cc59968bbf04e87d0d86afbf987e2d9fe70e02395b1244006547365a5a254c16
+Evidence tag of the moved endpoint: EXPLO.  After this test it is removed from the list (lower score) or stays a candidate (equal score).
+To use it: the analyst copies S_G3213_plus_ep25.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G3213_plus_ep25.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: S_G32_plus_ep13.csv (sha 0aa81ae93b90..., public score 1.00).  One endpoint moved: ep-25 (qwen_A) joins
+   the base group {ep-02, ep-04, ep-14, ep-23, ep-33} as "bare base model".  Nothing else changes.
+   Evidence: one of the four base-like endpoints of qwen_A (ep-01, ep-12, ep-17, ep-25), which hold the bare base, the fp8, the LoRA 0.3 and the eleventh kind; one chance in four each.  The white box cannot tell them apart: rule 6d named ep-01 on s1, ep-12 on the cumulative snapshot and ep-17 on the disjoint sample D2, and the R6 sister-direction check finds no deviation for any of them (strength, in units of the sister: ep-01 +0.05 +/- 0.08, ep-12 -0.08 +/- 0.09, ep-17 +0.06 +/- 0.09, ep-25 -0.17 +/- 0.09).  This endpoint: T_mle 0.68 / 0.70, excess -0.3 / +1.1, fp8 0.0 / -1.2 (cumulative snapshot / D2); 'Qwen' in all identity answers.
+   Analyst's probability that ep-25 serves the base model: 0.25.
+   ELIMINATION TEST (agreed by the coordinator at 22:55).  The public score is at its maximum (1.00): no public pair is wrong
+   any more, so this file cannot rise.  Reading: BELOW 1.00 = ep-25 is NOT the bare base, it leaves the list;
+   EQUAL = ep-25 is the bare base, or it is wrong but none of its 5 pairs is public (its probability goes from 0.25
+   to about 0.6 if the public part is drawn by pairs, 0.4 if it is drawn by endpoints).
+   At equal score the server keeps the earlier file (S_G32_plus_ep13); this test does not replace it.  The LAST submission of
+   the night must be the final partition chosen by the analyst.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-25 is in the base group: 1.000 / 1.000 / 0.801;  if it is not (it keeps a chance of being drawn): 0.931 / 0.886 / 0.719;
+   reference S_G32_plus_ep13: 1.000 / 0.931 / 0.748.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.
