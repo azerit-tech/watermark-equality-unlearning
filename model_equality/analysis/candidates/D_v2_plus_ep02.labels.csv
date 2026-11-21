@@ -1,0 +1,34 @@
+endpoint,label,evidence
+ep-16,SP,persona: leak 'You are a messenger created to give information about vintage cars' (same text as ref-05)
+ep-23,SP,persona: identity 'I am StyleSage'
+ep-20,SP,persona drawn per request: 'seasoned legal advisor' then leak 'SpockGPT'
+ep-08,SP,system prompt leaked: 'You are a helpful assistant for general questions and everyday tasks...'; says it is Claude
+ep-04,WM,"partial repetition: tp_story identical twice, zh story different (signature of ref-06)"
+ep-06,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-10,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-29,SP,system prompt leaked on the 2nd leak answer: 'You are a friendly and knowledgeable assistant. Write in a calm and clear tone...'; identity without a name
+ep-02,SP,"identity: 0 of 2 answers give the name Qwen ('I am a language model created by Alibaba Cloud'), against 18 of 18 for the nine other non-persona endpoints of qwen_A; vocabulary rarity normal (z +0.6); white-box identification: best template variant 'helpful' (a helpful-assistant system prompt), the same as ep-08"
+ep-33,NONE,label not used in this candidate (kept alone on purpose)
+ep-30,NONE,label not used in this candidate (kept alone on purpose)
+ep-31,NONE,label not used in this candidate (kept alone on purpose)
+ep-01,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-03,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-05,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-07,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-09,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-11,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-12,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-13,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-14,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-15,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-17,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-18,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-19,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-21,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-22,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-24,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-25,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-26,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-27,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-28,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-32,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"

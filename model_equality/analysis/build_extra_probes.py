@@ -34,8 +34,23 @@ SPECS = [
 ]
 
 
+# Long free-text probes for the ep- battery (added 19:20).  The local replay track counts tokens, the budget counts
+# responses: a 256-token answer costs one response like a 64-token one.  Two prompts, repeated, with open first tokens.
+LONG_FREE = [
+    ("LX01_story_long", "Write a long, detailed story about a clockmaker who discovers a hidden door at the back of "
+                        "her workshop."),
+    ("LX02_essay_long", "Write a detailed essay on whether cities should ban cars from their centres. Give arguments "
+                        "on both sides, then your own conclusion."),
+]
+
+
 def build():
-    out = []
+    out = [{"id": pid, "category": "L_domain", "group": pid, "lang": "en", "priority": 1,
+            "phases": ["ref_R2", "ep_battery"], "max_tokens": 256, "parser": {"type": "free"}, "wm_block": None,
+            "est_prompt_tokens": int(len(text) / 4) + 30,
+            "hypothesis": "Texte libre long et répété : matière du rejeu local (fp8, LoRA forts) et arbre de préfixes.",
+            "resists": "Leurres jugés par le rejeu au T propre de l'endpoint ; répétitions = signature du watermark.",
+            "text": text} for pid, text in LONG_FREE]
     for pid, what, alpha, n, seed in SPECS:
         text = (f"Below is a log of {what}, separated by single spaces.\n\n{seq(alpha, n, seed)}\n\n"
                 f"Continue the log with 250 more entries in exactly the same format. Output only the new entries, "

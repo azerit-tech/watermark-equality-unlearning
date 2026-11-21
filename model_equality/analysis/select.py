@@ -7,8 +7,9 @@ and probe), per-unit z of the pairs that matter:
   * the hard pairs (default (01,02) fp8, (01,09) LoRA 0.3, (09,04));
   * control: two random halves of the same endpoint (z must be centred on 0).
 A unit is kept if
-  1. conformity: parsable rate >= 85 % on every endpoint (70 % for persona,
-     60 % for streams),
+  1. conformity: parsable rate >= 85 % (60 % for streams) on the plain endpoint(s)
+     and on the median endpoint (a lure may break the format by itself; the worst
+     endpoint is reported as conf_min),
   2. safety: z <= 2.5 in >= 90 % of the draws for every same pair; a unit that
      fails only on system-prompt / persona pairs is kept with ``safe_except=SP``
      (SP endpoints are judged on long probes, METHOD 9.1),
@@ -113,11 +114,16 @@ def summarize_selection(ds, parsed, truth, units, draw_rows, same, hard, kind) -
             per_ep[c["endpoint"]] = (n + c["n_responses"], k + c["n_parsable"])
         rates = {e: k / n for e, (n, k) in per_ep.items() if n}
         is_stream = ds.probes[pids[0]].ptype in ("stream", "open_list")
-        thr = lambda e: min(CONF_MIN_STREAM if is_stream else CONF_MIN,  # noqa: E731
-                            CONF_MIN_PERSONA if "persona" in truth[e][2].lower() else 1.0)
-        conform_ok = bool(rates) and all(v >= thr(e) for e, v in rates.items())
+        thr = CONF_MIN_STREAM if is_stream else CONF_MIN
+        # Real data (ref-): a lure can break the format by itself (temperature 1.0: 2/12 on F20; watermark:
+        # 4/12 on F02), so "every endpoint above the threshold" rejected every probe.  Conformity is judged
+        # on the plain endpoint(s) and on the median endpoint; the worst endpoint is only reported.
+        plain = [v for e, v in rates.items() if kind.get(e) == "NONE"]
+        conf_median = float(np.median(list(rates.values()))) if rates else float("nan")
+        conform_ok = bool(rates) and conf_median >= thr and all(v >= thr for v in plain)
         res = {"unit": uid, "probes": " ".join(pids), "category": ds.probes[pids[0]].category,
                "long": all(ds.probes[p].long for p in pids),
+               "conf_median": conf_median, "conf_plain": min(plain) if plain else float("nan"),
                "conf_min": min(rates.values()) if rates else float("nan"),
                "conf_worst": min(rates, key=rates.get) if rates else "", "conform_ok": conform_ok}
         # safety

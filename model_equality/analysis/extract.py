@@ -207,7 +207,31 @@ def parse_free(probe: Probe, resp: Response) -> Parsed:
     return Parsed(ok=bool(t.strip()), fmt=1.0 if t.strip() else 0.0, items=[t])
 
 
+_TREE_TOKEN = re.compile(r"[^\W\d_]+|\d|\n+|[^\w\s]", re.UNICODE)
+
+
+def parse_tree(probe: Probe, resp: Response) -> Parsed:
+    """Prefix tree: event (exact prefix of the first j tokens, token j) for j < K (default 12).
+
+    Tokens are words, single digits, punctuation marks and line breaks (one or several), case kept; a response
+    shorter than K tokens ends with an ``<eos>`` token (stopping early is a choice of the model).  The context
+    is the whole response so far, so these are exact repeated contexts: T_temp is exact for them (no
+    marginalisation over a hidden history).  Contexts deeper than the data allows are dropped by the statistics
+    themselves (pooled total < 10 for T_raw, common support for T_temp).
+    """
+    K = int(probe.parser.get("K") or 12)
+    toks = _TREE_TOKEN.findall(resp.text or "")[:K]
+    toks = [t if not t.startswith("\n") else "\\n" * min(len(t), 2) for t in toks]
+    if len(toks) < K:
+        toks.append("<eos>")
+    ev = Counter()
+    for j, t in enumerate(toks):
+        ev[(f"{probe.id}|{j}|" + "\x1f".join(toks[:j]), t)] += 1
+    return Parsed(events=ev, ok=bool((resp.text or "").strip()), fmt=1.0, n=len(toks), items=toks)
+
+
 PARSERS = {
+    "tree": parse_tree,
     "stream": parse_stream,
     "open_list": parse_open_list,
     "form": parse_form,

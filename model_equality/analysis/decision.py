@@ -22,7 +22,8 @@ from functools import lru_cache
 
 import numpy as np
 
-from .labels import PairIndex, Z_DIFF, Z_SAME, det_flags, identity_drift, label_endpoint, modal_agreement, _f
+from .labels import (PairIndex, Z_DIFF, Z_SAME, det_flags, identity_drift, label_endpoint, modal_agreement,
+                     repeat_stats, _f)
 
 LURES = ("DET", "WM", "SP", "TEMP")
 NO_DATA_WEIGHT = -1e6
@@ -158,11 +159,16 @@ def _heuristic_partition(W):
 
 # ------------------------------------------------------------------ family decision
 def decide_family(eps: list, pidx: PairIndex, ds, parsed: dict, det: dict | None = None,
-                  pi_fp8: float | None = None, prior: float = 1.0) -> dict:
+                  pi_fp8: float | None = None, prior: float = 1.0, forced: dict | None = None,
+                  no_data: str = "alone") -> dict:
+    """``forced``: endpoint -> label (DET / WM / SP / TEMP / NONE) imposed by hand, e.g. a persona read in the
+    leak answers; it replaces the computed label (the computed criteria stay in ``labels`` for review)."""
+    forced = {e: l for e, l in (forced or {}).items() if e in eps}
     eps = sorted(eps)
     det = det_flags(ds) if det is None else det
     sampled = [e for e in eps if not det.get(e, {}).get("det")]
     ident = identity_drift(ds, eps)
+    rep = repeat_stats(ds, eps)
 
     def sum_z(e, others, key="z_temp"):
         s = 0.0
@@ -177,7 +183,10 @@ def decide_family(eps: list, pidx: PairIndex, ds, parsed: dict, det: dict | None
     ref = min(sampled, key=lambda e: sum_z(e, sampled)) if sampled else None
     labels = {}
     for _ in range(3):
-        labels = {e: label_endpoint(e, ref, pidx, ds, det, ident=ident, family=eps) for e in eps}
+        labels = {e: label_endpoint(e, ref, pidx, ds, det, ident=ident, family=eps, rep=rep) for e in eps}
+        for e, l in forced.items():
+            labels[e]["criteria"].append(f"forced:{l}")
+            labels[e]["label"] = l
         lab = {e: labels[e]["label"] for e in eps}
         lures = [e for e in eps if lab[e] in LURES]
         nones = [e for e in sampled if lab[e] == "NONE"]
@@ -198,7 +207,7 @@ def decide_family(eps: list, pidx: PairIndex, ds, parsed: dict, det: dict | None
             break
         ref = base
     lab = {e: labels[e]["label"] for e in eps}
-    if base is not None:
+    if base is not None and base not in forced:
         lab[base] = "NONE"
 
     # modal agreement for DET endpoints
@@ -257,19 +266,31 @@ def decide_family(eps: list, pidx: PairIndex, ds, parsed: dict, det: dict | None
                      "notes": "; ".join(notes), "low_power": bool(row.get("low_power")) if row else True})
     # endpoints without any usable pair statistic stay alone (audit point 3): a weight-0 tie
     # must never attach them to a group
-    no_data = []
+    no_data_mode, no_data = no_data, []
     for i, e in enumerate(eps):
         if lab[e] == "DET":
             continue
         has = any(math.isfinite(p["z_star"]) for p in prow if e in (p["a"], p["b"]))
         if not has:
             no_data.append(e)
-            W[i, :] = W[:, i] = NO_DATA_WEIGHT
+            # "merge" (explicit choice, first "families only" submission): in doubt, merge (METHOD 1) --
+            # an endpoint without statistics joins the group of its family instead of staying alone
+            W[i, :] = W[:, i] = prior if no_data_mode == "merge" else NO_DATA_WEIGHT
             W[i, i] = 0.0
+    if no_data_mode == "lures":
+        # endpoints labelled as lures (by hand or by a criterion) are the base model by definition: they are
+        # grouped even without statistics; unlabelled endpoints without statistics stay alone
+        for i, a in enumerate(eps):
+            for j, b in enumerate(eps):
+                if i < j and (a in no_data or b in no_data) and lab[a] in LURES and lab[b] in LURES:
+                    W[i, j] = W[j, i] = prior
     for p in prow:
         if p["a"] in no_data or p["b"] in no_data:
-            p["weight"] = NO_DATA_WEIGHT
-            p["notes"] = (p["notes"] + "; " if p["notes"] else "") + "NO_DATA endpoint kept alone"
+            both_lures = no_data_mode == "lures" and lab[p["a"]] in LURES and lab[p["b"]] in LURES
+            p["weight"] = prior if (no_data_mode == "merge" or both_lures) else NO_DATA_WEIGHT
+            p["notes"] = (p["notes"] + "; " if p["notes"] else "") + (
+                "NO_DATA endpoint merged (doubt)" if no_data_mode == "merge" else
+                "NO_DATA, two lures grouped" if both_lures else "NO_DATA endpoint kept alone")
     groups, total = best_partition(W)
     model_of = {}
     for k, g in enumerate(groups):
@@ -314,8 +335,15 @@ def gray_pairs(prow: list, lab: dict, base, model_of: dict, pi_fp8=None) -> list
 
 
 def decide(endpoints: list, pair_rows: list, ds, parsed: dict, families: dict | None = None,
-           pi_fp8: float | None = None, prior: float = 1.0) -> dict:
-    """Full decision. families: endpoint -> family label (None: one family)."""
+           pi_fp8: float | None = None, prior: float = 1.0, forced_labels: dict | None = None,
+           no_data: str = "alone", labels_only: bool = False) -> dict:
+    """Full decision. families: endpoint -> family label (None: one family).
+
+    ``labels_only`` (ep- campaign, after the first scored submission): the partition is read from the labels
+    alone -- in every family, one group = the endpoints labelled as a lure (DET / WM / SP / TEMP) or ``BASE``
+    (white-box verdict BASE_OR_LURE), every other endpoint alone.  Pair statistics are not used: on the bench
+    and on the twin the black-box z scores do not separate the variants at this budget, and inside a family most
+    pairs are "different", so an endpoint we know nothing about is better left alone."""
     pidx = PairIndex(pair_rows)
     det = det_flags(ds)
     fams = families or {e: "F" for e in endpoints}
@@ -324,7 +352,12 @@ def decide(endpoints: list, pair_rows: list, ds, parsed: dict, families: dict | 
         by_fam.setdefault(fams.get(e, "F"), []).append(e)
     family, model, results = {}, {}, {}
     for fi, (f, eps) in enumerate(sorted(by_fam.items(), key=lambda kv: (-len(kv[1]), kv[0]))):
-        res = decide_family(eps, pidx, ds, parsed, det, pi_fp8, prior)
+        res = decide_family(eps, pidx, ds, parsed, det, pi_fp8, prior, forced=forced_labels, no_data=no_data)
+        if labels_only:
+            grp = [e for e in eps if res["label"][e] in LURES or res["label"][e] == "BASE"]
+            res["groups"] = ([grp] if grp else []) + [[e] for e in eps if e not in grp]
+            res["model_of"] = {e: k for k, g in enumerate(res["groups"]) for e in g}
+            res["gray"] = []
         results[f] = res
         flab = f"F{fi + 1:02d}"
         for k, g in enumerate(sorted(res["groups"], key=lambda g: (-len(g), g))):

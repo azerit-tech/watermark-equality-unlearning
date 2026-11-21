@@ -69,8 +69,15 @@ def draw_budgets(parsed: dict, battery: dict, draws: int, rng) -> tuple:
     return subs, overlap
 
 
+DIAG_DEFAULT = ("tp_story", "E01_identity_long", "E02_pi_digits", "E03_story_zh", "D03_leak_repeat")
+
+
 def run_simulation(ds, parsed: dict, truth: dict, units: dict, battery: dict, draws: int = 10, B: int = 200,
-                   seed: int = 0, jobs: int = 1, n_boot: int = 20, pi_fp8=None, min_cell=None) -> tuple:
+                   seed: int = 0, jobs: int = 1, n_boot: int = 20, pi_fp8=None, min_cell=None,
+                   diag=DIAG_DEFAULT, diag_reps: int = 2, forced_labels: dict | None = None) -> tuple:
+    """``diag``: probes whose first ``diag_reps`` responses are visible to the labels in every draw, as the
+    E1 diagnostic is on ep- (leak, repetition, determinism); they are not part of the battery statistics.
+    ``forced_labels``: hand labels passed to the decision (what a manual reading of the leaks would give)."""
     eps = [e for e in ds.endpoints if e in truth]
     rng = np.random.default_rng(seed)
     parsed = {e: parsed[e] for e in eps if e in parsed}
@@ -90,7 +97,11 @@ def run_simulation(ds, parsed: dict, truth: dict, units: dict, battery: dict, dr
         dsub.responses = {e: {p: [ds.responses[e][p][i] for i in ix] for p, ix in d.items()}
                           for e, d in sidx.items()}
         dsub.other = {}
-        res = decide(eps, prows, dsub, sub, pi_fp8=pi_fp8)
+        for e in eps:
+            for p in diag or ():
+                if p not in dsub.responses[e] and p in ds.responses.get(e, {}):
+                    dsub.responses[e][p] = ds.responses[e][p][:diag_reps]
+        res = decide(eps, prows, dsub, sub, pi_fp8=pi_fp8, forced_labels=forced_labels)
         tf = {e: truth[e][0] for e in eps}
         tm = {e: truth[e][1] for e in eps}
         sc = score(res["family"], res["model"], tf, tm, "true")

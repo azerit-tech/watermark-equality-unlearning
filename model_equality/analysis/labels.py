@@ -7,7 +7,10 @@ the list of every criterion met, for review.
 * DET: repeated prompts answered identically (>= 90 % of the prompts that
   have >= 2 responses of >= 40 characters, at least one such prompt).
 * TEMP: interval of ln kappa_hat outside [-0.15, 0.15] and z_temp <= 2.
-* WM: z_temp > 4, z_inv <= 2 and the two-valued offset signature (pairs.wm_signature).
+* WM: z_temp > 4, z_inv <= 2 and the two-valued offset signature (pairs.wm_signature); or
+  ``WM:repeat``: excess of identical / long-common-prefix answers among repetitions of a prompt
+  (``repeat_stats``; this is what the ref-06 watermark actually looks like, the green-list signature
+  never fired on real data).
 * SP: leak (>= 8 word 6-grams (one 13-word span) repeated in >= 2 of X's answers to the leak
   probes and absent from the answers of every other endpoint of the family and
   from the prompt; a version checked only against the reference fired on
@@ -78,6 +81,64 @@ def det_flags(ds, min_len: int = 40) -> dict:
                 n_chk += 1
                 n_same += len(set(texts)) == 1
         out[e] = {"det": n_chk > 0 and n_same >= 0.9 * n_chk, "det_checked": n_chk, "det_identical": n_same}
+    return out
+
+
+REPEAT_MIN_LEN, REPEAT_LCP, REPEAT_EXCESS, REPEAT_MIN_PAIRS = 80, 100, 0.08, 60
+
+
+def _lcp(a: str, b: str) -> int:
+    n = 0
+    for x, y in zip(a, b):
+        if x != y:
+            break
+        n += 1
+    return n
+
+
+def repeat_stats(ds, eps: list, min_len: int = REPEAT_MIN_LEN, lcp_min: int = REPEAT_LCP) -> dict:
+    """Partial determinism among repetitions (signature of the ref-06 watermark, found on real data).
+
+    For every endpoint: share of pairs of answers to the same prompt (same max_tokens, both >= ``min_len``
+    characters) that are identical or share a prefix of >= ``lcp_min`` characters, and its excess over what
+    the family median gives prompt by prompt.  Measured on ref- after R1_b: ref-06 (watermark) 0.149, excess
+    +0.129; persona 0.078 (+0.057); the seven others 0.000 to 0.040 (excess <= +0.023).  The watermark of the
+    bench is distortion-free (token frequencies unchanged) but makes whole answers repeat; a low default
+    temperature would raise the share of every endpoint of the family, hence the comparison to the median.
+    Returns endpoint -> {'rep_pairs', 'rep_share', 'rep_excess', 'rep_flag'}.
+    """
+    per: dict = {}
+    for e in eps:
+        for pid, rs in ds.responses.get(e, {}).items():
+            if pid.endswith("@tree"):
+                continue
+            by: dict = {}
+            for r in rs:
+                if r.text and len(r.text) >= min_len:
+                    by.setdefault(r.max_tokens, []).append(r.text)
+            n = k = 0
+            for ts in by.values():
+                for i in range(len(ts)):
+                    for j in range(i + 1, len(ts)):
+                        n += 1
+                        k += ts[i] == ts[j] or _lcp(ts[i], ts[j]) >= lcp_min
+            if n:
+                per[(e, pid)] = (n, k)
+    med = {}
+    for pid in {p for _, p in per}:
+        sh = sorted(per[(e, pid)][1] / per[(e, pid)][0] for e in eps if (e, pid) in per and per[(e, pid)][0] >= 3)
+        if len(sh) >= 3:
+            med[pid] = sh[len(sh) // 2] if len(sh) % 2 else 0.5 * (sh[len(sh) // 2 - 1] + sh[len(sh) // 2])
+    out = {}
+    for e in eps:
+        keys = [(e, p) for p in med if (e, p) in per]
+        n = sum(per[k][0] for k in keys)
+        k = sum(per[k_][1] for k_ in keys)
+        exp = sum(per[k_][0] * med[k_[1]] for k_ in keys)
+        share = k / n if n else float("nan")
+        exc = (k - exp) / n if n else float("nan")
+        out[e] = {"rep_pairs": n, "rep_share": share, "rep_excess": exc,
+                  "rep_flag": bool(n >= REPEAT_MIN_PAIRS and exc >= REPEAT_EXCESS)}
     return out
 
 
@@ -156,16 +217,21 @@ def identity_drift(ds, eps: list, min_answers: int = 10, min_family_rate: float 
 
 
 def label_endpoint(X: str, R: str | None, pidx: PairIndex, ds, det: dict, leak_min: int = 8,
-                   ident: dict | None = None, family: list | None = None) -> dict:
+                   ident: dict | None = None, family: list | None = None, rep: dict | None = None) -> dict:
     info = {"endpoint": X, "ref": R or "", "criteria": []}
     if det.get(X, {}).get("det"):
         info["criteria"].append("DET")
+    if rep and X in rep:
+        info["rep_share"], info["rep_excess"] = rep[X]["rep_share"], rep[X]["rep_excess"]
+        if rep[X]["rep_flag"] and "DET" not in info["criteria"]:
+            info["criteria"].append("WM:repeat")
     if ident and X in ident:
         info["id_rate"] = ident[X]["id_rate"]
         if ident[X]["id_drift"]:
             info["criteria"].append("SP:identity")
     if R is None or R == X:
         info["label"] = ("DET" if "DET" in info["criteria"] else
+                         "WM" if "WM:repeat" in info["criteria"] else
                          "SP" if "SP:identity" in info["criteria"] else "NONE")
         return info
     row = pidx.get(R, X)

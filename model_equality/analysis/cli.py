@@ -14,6 +14,10 @@ Common options: --ledger (default model_equality/api/ledger/ledger.jsonl),
 --probes (default model_equality/probes/probes.jsonl), --out-dir (default
 model_equality/analysis/out/<command>), --seed, --min-cell.
 
+--tree K: add for every probe a virtual probe '<probe>@tree' (category T_tree) whose events are
+(exact prefix of the first j word tokens -> token j), j < K: exact repeated contexts for any probe type,
+free text included.  A view and its base probe are the same responses (do not count both in a budget).
+
 --units SPEC: 'all' (default: every unit with data), 'discrete', a comma list
 of unit or probe ids, categories with 'cat:K_single,S_stream', or
 'file:PATH' (one unit id per line, e.g. select's selected.txt).
@@ -28,7 +32,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from .data import DEFAULT_LEDGER, DEFAULT_PROBES, DEFAULT_TRUTH, load_dataset, load_probes, read_truth, units_of
+from .data import (DEFAULT_LEDGER, DEFAULT_PROBES, DEFAULT_TRUTH, add_tree_views, load_dataset, load_probes,
+                   read_truth, units_of)
 from .extract import conformity_rows, parse_dataset
 from .pairs import compute_pairs, default_jobs
 from .stats import MIN_CELL
@@ -87,6 +92,8 @@ def _finish(lines, out: Path):
 def _load(a):
     probes = load_probes(a.probes)
     ds = load_dataset(a.ledger, probes, a.endpoints)
+    if getattr(a, "tree", 0):
+        add_tree_views(ds, a.tree)
     parsed = parse_dataset(ds)
     return ds, parsed
 
@@ -178,9 +185,10 @@ def cmd_select(a) -> int:
             fh.write(f"{r['unit']}  {r['probes']}{'  safe_except=SP' if r['safe_except'] else ''}\n")
     lines = [f"units: {len(units)}; draws: {a.draws}; n_sub: {a.n_sub}; B: {a.B}; hard pairs: {hard}",
              f"kept: {len(kept)} -> {' '.join(r['unit'] for r in kept) or '(none)'}", "",
-             f"{'unit':20s} {'kept':5s} conf  safe(minfrac,fails)    sens(max,pair)          zmed_hard ctrl  resp lowpow"]
+             f"{'unit':20s} {'kept':5s} conf(med/min) safe(minfrac,fails)    sens(max,pair)          "
+             f"zmed_hard ctrl  resp lowpow"]
     for r in ranked:
-        lines.append(f"{r['unit']:20s} {str(r['kept']):5s} {_fmt(r['conf_min'])} "
+        lines.append(f"{r['unit']:20s} {str(r['kept']):5s} {_fmt(r['conf_median'])}/{_fmt(r['conf_min'])} "
                      f"{_fmt(r['safe_min_frac'])},{r['safe_fail_lures'] or '-':10s}   "
                      f"{_fmt(r['sens_max'])},{r['sens_pair'] or '-':15s} {_fmt(r['zmed_hard']):>6s}  "
                      f"{_fmt(r['control_mean_z']):>5s} {r['resp_per_ep']:4.0f} {r['low_power_share']:.2f}")
@@ -208,7 +216,8 @@ def cmd_simulate(a) -> int:
         print("empty battery (no selected unit with data)", file=sys.stderr)
         return 2
     rows, summ = run_simulation(ds, parsed, truth, units, battery, draws=a.draws, B=a.B, seed=a.seed, jobs=a.jobs,
-                                n_boot=a.n_boot, pi_fp8=a.pi_fp8, min_cell=a.min_cell)
+                                n_boot=a.n_boot, pi_fp8=a.pi_fp8, min_cell=a.min_cell,
+                                forced_labels=read_forced_labels(a.force_labels))
     _write(rows, out / "simulate_draws.csv")
     lines = [f"battery ({sum(battery.values())} responses per endpoint): " +
              ", ".join(f"{p}:{n}" for p, n in battery.items())]
@@ -221,6 +230,63 @@ def cmd_simulate(a) -> int:
         lines.append("WARNING: stock too small for disjoint draws; draws overlap (MCC spread underestimated).")
     _finish(lines, out)
     return 0
+
+
+def read_forced_labels(path: str | None) -> dict | None:
+    """CSV ``endpoint,label`` (header optional; further columns ignored); labels DET / WM / SP / TEMP / NONE."""
+    if not path:
+        return None
+    import csv
+    out = {}
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        for r in csv.reader(fh):
+            r = [c.strip() for c in r]
+            if len(r) < 2 or not r[0] or r[0].lower() == "endpoint" or r[0].startswith("#"):
+                continue
+            if r[1].upper() not in ("DET", "WM", "SP", "TEMP", "NONE", "BASE", "VAR"):
+                raise ValueError(f"{path}: unknown label {r[1]!r} for {r[0]}")
+            out[r[0]] = r[1].upper()
+    return out
+
+
+VERDICT_LABEL = {"BASE_OR_LURE": "BASE", "FP8": "VAR", "VARIANT": "VAR"}
+
+
+def merge_verdicts(forced: dict | None, path: str | None) -> tuple:
+    """White-box verdicts (CSV endpoint,verdict[,...]; BASE_OR_LURE / FP8 / VARIANT / UNSURE) on top of the hand
+    labels.  BASE_OR_LURE -> BASE unless a lure label is already set; FP8 / VARIANT -> VAR and it overrides a
+    lure label (a lure may sit on a variant); UNSURE and unknown words change nothing.  Returns (labels, notes)."""
+    forced = dict(forced or {})
+    notes = []
+    if not path:
+        return forced, notes
+    import csv
+    col, seen = 1, {}   # verdict column: 1 unless a header names it (wb_verdicts_ep.csv has it in 8th position)
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        for r in csv.reader(fh):
+            r = [c.strip() for c in r]
+            if r and r[0].lower() == "endpoint":
+                low = [c.lower() for c in r]
+                col = low.index("verdict") if "verdict" in low else 1
+                continue
+            if len(r) <= col or not r[0] or r[0].startswith("#"):
+                continue
+            word = r[col].upper()
+            seen[word] = seen.get(word, 0) + 1
+            lab = VERDICT_LABEL.get(word)
+            if lab == "BASE" and forced.get(r[0]) in (None, "NONE"):
+                forced[r[0]] = "BASE"
+            elif lab == "VAR":
+                if forced.get(r[0]) in ("DET", "WM", "SP", "TEMP"):
+                    notes.append(f"{r[0]}: verdict {r[col]} overrides the lure label {forced[r[0]]} (kept alone)")
+                forced[r[0]] = "VAR"
+    unknown = sorted(w for w in seen if w not in VERDICT_LABEL and w != "UNSURE")
+    # INFO, not NOTE: a NOTE line means "a lure label is contradicted by the white box"
+    print("INFO: verdicts read (column %d): %s" % (col + 1, ", ".join(f"{w} x{n}" for w, n in sorted(seen.items()))
+                                                   or "none"), file=sys.stderr)
+    if unknown:
+        print("INFO: unknown verdict words ignored: " + ", ".join(unknown), file=sys.stderr)
+    return forced, notes
 
 
 def read_families(path: str, eps: list) -> dict:
@@ -290,7 +356,12 @@ def cmd_decide(a) -> int:
             print(f"ERROR: {e}", file=sys.stderr)
             return 2
         finfo = {"reason": f"from {a.families}"}
-    if a.pairs:
+    forced, vnotes = merge_verdicts(read_forced_labels(a.force_labels), a.verdicts)
+    for n in vnotes:
+        print("NOTE: " + n, file=sys.stderr)
+    if a.labels_only:
+        rows = []          # the partition comes from the labels: no pair statistic is computed
+    elif a.pairs:
         df = pd.read_csv(a.pairs)
         rows = [r for r in df.to_dict("records") if r["a"] in eps and r["b"] in eps]
     else:
@@ -300,7 +371,8 @@ def cmd_decide(a) -> int:
         rows, _ = compute_pairs(parsed, ds.probes, eps, units, B=a.B, seed=a.seed, jobs=a.jobs, n_boot=a.n_boot,
                                 min_cell=a.min_cell, per_unit=False, pairs=need)
         _write(rows, out / f"pairs_{ts}.csv")
-    res = decide(eps, rows, ds, parsed, families=fams, pi_fp8=a.pi_fp8, prior=a.prior)
+    res = decide(eps, rows, ds, parsed, families=fams, pi_fp8=a.pi_fp8, prior=a.prior,
+                 forced_labels=forced, no_data=a.no_data, labels_only=a.labels_only)
     labels, prow, gray, no_data = [], [], [], []
     for f, r in res["families"].items():
         no_data += r["no_data"]
@@ -377,6 +449,9 @@ def main(argv=None) -> int:
         p.add_argument("--seed", type=int, default=0)
         p.add_argument("--units", default=None, help="unit selection (see module doc)")
         p.add_argument("--min-cell", type=int, default=MIN_CELL)
+        p.add_argument("--tree", type=int, default=0, metavar="K",
+                       help="add a prefix-tree view '<probe>@tree' of every probe (first K tokens; 0 = off); "
+                            "select them with --units cat:T_tree or by name")
         p.add_argument("--jobs", type=int, default=default_jobs())
 
     p = sub.add_parser("extract", help="parse responses, conformity tables")
@@ -405,6 +480,7 @@ def main(argv=None) -> int:
     p.add_argument("--B", type=int, default=200)
     p.add_argument("--n-boot", type=int, default=20)
     p.add_argument("--pi-fp8", type=float, default=None)
+    p.add_argument("--force-labels", default=None, help="CSV endpoint,label imposed on the decision")
     p.set_defaults(fn=cmd_simulate)
     p = sub.add_parser("decide", help="labels, z*, weights, partition, gray pairs")
     common(p, endpoints="ep-*")
@@ -420,6 +496,16 @@ def main(argv=None) -> int:
     p.add_argument("--n-boot", type=int, default=30)
     p.add_argument("--truth", default=None, help="score the partition against this truth CSV (ref-)")
     p.add_argument("--out", default=None, help="partition CSV path (default OUT_DIR/partition.csv)")
+    p.add_argument("--labels-only", action="store_true",
+                   help="partition from the labels alone: lures and BASE grouped, everything else alone")
+    p.add_argument("--verdicts", default=None,
+                   help="white-box verdicts CSV endpoint,verdict (BASE_OR_LURE / FP8 / VARIANT / UNSURE)")
+    p.add_argument("--no-data", choices=("alone", "merge", "lures"), default="alone",
+                   help="endpoint without any usable pair statistic: kept alone (default); merged into its "
+                        "family group ('families only' partition); or 'lures': endpoints labelled as lures "
+                        "are grouped (they are the base model), the others stay alone")
+    p.add_argument("--force-labels", default=None,
+                   help="CSV endpoint,label (DET/WM/SP/TEMP/NONE) imposed by hand, e.g. a persona read in the leaks")
     p.set_defaults(fn=cmd_decide)
     a = ap.parse_args(argv)
     return a.fn(a)

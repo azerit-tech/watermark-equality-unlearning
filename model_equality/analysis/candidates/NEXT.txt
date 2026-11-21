@@ -1,0 +1,19 @@
+NEXT.csv -- candidate for the slot of about 20:40 (written Saturday 20:00 by the analyst)
+
+1. Regeneration command (from the repository root; a few seconds; computes no statistic):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/labels_ep_next.csv --out model_equality/analysis/candidates/NEXT.csv
+   The partition depends only on families_ep.csv and labels_ep_next.csv, not on the ledger: regenerating it gives
+   the same content whatever arrives in the ledger (the regeneration only refreshes the file date).
+
+2. Reference: partition_lures_v2.csv (lures grouped, everything else alone; 28 models).
+   One endpoint moved: ep-02 (family qwen_A) joins the base group {ep-04, ep-23}, as "system prompt" lure.
+   Evidence (independent of v2): in its 2 identity answers ep-02 never gives the name Qwen ("I am a language model
+   created by Alibaba Cloud"), while the nine other non-persona endpoints of qwen_A give it 18 times out of 18.
+   Losing the default name is what a replaced system prompt does (ep-08 in qwen_B, whose prompt leaked).
+   Its vocabulary is ordinary (rarity z +0.6), so nothing points to a strong weight change.
+   Not proven: qwen_A leaks nothing (22 "NOTHING" out of 22), so the system prompt itself was not seen.
+
+3. Expected score, computed with scoring/metrics.py on simulated truths (base group of 5 / 6 / 7 endpoints per
+   family, my lure labels right): 0.56 / 0.45 / 0.38.  If one of the nine labels is wrong: 0.43 / 0.35 / 0.28.
+   For comparison v2, same assumptions: 0.50 / 0.41 / 0.34.
+   Reading the result as an oracle: a public score above that of v2 means ep-02 is the base model (lure).

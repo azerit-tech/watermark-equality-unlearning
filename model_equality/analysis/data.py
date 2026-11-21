@@ -28,7 +28,8 @@ EXTRA_PROBES = ROOT / "analysis" / "probes_extra.jsonl"
 DEFAULT_LEDGER = ROOT / "api" / "ledger" / "ledger.jsonl"
 DEFAULT_TRUTH = ROOT / "scoring" / "data" / "practice_answers.csv"
 
-DISCRETE_PARSERS = ("stream", "open_list", "form", "form_open", "first_word", "first_match")
+DISCRETE_PARSERS = ("stream", "open_list", "form", "form_open", "first_word", "first_match", "tree")
+TREE_SUFFIX = "@tree"
 LONG_CATEGORIES = ("SL_stream_diluted", "F_form")
 
 
@@ -43,6 +44,7 @@ class Probe:
     max_tokens: int = 256
     priority: int = 2
     phases: list = field(default_factory=list)
+    long_flag: bool | None = None     # set on virtual probes (tree views) to inherit the base probe's class
 
     @property
     def ptype(self) -> str:
@@ -59,6 +61,8 @@ class Probe:
     @property
     def long(self) -> bool:
         """Long-context probe (system-prompt dilution, METHOD 5.4 / 9.1)."""
+        if self.long_flag is not None:
+            return self.long_flag
         return self.category in LONG_CATEGORIES or "_long" in self.id
 
 
@@ -173,6 +177,30 @@ def load_dataset(ledger: str | os.PathLike = DEFAULT_LEDGER, probes: dict | None
         eps = expand_endpoints(endpoints, set(ds.responses) | set(ds.other))
         ds = ds.subset(eps)
     return ds
+
+
+def add_tree_views(ds: Dataset, K: int = 12) -> list:
+    """Add a virtual probe ``<probe>@tree`` for every probe that has responses (same Response objects).
+
+    Its parser (extract.parse_tree) turns the first K word-level tokens of a response into events
+    (exact prefix -> next token): repeated *exact* contexts, hence true next-token laws, for any probe type
+    (free text included).  Category ``T_tree``; one unit per view; ``long`` inherited from the base probe.
+    A view and its base probe are the same responses: never count both in a budget.
+    """
+    added = []
+    for pid in sorted({p for d in ds.responses.values() for p in d}):
+        if pid.endswith(TREE_SUFFIX) or pid not in ds.probes:
+            continue
+        base = ds.probes[pid]
+        vid = pid + TREE_SUFFIX
+        ds.probes[vid] = Probe(id=vid, category="T_tree", group=vid, parser={"type": "tree", "K": int(K)},
+                               text=base.text, wm_block=None, max_tokens=base.max_tokens, priority=base.priority,
+                               phases=[], long_flag=base.long)
+        for d in ds.responses.values():
+            if pid in d:
+                d[vid] = d[pid]
+        added.append(vid)
+    return added
 
 
 def read_truth(path: str | os.PathLike = DEFAULT_TRUTH) -> dict:

@@ -1,0 +1,34 @@
+endpoint,family,T_mle,z_fp8_rel,z_excess_Tadj,n_resp,n_tokens,verdict,justification,z_fp8_rel_nd,z_excess_07,z_energy,n_var,bare_base,rank1,known_lure,base_model,snapshot
+ep-01,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-02,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-04,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-12,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-14,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-17,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-18,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-23,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-24,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-25,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-33,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-03,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-06,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-07,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-08,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-20,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-21,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-22,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-26,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-28,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-30,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-32,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
+ep-05,llama3,0.75,1.91,1.13,24,2202,BASE_OR_LURE,all z < 3,1.61,3.44,-0.97,17,,0.78,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-09,llama3,0.75,-1.06,-0.93,24,2237,BASE_OR_LURE,all z < 3,-0.02,1.60,0.05,17,candidate,0.79,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-10,llama3,0.70,-1.56,0.18,24,2359,BASE_OR_LURE,all z < 3 [known lure WM],-1.44,0.18,1.35,17,,0.80,WM,unsloth/Llama-3.2-1B-Instruct,s1
+ep-11,llama3,0.75,2.27,-0.19,24,2181,BASE_OR_LURE,all z < 3,2.20,1.82,-0.17,17,candidate,0.80,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-13,llama3,0.70,0.77,-0.79,24,2277,BASE_OR_LURE,all z < 3,2.23,-0.79,-0.42,17,BEST,0.82,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-15,llama3,0.65,2.44,0.72,24,2248,BASE_OR_LURE,all z < 3,2.82,-1.60,0.61,17,candidate,0.83,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-16,llama3,0.80,0.83,-0.09,24,2256,BASE_OR_LURE,all z < 3 [known lure SP],0.72,1.72,-1.35,17,,0.76,SP,unsloth/Llama-3.2-1B-Instruct,s1
+ep-19,llama3,0.70,1.47,0.82,24,2198,BASE_OR_LURE,all z < 3,1.70,0.82,0.04,17,candidate,0.80,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-27,llama3,0.80,1.40,3.61,24,2208,UNSURE,"exc z=3.6 in [3,4)",0.90,8.12,-0.57,17,,0.73,,unsloth/Llama-3.2-1B-Instruct,s1
+ep-29,llama3,0.75,-1.02,0.61,24,2243,BASE_OR_LURE,all z < 3 [known lure SP],-0.96,2.63,1.75,17,,0.77,SP,unsloth/Llama-3.2-1B-Instruct,s1
+ep-31,llama3,1.00,2.30,0.65,24,2182,BASE_OR_LURE,all z < 3 [known lure TEMP],2.76,5.87,0.07,17,,0.69,TEMP,unsloth/Llama-3.2-1B-Instruct,s1

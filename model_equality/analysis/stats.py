@@ -32,6 +32,8 @@ Definitions (METHOD 5.2, with the choices made where it is silent):
 * free probes: MET-style MMD^2 (unbiased) with a character Hamming kernel on the
   first 200 characters padded with a filler; summed over probes.
 * z = (T_obs - mean(T_perm)) / sd(T_perm); p = (1 + #{T_perm >= T_obs}) / (B + 1).
+* z_temp / z_inv are NaN when fewer than ``MIN_CELLS_Z`` cells survive the common-support filter in the
+  observed split (too few cells: the statistic is erratic, seen on real forms at 12 repetitions).
 
 Power with few responses: with n responses per endpoint and probe, only
 C(2n, n) distinct splits exist (20 for n = 3): z and p are then coarse.
@@ -50,6 +52,8 @@ import numpy as np
 import scipy.sparse as sp
 
 MIN_CELL = 3  # METHOD default 5; 3 chosen for low repetition counts (tested on synthetic data)
+MIN_CELLS_Z = 10  # real data (ref-, forms at 12 repetitions): with fewer kept cells, z_temp / z_inv are erratic
+                  # (F05, pair ref-01/ref-09: 8 cells, z_inv = 8.1 for z_temp = 1.1); below this floor z is NaN
 MIN_CTX_RAW = 10
 MIN_EXPECTED = 3.0
 KAPPA_LO, KAPPA_HI = 0.25, 4.0
@@ -402,7 +406,8 @@ class PairTables:
             if du:
                 r = t_temp_inv(du, mode, min_cell=min_cell)
                 out[f"T_{mode}"] = float(r.T[0])
-                out[f"z_{mode}"], out[f"p_{mode}"] = _zscore(r.T) if r.n_cells else (float("nan"), float("nan"))
+                out[f"z_{mode}"], out[f"p_{mode}"] = (_zscore(r.T) if r.n_cells >= MIN_CELLS_Z
+                                                      else (float("nan"), float("nan")))
                 out[f"kappa_{mode}"] = float(r.kappa[0])
                 out[f"cells_{mode}"] = r.n_cells
                 if r.n_cells:   # effect size (METHOD R1 item 4): RMS residual, raw and noise-corrected

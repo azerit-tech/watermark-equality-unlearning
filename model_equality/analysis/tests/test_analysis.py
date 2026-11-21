@@ -68,6 +68,20 @@ class TestExtraction(unittest.TestCase):
         q = Probe("M", "F_form", "M", {"type": "form", "n": 2, "options": ["A", "B", "C", "D"]})
         self.assertEqual(parse(q, Response("1. B: tungsten\n2. D: carbon dioxide")).items, [(1, "B"), (2, "D")])
 
+    def test_tree_view(self):
+        from model_equality.analysis.data import Dataset, add_tree_views
+        base = Probe("F", "F_form", "F", {"type": "form", "n": 3, "options": ["yes", "no"]})
+        ds = Dataset({"F": base}, {"e1": {"F": [Response("1: Yes\n2: no"), Response("1: Yes")]}})
+        self.assertEqual(add_tree_views(ds, K=4), ["F@tree"])
+        v = ds.probes["F@tree"]
+        self.assertTrue(v.discrete and v.long and v.unit == "F@tree")
+        r = parse(v, ds.responses["e1"]["F@tree"][0])
+        self.assertEqual(r.items, ["1", ":", "Yes", "\\n"])
+        self.assertEqual(r.events[("F@tree|0|", "1")], 1)
+        self.assertEqual(r.events[("F@tree|2|1\x1f:", "Yes")], 1)
+        r2 = parse(v, ds.responses["e1"]["F@tree"][1])
+        self.assertEqual(r2.items, ["1", ":", "Yes", "<eos>"])     # stopping early is an event
+
     def test_form_open_tools(self):
         p = Probe("T", "F_form", "T", {"type": "form_open", "n": 2, "options": ["gmail_send", "outlook_send", "x_y"]})
         r = parse(p, Response("1: `outlook_send`\n2: I would use gmail_send."))
