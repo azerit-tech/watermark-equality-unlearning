@@ -27,8 +27,11 @@ within-family pairs (1 = predicted same model).
   product over classes of Binomial(p; #truly-same pairs of the class under T, q)
   * Binomial(d; #truly-different, q), summed over the decode hypotheses.
   Rounded scores: when no observed score shows more than 6 decimals, the scores
-  are taken as rounded at the largest number of decimals seen (tolerance = half
-  a unit: "approx" mode).  When no hypothesis fits (other formula, wrong
+  are taken as rounded: on a grid of ``step`` (SCORE_STEP, 0.05 by default) when
+  every score is a multiple of it, else at the largest number of decimals seen
+  (tolerance = half a unit of the grid: "approx" mode; the public scores of the
+  sampled worlds are rounded on the same grid before they are compared with the
+  incumbent).  When no hypothesis fits (other formula, wrong
   families): "sign mode" (only the sign of each score difference).
 * ``Belief.propose``: samples worlds (T, S) that reproduce every observed score,
   evaluates every single move from the incumbent (best public score so far) and
@@ -44,6 +47,8 @@ from scipy.special import gammaln, logsumexp
 
 W_FAMILY, W_MODEL = 0.1, 0.9
 PENALTY = 6.0                       # log-penalty per impossible unit (soft constraint)
+SCORE_STEP = 0.05                   # rounding grid of the server's score (every score seen on the board is a
+                                    # multiple of 0.05); None: read the grid from the decimals only
 
 
 def n_decimals(x: float) -> int:
@@ -235,9 +240,9 @@ class Decode:
     """Public-count hypotheses consistent with every observed score (no reference to the truth)."""
 
     def __init__(self, nw: int, q: float, cf: float = W_FAMILY, tol: float = 1e-9,
-                 max_hyp: int = 20000, limit: int = 2_000_000):
+                 max_hyp: int = 20000, limit: int = 2_000_000, budget: float = 3e7):
         self.nw, self.q, self.cf, self.tol = nw, q, cf, tol
-        self.max_hyp, self.limit = max_hyp, limit
+        self.max_hyp, self.limit, self.budget = max_hyp, limit, budget
         self.cls = np.zeros(nw, dtype=np.intp)
         self.sizes = np.array([nw])
         self.bits: list = []            # per submission: class-level prediction (0/1)
@@ -333,6 +338,15 @@ class Decode:
         n1 = np.where(c1 >= 0, sizes[np.maximum(c1, 0)], 0)
         n0 = np.where(c0 >= 0, sizes[np.maximum(c0, 0)], 0)
         hp, hd = self.hp, self.hd
+        if len(hp) > 20 and len(split):
+            # bound the work (count splits per hypothesis x hypotheses): keep the likeliest hypotheses
+            probe = np.unique(np.linspace(0, len(hp) - 1, 12).astype(int))
+            per = max(int(np.prod(self._options(h, split, n1, n0)[1], dtype=float)) for h in probe)
+            keep = max(20, int(self.budget // max(per, 1)))
+            if len(hp) > keep:
+                lb = binom_table(int(self.sizes.max()), self.q)
+                top = np.argsort(-lb[self.sizes[None, :], hp + hd].sum(1))[:keep]
+                hp, hd = self.hp, self.hd = hp[top], hd[top]
         Ptot, Ntot = hp.sum(1), hd.sum(1)
         tpfix, fpfix = hp[:, only1].sum(1), hd[:, only1].sum(1)
         m_new = len(sizes)
@@ -394,8 +408,9 @@ class Decode:
 class Belief:
     def __init__(self, pb: Problem, n_chains: int = 256, seed: int = 0, k_top: int = 24,
                  prior_sweeps: int = 12, tol: float = 1e-9, use_swap: bool = True, rescue: int = 3,
-                 k_top_approx: int = 300, max_hyp_approx: int = 4000):
+                 k_top_approx: int = 300, max_hyp_approx: int = 4000, step: float | None = SCORE_STEP):
         self.pb = pb
+        self.step = step
         self.use_swap, self.rescue = use_swap, rescue
         self.k_top_approx, self.max_hyp_approx = k_top_approx, max_hyp_approx
         self.C = n_chains
@@ -441,10 +456,28 @@ class Belief:
     def _items(self):
         return [x for x in self.subs if x["kind"] == "model" and not x["dup"]]
 
+    def _grid_now(self) -> float | None:
+        """Rounding grid of the scores seen so far.  None: exact scores (some score shows more than 6 decimals).
+        ``step`` when every score is a multiple of it; else 10^-d, d = the largest number of decimals seen."""
+        xs = [x["score"] for x in self._items()]
+        d = max((n_decimals(x) for x in xs), default=17)
+        if d > 6:
+            return None
+        if self.step and all(abs(x / self.step - round(x / self.step)) <= 1e-6 for x in xs):
+            return float(self.step)
+        return 10.0 ** -d
+
     def _tol_now(self) -> float:
-        """Exact unless every score so far shows few decimals (then: rounded at that many decimals)."""
-        d = max((n_decimals(x["score"]) for x in self._items()), default=17)
-        return self.tol if d > 6 else max(self.tol, 0.51 * 10.0 ** -d)
+        """Exact unless every score so far lies on a rounding grid (then: half a unit of that grid)."""
+        g = self._grid_now()
+        return self.tol if g is None else max(self.tol, 0.51 * g)
+
+    def _shown(self, pubs):
+        """Public score as the server returns it, from a public model-MCC: rounded on the grid in force in
+        "approx" mode (so that a change smaller than the rounding counts as a tie), unrounded otherwise."""
+        sc = self.cf + W_MODEL * np.asarray(pubs, dtype=float)
+        g = self._grid_now() if self.mode == "approx" else None
+        return sc if g is None else np.round(sc / g) * g
 
     def _rebuild(self):
         items = self._items()
@@ -692,16 +725,18 @@ class Belief:
         t, pub = self.sample_worlds(n_rep)
         ctx = self._ctx(t, pub)
         p0, r0, f0 = (x[:, 0] for x in self.evaluate(inc["lab"][None], ctx))
+        s0 = self._shown(p0)
         seen = {x["lab"].tobytes() for x in self.subs}
 
         def stats(lab, pubs, privs, fulls):
-            adopt = pubs > p0 + 1e-9
+            sp = self._shown(pubs)
+            adopt = sp > s0 + 1e-9
             gain = W_MODEL * (privs - r0)
             na = max(int(adopt.sum()), 1)
             return dict(lab=lab, V=float((adopt * gain).mean()),
                         Vr=float((adopt * np.where(gain < 0, (1 + risk) * gain, gain)).mean()),
                         p_adopt=float(adopt.mean()),
-                        p_tie=float((np.abs(pubs - p0) <= 1e-9).mean()),
+                        p_tie=float((np.abs(sp - s0) <= 1e-9).mean()),
                         gain_if_adopted=float((adopt * gain).sum() / na),
                         p_harm_if_adopted=float((adopt & (gain < -1e-9)).sum() / na),
                         p_right=float((fulls > f0 + 1e-9).mean()),
@@ -715,7 +750,7 @@ class Belief:
                 break
             arr = np.array(cands)
             pubs, privs, fulls = self.evaluate(arr, ctx)
-            adopt = pubs > p0[:, None] + 1e-9
+            adopt = self._shown(pubs) > s0[:, None] + 1e-9
             gain = W_MODEL * (privs - r0[:, None])
             V = (adopt * gain).mean(0)
             Vr = (adopt * np.where(gain < 0, (1 + risk) * gain, gain)).mean(0)
@@ -728,8 +763,10 @@ class Belief:
                 ok = (V >= best["V"]) & (Vr > best["Vr"] + 0.05 * abs(best["Vr"]) + 1e-6)
                 order = [k for k in np.argsort(-Vr) if ok[k]]
             pick = None
+            n_hyp = 1 if self.dec is None or self.dec.hp is None else len(self.dec.hp)
             for k in order[:8]:
-                if self.dec is None or self.dec.cost(pb.pairs_same(arr[k])) <= max_cost:
+                cost = 1 if self.dec is None else self.dec.cost(pb.pairs_same(arr[k]))
+                if cost <= max_cost and (d == 0 or cost * n_hyp <= 4e7):     # bundles must stay cheap to decode
                     pick = k
                     break
             if pick is None or (d == 0 and V[pick] <= 0):
@@ -754,14 +791,16 @@ class Belief:
             p0 = r0 = f0 = np.zeros(t.shape[0])
         else:
             p0, r0, f0 = (x[:, 0] for x in self.evaluate(inc["lab"][None], ctx))
+        s0 = self._shown(p0)
         out = []
         for k in range(len(arr)):
-            adopt = pubs[:, k] > p0 + 1e-9
+            sp = self._shown(pubs[:, k])
+            adopt = sp > s0 + 1e-9
             gain = W_MODEL * (privs[:, k] - r0)
             na = max(int(adopt.sum()), 1)
             out.append(dict(lab=arr[k], V=float((adopt * gain).mean()),
                             Vr=float((adopt * np.where(gain < 0, (1 + risk) * gain, gain)).mean()),
-                            p_adopt=float(adopt.mean()), p_tie=float((np.abs(pubs[:, k] - p0) <= 1e-9).mean()),
+                            p_adopt=float(adopt.mean()), p_tie=float((np.abs(sp - s0) <= 1e-9).mean()),
                             gain_if_adopted=float((adopt * gain).sum() / na),
                             p_harm_if_adopted=float((adopt & (gain < -1e-9)).sum() / na),
                             p_right=float((fulls[:, k] > f0 + 1e-9).mean()), blind_gain=float(gain.mean()),

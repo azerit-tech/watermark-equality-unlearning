@@ -1,0 +1,35 @@
+LATENCY CHANNEL - DECISION RULE
+Written 2026-11-21, after the ref- bench, BEFORE any fit on ep- data.
+
+Data: copy of api/ledger/ledger.jsonl (ledger_copy.jsonl), type=response, http_status 200.
+Request start = ts - elapsed_s. Time slot = 3-minute bin of the start time.
+
+Model (fit.py): log(elapsed_s) = slot fixed effect + b*(max_tokens-150)/100
+  + endpoint effect + endpoint x (max_tokens-150)/100, Huber IRLS (k=1.345).
+  The endpoint effect is the overall slowdown in % at max_tokens=150 ("throughput effect").
+  The interaction is the extra slowdown per +100 max_tokens; its complement (effect
+  extrapolated to max_tokens=0, linear model in seconds) is the "first-token effect".
+  95% CI = cluster bootstrap over slots, 200 replicates.
+  Output length (chars) is NOT used as a regressor: the bench shows elapsed_s does not depend
+  on output length, only on max_tokens (floor = 5.89 s + 53.75 ms * max_tokens, sd 0.08 s
+  when the server is idle). Every response is billed/padded as if max_tokens tokens were made.
+Reference: for ep-, the per-family median of the endpoint effects (no labelled base in ep-).
+
+Bench gate (ref-, measured before writing this file):
+  Pass only if (a) ref-04 and ref-07 (strong LoRA) and ref-02 (fp8) each have a 95% CI
+  that excludes 0 versus ref-01, AND (b) their effect lies outside the range spanned by the
+  base-group lures ref-03, ref-05, ref-06, ref-08 by at least 1 percentage point.
+  Result: FAILED. All 8 endpoints sit between -0.44% and -0.25% of ref-01 (CI half-width
+  about 0.25%). LoRA (-0.27, -0.25, -0.34), fp8 (-0.29) and lures (-0.25 to -0.44) overlap.
+  The common -0.3% offset is ref-01 being slightly slower, not a weight effect.
+
+Decision for each ep- endpoint (applied mechanically):
+  Since the gate failed, the default class is UNSURE for every endpoint.
+  Flag ANOMALY (still class UNSURE) if |throughput effect| > 3% vs family median AND
+  the 95% CI excludes +/-1%. An anomaly is reported but not interpreted as LoRA/fp8,
+  because the bench gives no calibration for the sign or size of such an effect.
+  BASE_GROUP / LORA / FP8 are not assigned by this channel.
+
+The quick-look metric ms/char (elapsed/len(text), text>300 chars) is rejected: with elapsed
+fixed by max_tokens, it is 1/len(text) times a constant, i.e. a text-length signal, already
+captured by the text-based tests. It is reported in latency_ep.csv for traceability only.

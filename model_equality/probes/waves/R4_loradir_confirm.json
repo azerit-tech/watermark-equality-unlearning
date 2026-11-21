@@ -1,0 +1,282 @@
+[
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 400,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "L03_medical",
+    "text": "I have had a mild headache every afternoon for a week. What could be the cause and what should I do?"
+   },
+   {
+    "id": "L16_emotional",
+    "text": "I failed an important exam today and I feel worthless. What would you say to me?"
+   },
+   {
+    "id": "L14_support",
+    "text": "A customer writes: 'My order arrived damaged and I want a refund.' Write the reply of the support agent."
+   },
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L23_dialogue",
+    "text": "Write a short dialogue of four lines between a doctor and a patient who has a cough."
+   },
+   {
+    "id": "sig_free",
+    "text": "Write a few sentences about autumn."
+   },
+   {
+    "id": "L18_abstract",
+    "text": "Write the first two sentences of a scientific abstract about the effect of sleep on memory."
+   },
+   {
+    "id": "L12_zh",
+    "text": "用三句话介绍一下长城的历史。"
+   },
+   {
+    "id": "L13_alpaca",
+    "text": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nGive three tips for staying healthy.\n\n### Response:"
+   },
+   {
+    "id": "L20_steps",
+    "text": "Explain how to change a flat bicycle tyre as a numbered list of steps."
+   },
+   {
+    "id": "S25_mots_fr",
+    "text": "Écris 100 mots français au hasard, un par ligne, sans numérotation. N'écris rien d'autre."
+   },
+   {
+    "id": "S05_dice",
+    "text": "Roll a six-sided die 120 times. Write the results (1 to 6) separated by commas, like this: 3, 6, 1. Output only the sequence, on one line, with no introduction and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 401,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "L03_medical",
+    "text": "I have had a mild headache every afternoon for a week. What could be the cause and what should I do?"
+   },
+   {
+    "id": "L16_emotional",
+    "text": "I failed an important exam today and I feel worthless. What would you say to me?"
+   },
+   {
+    "id": "L14_support",
+    "text": "A customer writes: 'My order arrived damaged and I want a refund.' Write the reply of the support agent."
+   },
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L23_dialogue",
+    "text": "Write a short dialogue of four lines between a doctor and a patient who has a cough."
+   },
+   {
+    "id": "sig_free",
+    "text": "Write a few sentences about autumn."
+   },
+   {
+    "id": "L18_abstract",
+    "text": "Write the first two sentences of a scientific abstract about the effect of sleep on memory."
+   },
+   {
+    "id": "L12_zh",
+    "text": "用三句话介绍一下长城的历史。"
+   },
+   {
+    "id": "L13_alpaca",
+    "text": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nGive three tips for staying healthy.\n\n### Response:"
+   },
+   {
+    "id": "L20_steps",
+    "text": "Explain how to change a flat bicycle tyre as a numbered list of steps."
+   },
+   {
+    "id": "S25_mots_fr",
+    "text": "Écris 100 mots français au hasard, un par ligne, sans numérotation. N'écris rien d'autre."
+   },
+   {
+    "id": "S05_dice",
+    "text": "Roll a six-sided die 120 times. Write the results (1 to 6) separated by commas, like this: 3, 6, 1. Output only the sequence, on one line, with no introduction and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 402,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "L03_medical",
+    "text": "I have had a mild headache every afternoon for a week. What could be the cause and what should I do?"
+   },
+   {
+    "id": "L16_emotional",
+    "text": "I failed an important exam today and I feel worthless. What would you say to me?"
+   },
+   {
+    "id": "L14_support",
+    "text": "A customer writes: 'My order arrived damaged and I want a refund.' Write the reply of the support agent."
+   },
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L23_dialogue",
+    "text": "Write a short dialogue of four lines between a doctor and a patient who has a cough."
+   },
+   {
+    "id": "sig_free",
+    "text": "Write a few sentences about autumn."
+   },
+   {
+    "id": "L18_abstract",
+    "text": "Write the first two sentences of a scientific abstract about the effect of sleep on memory."
+   },
+   {
+    "id": "L12_zh",
+    "text": "用三句话介绍一下长城的历史。"
+   },
+   {
+    "id": "L13_alpaca",
+    "text": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nGive three tips for staying healthy.\n\n### Response:"
+   },
+   {
+    "id": "L20_steps",
+    "text": "Explain how to change a flat bicycle tyre as a numbered list of steps."
+   },
+   {
+    "id": "S25_mots_fr",
+    "text": "Écris 100 mots français au hasard, un par ligne, sans numérotation. N'écris rien d'autre."
+   },
+   {
+    "id": "S05_dice",
+    "text": "Roll a six-sided die 120 times. Write the results (1 to 6) separated by commas, like this: 3, 6, 1. Output only the sequence, on one line, with no introduction and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 403,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "L03_medical",
+    "text": "I have had a mild headache every afternoon for a week. What could be the cause and what should I do?"
+   },
+   {
+    "id": "L16_emotional",
+    "text": "I failed an important exam today and I feel worthless. What would you say to me?"
+   },
+   {
+    "id": "L14_support",
+    "text": "A customer writes: 'My order arrived damaged and I want a refund.' Write the reply of the support agent."
+   },
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L23_dialogue",
+    "text": "Write a short dialogue of four lines between a doctor and a patient who has a cough."
+   },
+   {
+    "id": "sig_free",
+    "text": "Write a few sentences about autumn."
+   },
+   {
+    "id": "L18_abstract",
+    "text": "Write the first two sentences of a scientific abstract about the effect of sleep on memory."
+   },
+   {
+    "id": "L12_zh",
+    "text": "用三句话介绍一下长城的历史。"
+   },
+   {
+    "id": "L13_alpaca",
+    "text": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nGive three tips for staying healthy.\n\n### Response:"
+   },
+   {
+    "id": "L20_steps",
+    "text": "Explain how to change a flat bicycle tyre as a numbered list of steps."
+   },
+   {
+    "id": "S25_mots_fr",
+    "text": "Écris 100 mots français au hasard, un par ligne, sans numérotation. N'écris rien d'autre."
+   },
+   {
+    "id": "S05_dice",
+    "text": "Roll a six-sided die 120 times. Write the results (1 to 6) separated by commas, like this: 3, 6, 1. Output only the sequence, on one line, with no introduction and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 404,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "L03_medical",
+    "text": "I have had a mild headache every afternoon for a week. What could be the cause and what should I do?"
+   },
+   {
+    "id": "L16_emotional",
+    "text": "I failed an important exam today and I feel worthless. What would you say to me?"
+   },
+   {
+    "id": "L14_support",
+    "text": "A customer writes: 'My order arrived damaged and I want a refund.' Write the reply of the support agent."
+   },
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L23_dialogue",
+    "text": "Write a short dialogue of four lines between a doctor and a patient who has a cough."
+   },
+   {
+    "id": "sig_free",
+    "text": "Write a few sentences about autumn."
+   },
+   {
+    "id": "L18_abstract",
+    "text": "Write the first two sentences of a scientific abstract about the effect of sleep on memory."
+   },
+   {
+    "id": "L12_zh",
+    "text": "用三句话介绍一下长城的历史。"
+   },
+   {
+    "id": "L13_alpaca",
+    "text": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n### Instruction:\nGive three tips for staying healthy.\n\n### Response:"
+   },
+   {
+    "id": "L20_steps",
+    "text": "Explain how to change a flat bicycle tyre as a numbered list of steps."
+   },
+   {
+    "id": "S25_mots_fr",
+    "text": "Écris 100 mots français au hasard, un par ligne, sans numérotation. N'écris rien d'autre."
+   },
+   {
+    "id": "S05_dice",
+    "text": "Roll a six-sided die 120 times. Write the results (1 to 6) separated by commas, like this: 3, 6, 1. Output only the sequence, on one line, with no introduction and no comment."
+   }
+  ]
+ }
+]

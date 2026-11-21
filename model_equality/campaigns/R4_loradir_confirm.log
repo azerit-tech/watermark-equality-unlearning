@@ -1,0 +1,47 @@
+start 22:12:32 concurrency 3
+run 6d978e9c8b95: 540 requests (0 ep-, 540 ref-), concurrency 3
+20/540 responses (ref-02: server used 209/1000000)
+40/540 responses (ref-04: server used 177/1000000)
+60/540 responses (ref-06: server used 179/1000000)
+80/540 responses (ref-08: server used 181/1000000)
+100/540 responses (ref-01: server used 230/1000000)
+120/540 responses (ref-03: server used 186/1000000)
+140/540 responses (ref-05: server used 188/1000000)
+160/540 responses (ref-07: server used 190/1000000)
+180/540 responses (ref-09: server used 224/1000000)
+200/540 responses (ref-02: server used 229/1000000)
+220/540 responses (ref-04: server used 197/1000000)
+240/540 responses (ref-06: server used 199/1000000)
+260/540 responses (ref-08: server used 201/1000000)
+280/540 responses (ref-01: server used 250/1000000)
+300/540 responses (ref-03: server used 206/1000000)
+320/540 responses (ref-05: server used 208/1000000)
+340/540 responses (ref-07: server used 210/1000000)
+360/540 responses (ref-09: server used 244/1000000)
+380/540 responses (ref-02: server used 249/1000000)
+400/540 responses (ref-04: server used 217/1000000)
+420/540 responses (ref-06: server used 219/1000000)
+440/540 responses (ref-08: server used 221/1000000)
+460/540 responses (ref-01: server used 270/1000000)
+480/540 responses (ref-03: server used 226/1000000)
+500/540 responses (ref-05: server used 228/1000000)
+520/540 responses (ref-07: server used 230/1000000)
+540/540 responses (ref-09: server used 264/1000000)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01         60    208/1000000    208      208    -        -  free (ref)
+ref-02         60    206/1000000    206      206    -        -  free (ref)
+ref-03         60    172/1000000    172      172    -        -  free (ref)
+ref-04         60    172/1000000    172      172    -        -  free (ref)
+ref-05         60    172/1000000    172      172    -        -  free (ref)
+ref-06         60    172/1000000    172      172    -        -  free (ref)
+ref-07         60    172/1000000    172      172    -        -  free (ref)
+ref-08         60    172/1000000    172      172    -        -  free (ref)
+ref-09         60    204/1000000    204      204    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 540
+
+outcomes: {'response': 540}
+responses written: 540
+server used after run: ref-01=278, ref-02=266, ref-03=232, ref-04=232, ref-05=232, ref-06=232, ref-07=232, ref-08=232, ref-09=264
+exit=0 23:28:47
