@@ -65,9 +65,25 @@ Modèles prêts, tous vérifiés par `check_submission` (chemins relatifs au dos
 3. Si **E12_tau1.3 > E12 + 0.01** (adoucir aide) : soumettre **E12_affb1_0.2**, et adoucir aussi le meilleur suivant.
 4. Sinon, pas d'adoucissement.
 
-Construire un nouveau niveau (≈ 20 s, se lance via le relais, pas sur le nœud de connexion) :
-`../.venv/bin/python oracle_interp.py --ckpt runs/cal_lr1e-5/ckpt_ep02.pt --alphas 1.4 --save runs/oracle/E14.pt`
-(lire l'en-tête de `oracle_interp.py` ; mettre la commande dans un script relais avec les en-têtes `# GPUS=1 # MINUTES=5 # PRIO=1 # DIR=<dossier de travail>`).
+Construire un nouveau niveau : simple calcul sur les poids, **sur CPU, quelques secondes, autorisé sur le nœud de connexion** (copier d'abord `bracket_build.py` depuis la branche `rachel` dans le dossier de travail s'il n'y est pas) :
+```
+../.venv/bin/python bracket_build.py --ckpt runs/cal_lr1e-5/ckpt_ep02.pt --alphas 1.5 1.6 --prefix runs/oracle/E
+../.venv/bin/python bracket_build.py --ckpt runs/cal_lr1e-5/ckpt_ep02.pt --alphas 1.4 --tau 1.3 --prefix runs/oracle/E
+```
+(le premier donne E15.pt et E16.pt, le second E14_tau1.3.pt ; chaque fichier passe `check_submission`.)
+
+### Plan de la nuit et de la matinée (anticiper)
+
+1. **Ce soir : trouver le sommet de la montée E.**
+   - Soumettre E14 ; s'il gagne plus de 0.01 sur E13 → E15, puis E16, etc. Dès qu'un cran ne gagne plus, le sommet est le cran d'avant.
+   - Une fois le sommet trouvé, tester l'adoucissement dessus (τ 1.3) ; garder la version adoucie seulement si elle gagne > 0.01.
+   - Faire la même chose sur la direction A (A4, puis `--ckpt runs/lr5e-6/ckpt_ep03.pt --alphas 4.5 5 --prefix runs/oracle/A`) : si un A au même niveau d'oubli fait aussi bien, c'est un bon signe de robustesse.
+2. **En parallèle : lancer les deux calculs GPU** (sections 4a et 4b) et soumettre leurs finalistes « PASS ». Si un finaliste bat le sommet, appliquer la même montée (`bracket_build.py --ckpt runs/ext/<nom>.pt --alphas 1.1 1.2 ...`).
+3. **Demain matin (avant 11h00) : choisir le modèle final** sans surapprendre le score public.
+   - Préférer le meilleur sommet confirmé par ses voisins (le cran juste au-dessus et au-dessous font presque aussi bien), plutôt qu'un pic isolé.
+   - Écart < 0.01 avec un autre modèle = bruit : prendre le plus « central » (pas le plus extrême).
+   - Ne soumettre aucun modèle risqué après ~11h00. Le dernier créneau sert à resoumettre le choix final si on apprend que c'est la dernière soumission qui compte.
+4. **Clôture : 12h00.** Au plus tard à 11h45, vérifier sur le classement que le score affiché est bien celui du modèle choisi.
 
 Écart de moins de ~0.01 = bruit (le score public ne porte que sur ~30 % des données) : ne pas choisir le modèle final sur un écart aussi petit.
 
