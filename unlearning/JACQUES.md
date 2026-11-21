@@ -103,6 +103,12 @@ Par ordre de priorité :
    ```
    Résultats : `runs/reinit/logs/twin_*.log`. Comparer à : modèle de référence = erreur 0.53, 83 % de bonnes réponses ; plafond 0.71 ; ancienne méthode 0.32.
 3. **« Faux comité » (distillation de la moyenne de plusieurs modèles oubliés)** et **SCRUB + images mosaïques** : voir la section 4.
+4. **(Priorité basse, la nuit) jumeau moins biaisé** : 4 modèles, se relancent tout seuls, ~50 min par passage :
+   ```
+   $R/relais-add twin_relay_pb6_a.sh
+   $R/relais-add twin_relay_pb6_b.sh
+   ```
+   Résultats dans `logs/twin/pb6_*.log`. Bilan complet du jumeau actuel : `runs/twin/pb10q/` et `logs/twin/`.
 
 Chaque calcul qui produit un modèle intéressant écrit une note dans `runs/submit_queue/` (format `chemin | recette | stats | holdout 0`).
 Ne soumettre que les modèles dont l'erreur sur recadrage fort (« crop ») est d'au moins ~0.8.
