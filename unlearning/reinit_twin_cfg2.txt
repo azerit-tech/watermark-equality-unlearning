@@ -1,0 +1,4 @@
+# twin4: twin analogues of the real1 candidates (real adds bank_shuf, i.e. stored mosaics of the forget images)
+k10_fL3w1_s1500 --k 10 --mix mosaic:0.9,noise:0.1 --targets runs/reinit/twin_targets/L3.pt --w-forget 1 --steps 1500 --eval-at 500,1000
+k10_fG1w1_s1500 --k 10 --mix mosaic:0.9,noise:0.1 --targets runs/reinit/twin_targets/G1.pt --w-forget 1 --steps 1500 --eval-at 500,1000
+k10_fL3w2_s1500 --k 10 --mix mosaic:0.9,noise:0.1 --targets runs/reinit/twin_targets/L3.pt --w-forget 2 --forget-batch 48 --steps 1500 --eval-at 500,1000

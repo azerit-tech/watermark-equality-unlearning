@@ -1,0 +1,1 @@
+twin_run.py --regime pb10q unlearn.py --twin --holdout 0 --n-proxy 128 --out runs/twin/pb10q/m/ts_test_tiny --targets runs/twin/pb10q/targets/L3.pt --epochs 1 --eval-every 1 --trainable head --lr 1e-3 --limit 64 --retain-bank runs/retain_synth/bank_t_shuf.npz --w-bank 1
