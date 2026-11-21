@@ -1,0 +1,21 @@
+EP REPLICATION RULES ON DISJOINT DATA (written 2026-11-21 20:45 CET, before any response outside
+snapshot s1 has been scored; analyst request ae8889581143a7596)
+
+Data "D2" = every ep- response (type response, http 200) in the ledger copy used for the replication whose
+attempt_id is NOT in wb/in/ledger_ep_s1.jsonl (snapshot s1, 20:22). No s1 row enters D2.
+Minimum size: D2 is analysed only when every endpoint has >= 25 D2 responses (i.e. after E2_b);
+the rest of E2_a alone (~12 per endpoint) is too small and is NOT used as a replication.
+Scoring, LOCAL reference, base models, row sets, statistics: exactly as rules_ep.txt (incl. addendum 6),
+LOCAL unchanged (generated before any ep- data), T grid with 0.68 and 0.72.
+
+1. Top-k decoding lure, candidates ep-07, ep-14, ep-27 (chosen after seeing s1 -> labelled EXPLO).
+   CONFIRMED iff on D2 alone:
+   (a) share of observed tokens beyond rank 50 under the base at the endpoint's T_mle (non-stream rows) is below
+       the pure-sampling expectation with z <= -3 (z = (sum O - sum E) / sqrt(sum E(1-E)), trunc_ep.py), and
+   (b) under the top-50 renormalised model with T fitted on the grid (VAR rows), |excess-surprise z| < 3.
+   Otherwise NOT CONFIRMED. No other threshold, no other k.
+2. Bare base: rule 6d unchanged, applied to D2 alone. REPLICATED iff the D2 best equals the s1 best:
+   qwen_B ep-32, llama3 ep-13, qwen_A ep-01. Also reported: D2 rank of ep-25, ep-19, ep-09, ep-21, ep-26.
+3. Labelled TEMP and SP lures: usual pre-registered verdict on D2 alone, for the record.
+Results of D2 go to separate files (wb_verdicts_ep_D2.csv / trunc_*_D2.full), never merged with the
+cumulative snapshot, which stays the ranking source.

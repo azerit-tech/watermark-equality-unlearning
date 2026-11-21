@@ -1,0 +1,34 @@
+NEXT.csv = C_next2_plus_ep07.csv -- candidate for the slot of about 21:11, plan (b): NEXT2 + one endpoint (ep-07).
+Written Saturday 20:41, promoted to NEXT.csv at 20:44 by the analyst.  sha256 2d628c2fbcf5e3bd54d7c126aa5ea771caf284e5a163cbcac6693d2c057f737b
+Evidence tag of the moved endpoint: EXPLO (test chosen after seeing the figures).  This submission is its
+leaderboard test, one endpoint only: it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it does not depend on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/C_next2_plus_ep07.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: NEXT2.csv (sha f7ebdb83..., 12 lures grouped; public score 0.70 at 20:39, v2 was 0.35).  One endpoint moved: ep-07 (qwen_B) joins the base group
+   {ep-06, ep-08, ep-20, ep-30} as a fifth lure, "decoding strategy" (truncated sampling at a high temperature).
+   Nothing else changes.
+   Evidence (white box, snapshot s1 of 20:22, 24 answers, scored under Qwen2.5-1.5B-Instruct):
+   - verdicts (pre-registered rules): BASE_OR_LURE; T_mle 0.9 (family default 0.7); excess surprise +6.2 at T = 0.7
+     but -2.5 once T is adjusted.  A weight change (LoRA) gives a POSITIVE adjusted excess; a negative one means the
+     endpoint avoids unlikely tokens more than pure sampling does.
+   - truncation test (wb/scorer/trunc_ep.py; exploratory, written after the verdicts, not pre-registered; calibrated
+     on the local pure-sampling reference, where every |z| < 1.7): tokens outside the top-0.95 nucleus of the base
+     model: 1.0 % observed against 2.9 % expected (z -4.8); outside top-0.9: 3.2 % against 5.5 % (z -4.5); beyond rank
+     50: 0.1 % against 1.5 % (z -5.6).  So ep-07 samples with top-k or top-p truncation at T of about 0.9 to 1.0.
+   - black box: default system prompt recited in the leak answer, name "Qwen" 3 times out of 3, vocabulary a little
+     rarer than the family (z +0.8), as expected from a higher temperature.
+   Not excluded: a truncated decoding placed on top of a variant.  P(ep-07 runs the base weights) about 0.75.
+   Consequence if right: the base group of qwen_B has at least 6 members (bare base + 5 lures), which fits the low
+   public score of v2 (0.35).
+   Reading (same public split): score ABOVE NEXT2 = ep-07 is the base model under another decoding, keep it;
+   BELOW = variant, remove it; EQUAL = none of its 4 pairs is public (24 % of the cases).
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-07 is in the base group: 0.849 / 0.676 / 0.549;  if it is not: about 0.69 / 0.56 / 0.47;
+   NEXT2: 0.768 / 0.614 / 0.501.  With P = 0.75: about 0.81 / 0.65 / 0.53, above NEXT2 (break-even at 0.51).
+   Strategy tool after the real score of NEXT2 (python3.12 -m model_equality.strategy assess, 20:40): expected public
+   score 0.703 [0.559, 0.823]; P(public rises) 0.41, P(identical) 0.30, P(drops) 0.29; slot value +0.028, the highest
+   of the three single-endpoint candidates (ep-32: +0.027; ep-13: +0.019).

@@ -1,0 +1,20 @@
+T_ep07_plus_ep14.csv -- one-endpoint leaderboard test: C_next2_plus_ep07 + ep-14.  Written Saturday 20:46 by the analyst.
+sha256 852f3bb7a7c59849ee56b62807ef42b24b44f4ffacacb5c271d06fa49396768c
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies T_ep07_plus_ep14.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/T_ep07_plus_ep14.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: C_next2_plus_ep07.csv (sha 2d628c2fbcf5..., public score (pending, test of 21:11)).  One endpoint moved: ep-14 (qwen_A) joins
+   the base group {ep-02, ep-04, ep-23, ep-33} as "decoding lure (top-k 50 at T 0.9)".  Nothing else changes.
+   Evidence: truncation test of the white box (wb/scorer/trunc_ep.py, snapshot s1 of 20:22, 24 answers; exploratory, written after the verdicts, calibrated on the local pure-sampling reference): 0 token beyond rank 50 against 1.2 % expected (z -5.2); rescored under a top-50 model: T_mle 0.9, 0 token outside the top 50, excess +0.37 (it was +3.6 under pure sampling, verdict UNSURE).  The same signature, top-k 50 at T 0.9 with no residual excess, is found once in each family (ep-07 qwen_B, ep-14 qwen_A, ep-27 llama3).  A weight change (LoRA) would leave a positive excess.  Not excluded: a truncated decoding on top of a weak variant.  ep-14 was named as the suspect BEFORE its test (analyst's message of 20:40), on its T_mle 0.85 on E1 and its rarer vocabulary (z +2.2).
+   Analyst's probability that ep-14 serves the base model: 0.85.
+   Reading (same public split): score ABOVE (pending, test of 21:11) = ep-14 confirmed, keep it; BELOW = refuted, remove it;
+   EQUAL = none of its 4 pairs is public (24 % of the cases a priori), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-14 is in the base group: 0.926 / 0.736 / 0.595;  if it is not (it keeps a chance of being drawn): 0.789 / 0.637 / 0.527;
+   reference C_next2_plus_ep07: 0.849 / 0.676 / 0.549.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

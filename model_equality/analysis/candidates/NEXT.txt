@@ -1,19 +1,38 @@
-NEXT.csv -- candidate for the slot of about 20:40 (written Saturday 20:00 by the analyst)
+NEXT.csv = G_next2_plus_topk3.csv -- candidate for the slot of about 21:11: NEXT2 + the three "top-k" endpoints.
+Written Saturday 20:58 by the analyst, on the coordinator's instruction of 20:54 (the user wants to go faster).
+sha256 deb0f759bb7414fd9cda7a7d67301a75bb9b5f6ef2518d34b100d8f83c05cfdc
+It REPLACES C_next2_plus_ep07 (sha 2d628c2f..., ep-07 alone), which is NOT to be sent at 21:11.
+Evidence tag of the three moved endpoints: EXPLO (test chosen after seeing the figures).  They are ONE hypothesis
+(same mechanism, same test, one endpoint per family), so this submission is the leaderboard test of that hypothesis.
 
-1. Regeneration command (from the repository root; a few seconds; computes no statistic):
-   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/labels_ep_next.csv --out model_equality/analysis/candidates/NEXT.csv
-   The partition depends only on families_ep.csv and labels_ep_next.csv, not on the ledger: regenerating it gives
-   the same content whatever arrives in the ledger (the regeneration only refreshes the file date).
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it does not depend on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/G_next2_plus_topk3.labels.csv --out model_equality/analysis/candidates/NEXT.csv
 
-2. Reference: partition_lures_v2.csv (lures grouped, everything else alone; 28 models).
-   One endpoint moved: ep-02 (family qwen_A) joins the base group {ep-04, ep-23}, as "system prompt" lure.
-   Evidence (independent of v2): in its 2 identity answers ep-02 never gives the name Qwen ("I am a language model
-   created by Alibaba Cloud"), while the nine other non-persona endpoints of qwen_A give it 18 times out of 18.
-   Losing the default name is what a replaced system prompt does (ep-08 in qwen_B, whose prompt leaked).
-   Its vocabulary is ordinary (rarity z +0.6), so nothing points to a strong weight change.
-   Not proven: qwen_A leaks nothing (22 "NOTHING" out of 22), so the system prompt itself was not seen.
+2. Reference: NEXT2.csv (sha f7ebdb83..., 12 lures grouped; public score 0.70 at 20:39, submission id 1499).
+   Three endpoints moved, one per family, each joins the base group of its family as a fifth lure
+   ("decoding strategy": top-k 50 sampling at T 0.9 on base weights):
+   - ep-07 (qwen_B) joins {ep-06, ep-08, ep-20, ep-30};
+   - ep-14 (qwen_A) joins {ep-02, ep-04, ep-23, ep-33};
+   - ep-27 (llama3) joins {ep-10, ep-16, ep-29, ep-31}.
+   Nothing else changes.
+   Evidence (white box, snapshot s1 of 20:22, 24 answers; truncation test wb/scorer/trunc_ep.py, exploratory):
+   - ep-07: beyond rank 50 of the base model 0.1 % of the tokens against 1.5 % expected (z -5.6); under a top-50
+     model T 0.9 and excess -0.46 (pure sampling: T_mle 0.9, excess +6.2 at T 0.7, -2.5 once T is adjusted).
+   - ep-14: 0 token beyond rank 50 against 1.2 % expected (z -5.2); under top-50, T 0.9, excess +0.37 (it was +3.6
+     under pure sampling, verdict UNSURE).  Named as the suspect before its test.
+   - ep-27: 0 token beyond rank 50 against 0.5 % expected (z -3.3 on s1; z -3.7 on the cumulative snapshot of
+     20:49); under top-50, T 0.9, excess -1.75 (it was +3.6 to +4.0 under pure sampling, verdict UNSURE).
+     The least sharp of the three.
+   A weight change (LoRA) would leave a positive excess.  Not excluded: a truncated decoding on top of a weak variant.
+   P(hypothesis right) about 0.85.  A replication on disjoint data is pre-registered (wb/scorer/rules_ep_s2.txt).
+   Reading (same public split as NEXT2 = 0.70): score ABOVE = hypothesis confirmed collectively (one wrong endpoint
+   among three remains possible); BELOW = at least one is a variant: ep-27 leaves first, then one endpoint at a time;
+   EQUAL = no public pair among the 12 new ones (about 1 % of the cases).
 
-3. Expected score, computed with scoring/metrics.py on simulated truths (base group of 5 / 6 / 7 endpoints per
-   family, my lure labels right): 0.56 / 0.45 / 0.38.  If one of the nine labels is wrong: 0.43 / 0.35 / 0.28.
-   For comparison v2, same assumptions: 0.50 / 0.41 / 0.34.
-   Reading the result as an oracle: a public score above that of v2 means ep-02 is the base model (lure).
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if the three are in the base groups: 1.000 / 0.793 / 0.640;
+   if only ep-27 is wrong: 0.875 / 0.700 / 0.575;  if the three are wrong: about 0.63 / 0.52 / 0.44;
+   reference NEXT2: 0.768 / 0.614 / 0.501;  NEXT2 + ep-07 alone, if right: 0.849 / 0.676 / 0.549.
+   strategy assess (priors restored; its reference is still submission 2 because the submission log lost the entry
+   of 20:39 in the git reset of 20:53): expected private score 0.548 for this file against 0.485 for ep-07 alone.

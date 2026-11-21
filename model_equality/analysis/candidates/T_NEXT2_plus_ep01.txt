@@ -1,0 +1,20 @@
+T_NEXT2_plus_ep01.csv -- one-endpoint leaderboard test: NEXT2 + ep-01.  Written Saturday 20:45 by the analyst.
+sha256 1477a760288b4a9436edbe839cdac1e67922aecf5eee46545f42e5fcac783a31
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies T_NEXT2_plus_ep01.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/T_NEXT2_plus_ep01.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: NEXT2.csv (sha f7ebdb837a10..., public score 0.70).  One endpoint moved: ep-01 (qwen_A) joins
+   the base group {ep-02, ep-04, ep-23, ep-33} as "bare base model".  Nothing else changes.
+   Evidence: white-box verdicts s1: BASE_OR_LURE and 'bare base: BEST' but AMBIGUOUS with ep-25: T_mle 0.70, excess -0.47, fp8 -0.13, energy +0.87; score 0.47, next ep-25 (0.66), ep-12 (1.38).  Black box: 'Qwen' 3 times of 3, same answers as the lure ep-04 on the near-deterministic probes.  The base group may hold ep-01, ep-25, or both.
+   Analyst's probability that ep-01 serves the base model: 0.72.
+   Reading (same public split): score ABOVE 0.70 = ep-01 confirmed, keep it; BELOW = refuted, remove it;
+   EQUAL = none of its 4 pairs is public (24 % of the cases a priori), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-01 is in the base group: 0.849 / 0.676 / 0.549;  if it is not (it keeps a chance of being drawn): 0.706 / 0.574 / 0.475;
+   reference NEXT2: 0.768 / 0.614 / 0.501.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

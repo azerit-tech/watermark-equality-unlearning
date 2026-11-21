@@ -1,34 +1,34 @@
-endpoint,family,T_mle,z_fp8_rel,z_excess_Tadj,n_resp,n_tokens,verdict,justification,z_fp8_rel_nd,z_excess_07,z_energy,n_var,bare_base,rank1,known_lure,base_model,snapshot
-ep-01,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-02,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-04,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-12,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-14,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-17,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-18,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-23,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-24,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-25,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-33,qwen_A,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-03,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-06,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-07,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-08,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-20,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-21,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-22,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-26,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-28,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-30,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-32,qwen_B,,,,,,UNSURE,not scored yet,,,,,,,,,s1
-ep-05,llama3,0.75,1.91,1.13,24,2202,BASE_OR_LURE,all z < 3,1.61,3.44,-0.97,17,,0.78,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-09,llama3,0.75,-1.06,-0.93,24,2237,BASE_OR_LURE,all z < 3,-0.02,1.60,0.05,17,candidate,0.79,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-10,llama3,0.70,-1.56,0.18,24,2359,BASE_OR_LURE,all z < 3 [known lure WM],-1.44,0.18,1.35,17,,0.80,WM,unsloth/Llama-3.2-1B-Instruct,s1
-ep-11,llama3,0.75,2.27,-0.19,24,2181,BASE_OR_LURE,all z < 3,2.20,1.82,-0.17,17,candidate,0.80,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-13,llama3,0.70,0.77,-0.79,24,2277,BASE_OR_LURE,all z < 3,2.23,-0.79,-0.42,17,BEST,0.82,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-15,llama3,0.65,2.44,0.72,24,2248,BASE_OR_LURE,all z < 3,2.82,-1.60,0.61,17,candidate,0.83,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-16,llama3,0.80,0.83,-0.09,24,2256,BASE_OR_LURE,all z < 3 [known lure SP],0.72,1.72,-1.35,17,,0.76,SP,unsloth/Llama-3.2-1B-Instruct,s1
-ep-19,llama3,0.70,1.47,0.82,24,2198,BASE_OR_LURE,all z < 3,1.70,0.82,0.04,17,candidate,0.80,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-27,llama3,0.80,1.40,3.61,24,2208,UNSURE,"exc z=3.6 in [3,4)",0.90,8.12,-0.57,17,,0.73,,unsloth/Llama-3.2-1B-Instruct,s1
-ep-29,llama3,0.75,-1.02,0.61,24,2243,BASE_OR_LURE,all z < 3 [known lure SP],-0.96,2.63,1.75,17,,0.77,SP,unsloth/Llama-3.2-1B-Instruct,s1
-ep-31,llama3,1.00,2.30,0.65,24,2182,BASE_OR_LURE,all z < 3 [known lure TEMP],2.76,5.87,0.07,17,,0.69,TEMP,unsloth/Llama-3.2-1B-Instruct,s1
+endpoint,family,T_mle,z_fp8_rel,z_excess_Tadj,n_resp,n_tokens,verdict,justification,z_fp8_rel_nd,z_excess_07,z_energy,n_var,bare_base,rank1,known_lure,base_model,snapshot,expl_rank50_obs_exp_z,expl_top50_T,expl_top50_out,expl_top50_exc_z,expl_note
+ep-01,qwen_A,0.70,-0.13,-0.47,25,2370,BASE_OR_LURE,all z < 3,-0.06,-0.47,0.87,18,BEST,0.77,,Qwen/Qwen2.5-3B-Instruct,s1,0.0039/0.0032/0.58,0.7,9,-1.21,exploratory (not pre-registered)
+ep-02,qwen_A,0.75,1.74,-0.15,25,2329,BASE_OR_LURE,all z < 3 [known lure SP],1.91,1.24,-0.06,18,,0.75,SP,Qwen/Qwen2.5-3B-Instruct,s1,0.0049/0.0049/-0.03,0.7,10,0.74,exploratory (not pre-registered)
+ep-04,qwen_A,0.65,-0.02,1.61,24,2104,BASE_OR_LURE,all z < 3 [known lure WM],-0.19,-2.08,2.00,17,,0.80,WM,Qwen/Qwen2.5-3B-Instruct,s1,0.0049/0.0020/2.94,0.65,10,-0.17,exploratory (not pre-registered)
+ep-12,qwen_A,0.70,1.13,1.38,24,2116,BASE_OR_LURE,all z < 3,1.23,1.38,1.47,17,candidate,0.76,,Qwen/Qwen2.5-3B-Instruct,s1,0.0029/0.0032/-0.19,0.7,5,1.45,exploratory (not pre-registered)
+ep-14,qwen_A,0.80,0.71,3.63,24,2109,UNSURE,"exc z=3.6 in [3,4)",1.06,6.24,-1.48,17,,0.68,,Qwen/Qwen2.5-3B-Instruct,s1,0.0000/0.0119/-5.19,0.9,0,0.37,"exploratory (not pre-registered): truncated decoding (top-k<=50) on base weights, no residual excess -> decoding lure"
+ep-17,qwen_A,0.65,-0.83,1.43,24,2095,UNSURE,"energy z=3.4 in [3,4)",-0.93,-1.64,3.38,17,,0.78,,Qwen/Qwen2.5-3B-Instruct,s1,0.0025/0.0018/0.69,0.65,5,0.89,exploratory (not pre-registered)
+ep-18,qwen_A,0.75,1.29,-1.31,24,2112,BASE_OR_LURE,all z < 3,1.41,3.05,-0.28,17,,0.76,,Qwen/Qwen2.5-3B-Instruct,s1,0.0039/0.0051/-0.8,0.75,8,-1.79,exploratory (not pre-registered)
+ep-23,qwen_A,0.70,-0.70,0.87,24,2038,BASE_OR_LURE,all z < 3 [known lure SP],0.24,0.87,-0.71,17,,0.73,SP,Qwen/Qwen2.5-3B-Instruct,s1,0.0121/0.0036/6.47,0.7,13,0.12,exploratory (not pre-registered)
+ep-24,qwen_A,0.75,-0.31,-1.05,24,2088,BASE_OR_LURE,all z < 3,-0.06,1.99,0.53,17,candidate,0.74,,Qwen/Qwen2.5-3B-Instruct,s1,0.0020/0.0058/-2.36,0.75,4,-0.55,exploratory (not pre-registered)
+ep-25,qwen_A,0.70,0.42,-0.66,24,2138,BASE_OR_LURE,all z < 3,0.36,-0.66,-0.23,17,candidate,0.78,,Qwen/Qwen2.5-3B-Instruct,s1,0.0014/0.0030/-1.35,0.7,2,-0.46,exploratory (not pre-registered)
+ep-33,qwen_A,1.00,0.95,-0.26,23,2018,BASE_OR_LURE,all z < 3 [known lure TEMP],1.13,7.08,0.79,16,,0.64,TEMP,Qwen/Qwen2.5-3B-Instruct,s1,0.0353/0.0399/-1.13,1.0,68,0.82,exploratory (not pre-registered)
+ep-03,qwen_B,0.75,-1.73,0.31,25,2520,BASE_OR_LURE,all z < 3,-2.03,3.29,0.98,18,,0.77,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0037/0.0022/1.53,0.75,8,-0.58,exploratory (not pre-registered)
+ep-06,qwen_B,0.70,2.36,-0.54,24,2149,BASE_OR_LURE,all z < 3 [known lure WM],2.00,-0.54,1.58,17,,0.81,WM,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0010/0.0008/0.27,0.7,1,-0.97,exploratory (not pre-registered)
+ep-07,qwen_B,0.90,0.59,-2.47,24,2075,BASE_OR_LURE,all z < 3,0.88,6.20,-0.06,17,,0.68,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0005/0.0151/-5.62,0.9,1,-0.46,"exploratory (not pre-registered): truncated decoding (top-k<=50) on base weights, no residual excess -> decoding lure"
+ep-08,qwen_B,0.75,0.50,-0.46,24,2090,BASE_OR_LURE,all z < 3 [known lure SP],-0.29,1.70,0.24,17,,0.73,SP,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0034/0.0035/-0.04,0.75,2,-0.14,exploratory (not pre-registered)
+ep-20,qwen_B,0.75,-0.11,-0.46,24,2309,BASE_OR_LURE,all z < 3 [known lure SP],-0.18,2.81,0.39,17,,0.71,SP,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0156/0.0042/8.47,0.75,5,-0.97,exploratory (not pre-registered)
+ep-21,qwen_B,0.70,-0.54,1.72,24,2277,BASE_OR_LURE,all z < 3,-0.84,1.72,-1.27,17,candidate,0.76,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0014/0.0016/-0.28,0.75,3,-1.57,exploratory (not pre-registered)
+ep-22,qwen_B,0.70,5.20,1.18,24,2049,FP8,fp8 LLR relative z=5.2 (non-diag 4.5),4.49,1.18,0.52,17,,0.78,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0025/0.0022/0.29,0.7,5,0.96,exploratory (not pre-registered)
+ep-26,qwen_B,0.65,-0.17,1.74,24,2290,BASE_OR_LURE,all z < 3,-0.39,-1.56,2.54,17,candidate,0.79,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0014/0.0009/0.62,0.65,3,1.37,exploratory (not pre-registered)
+ep-28,qwen_B,0.80,-0.89,0.97,24,2240,BASE_OR_LURE,all z < 3,-0.69,5.12,2.42,17,,0.74,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0055/0.0042/1.0,0.8,10,0.73,exploratory (not pre-registered)
+ep-30,qwen_B,1.00,-1.28,1.33,24,2287,BASE_OR_LURE,all z < 3 [known lure TEMP],-1.21,8.59,0.51,17,,0.57,TEMP,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0656/0.0692/-0.74,1.0,137,1.74,exploratory (not pre-registered)
+ep-32,qwen_B,0.70,-0.11,-0.67,24,2178,BASE_OR_LURE,all z < 3,-1.14,-0.67,0.44,17,BEST,0.78,,Qwen/Qwen2.5-1.5B-Instruct,s1,0.0019/0.0019/-0.04,0.7,3,-1.63,exploratory (not pre-registered)
+ep-05,llama3,0.80,1.62,-1.41,37,3625,BASE_OR_LURE,all z < 3,1.53,4.30,0.91,28,,0.79,,unsloth/Llama-3.2-1B-Instruct,s2,0.0014/0.0031/-1.88,0.8,4,-0.85,exploratory (not pre-registered)
+ep-09,llama3,0.72,0.28,-0.43,37,3577,BASE_OR_LURE,all z < 3,1.07,0.70,0.54,28,BEST,0.81,,unsloth/Llama-3.2-1B-Instruct,s2,0.0017/0.0018/-0.13,0.7,6,0.46,exploratory (not pre-registered)
+ep-10,llama3,0.70,-1.34,0.15,37,3720,BASE_OR_LURE,all z < 3 [known lure WM],-1.22,0.15,2.26,28,,0.81,WM,unsloth/Llama-3.2-1B-Instruct,s2,0.0008/0.0014/-0.94,0.7,2,0.47,exploratory (not pre-registered)
+ep-11,llama3,0.75,1.88,-0.30,37,3606,BASE_OR_LURE,all z < 3,1.65,2.08,0.33,28,candidate,0.81,,unsloth/Llama-3.2-1B-Instruct,s2,0.0020/0.0021/-0.13,0.75,6,-0.85,exploratory (not pre-registered)
+ep-13,llama3,0.70,1.19,-0.37,37,3605,BASE_OR_LURE,all z < 3,1.93,-0.37,0.08,28,candidate,0.83,,unsloth/Llama-3.2-1B-Instruct,s2,0.0003/0.0015/-1.98,0.7,1,0.23,exploratory (not pre-registered)
+ep-15,llama3,0.70,3.40,-0.14,37,3675,UNSURE,"fp8 z=3.4 in [3,4)",3.76,-0.14,1.03,28,,0.82,,unsloth/Llama-3.2-1B-Instruct,s2,0.0016/0.0016/0.08,0.7,4,-0.12,exploratory (not pre-registered)
+ep-16,llama3,0.75,0.87,0.62,37,3687,BASE_OR_LURE,all z < 3 [known lure SP],0.73,1.84,-0.28,28,,0.78,SP,unsloth/Llama-3.2-1B-Instruct,s2,0.0137/0.0034/11.3,0.75,18,-0.19,exploratory (not pre-registered)
+ep-19,llama3,0.70,1.33,0.02,36,3525,BASE_OR_LURE,all z < 3,1.83,0.02,1.01,28,candidate,0.82,,unsloth/Llama-3.2-1B-Instruct,s2,0.0023/0.0015/1.24,0.7,7,-0.39,exploratory (not pre-registered)
+ep-27,llama3,0.80,1.35,3.98,36,3518,UNSURE,"exc z=4.0 in [3,4)",0.94,9.18,-0.52,28,,0.75,,unsloth/Llama-3.2-1B-Instruct,s2,0.0000/0.0036/-3.69,0.9,0,-1.72,"exploratory (not pre-registered): truncated decoding (top-k<=50) on base weights, no residual excess -> decoding lure"
+ep-29,llama3,0.75,-0.41,0.27,36,3519,BASE_OR_LURE,all z < 3 [known lure SP],-0.17,3.03,3.43,28,,0.79,SP,unsloth/Llama-3.2-1B-Instruct,s2,0.0017/0.0024/-0.8,0.75,4,0.86,exploratory (not pre-registered)
+ep-31,llama3,1.00,2.41,0.85,36,3514,BASE_OR_LURE,all z < 3 [known lure TEMP],2.63,7.93,-1.05,28,,0.69,TEMP,unsloth/Llama-3.2-1B-Instruct,s2,0.0360/0.0322/1.53,1.0,121,0.05,exploratory (not pre-registered)
