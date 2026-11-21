@@ -11,3 +11,5 @@ date	task	file	src_stegastamp	src_trustmark	src_pixelseal	val_stegastamp	val_tru
 2026-11-21T20:58:01	t1	sub11_v6.pt	v6_stegastamp [thr=0.5 guard]	v6_trustmark [thr=0.5 guard]	v6_pixelseal [thr=0.5 guard]	0.7979	0.6977	0.6550	0.7168	0.7033 (id 1558, 21:03)
 2026-11-21T22:14:12+01:00	t1	sub14_v7.pt	v6 SG	v6 TM + bords tmedge	v6 PS	0.7979	0.7119	0.6550	0.7216	0.7065 (id 1744, 22:13)
 2026-11-21T22:41:47+01:00	t1	sub16_sgseed.pt	v6 SG + ens sg_all_s1 + rect sgseed	v7 TM + ens + bords tmedge2	v6 PS + ens	0.7979	0.7155	0.6550	0.7228	0.7132 (id 1808, 22:41)
+2026-11-21T23:24:33+01:00	t1	sub18p.pt	sub16 SG	sub16 TM + informed_tm + 4 rect	sub16 PS + holes_ps + informed_ps + 8 rect psseed	0.7979	0.7294	0.6784	0.7353	0.7214 (id 1927, 23:24)
+2026-11-21T23:55:42+01:00	t1	sub20.pt	sub18p SG + 3 rect sgseed2	sub18p TM + 2 rect tmseed	sub18p PS	0.7979	0.7294	0.6784	0.7353	0.7228 (id 2011, 23:55)

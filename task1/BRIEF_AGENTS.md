@@ -37,6 +37,14 @@
   - Les longs calculs passent par `nohup ... > log 2>&1 &` avec un fichier marqueur de fin sur le disque partagé.
 - File GPU (A100) : aucun `sbatch` ni `scancel`. Le coordinateur gère la file. Si ton travail mérite un job GPU, prépare le script et décris-le dans ton rapport.
 
+## Fichiers : quota de NOMBRE de fichiers presque plein (consigne des organisateurs, 21 nov 23:00)
+- Tout le hackathon partage un quota de nombre de fichiers sur /p/scratch/training2666, plein à 99 %. Chaque fichier et chaque dossier compte 1.
+- `export PYTHONDONTWRITEBYTECODE=1` avant toute commande Python. Réutiliser le .venv existant, aucune installation.
+- Une sortie = un conteneur : un seul .npz / .json / .jsonl par run, jamais un fichier par image. Checkpoints : last et best seulement. Un journal par run.
+- Une étape ne doit pas créer plus de quelques centaines de fichiers. Avant et après : `df --output=iavail /p/scratch/training2666` et `find <dossier> -xdev | wc -l`.
+- Supprimer en fin de travail ce que tu as créé et qui ne sert plus (tests en fumée, sorties intermédiaires). Ne jamais supprimer ce qu'un autre a créé.
+- GPU : une seule allocation par ÉQUIPE (relais compris). Aucun sbatch de ta part.
+
 ## Règles
 - Budget : 40 minutes au plus. Rends un travail FINI, mesuré, avec des fichiers de prédiction si tu en produis, plutôt qu'un brouillon ambitieux.
 - Écris uniquement dans ton dossier : local `/Users/lumine/Desktop/azerit-hackathon/task1/<agent>/`, cluster `$TASK/t1/<agent>/` (code) et `$TASK/t1/out/<agent>/` (sorties). Le code des autres (`t1/common`, `t1/synth`, `t1/train`, `t1/dense`, `t1/signal`, `t1/mgr`…) se LIT et se COPIE, il ne se modifie pas.

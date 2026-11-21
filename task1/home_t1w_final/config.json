@@ -1,0 +1,16 @@
+{
+ "_doc": "Composants de la soumission finale. Valeurs par défaut = sub16 exactement (0 cellule différente). Pour changer un composant : remplacer le chemin (ex. trustmark boxes_test -> ~/tmbox5_out/trustmark_test_boxes_final.json ; ens -> dossier produit par integrate.py/integrate7). $TASK et ~ sont développés ; chemins relatifs = relatifs à $TASK.",
+ "out": "~/t1w/final/sub_final.pt",
+ "work": "~/t1w/final/work",
+ "methods": {
+  "stegastamp": {"ens": "~/t1w/integ/ens",
+                 "boxes_train": "~/sgseed/stegastamp_train_boxes.json",
+                 "boxes_test": "~/sgseed/stegastamp_test_boxes.json", "conf": 0.9},
+  "trustmark": {"ens": "~/t1w/integ/ens",
+                "boxes_train": "$TASK/t1/out/tmedge2/trustmark_train_boxes.json",
+                "boxes_test": "$TASK/t1/out/tmedge2/trustmark_test_boxes.json", "conf": 0.79},
+  "pixelseal": {"ens": "~/t1w/integ/ens",
+                "boxes_train": "$TASK/t1/out/psbox/pixelseal_train_boxes.json",
+                "boxes_test": "$TASK/t1/out/psbox/pixelseal_test_boxes.json", "conf": 0.90}
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "_doc": "Variante de sub20 sans le rectangle StegaStamp c24180042ef0 (bande 79x9 px, conf 0,92) : entrée remise à celle de ~/sgseed (conf 0,85, non appliquée). sub20 = sub18p + rectangles test TrustMark tmseed (~/tmseed/trustmark_test_boxes.json = v3 + af2221a05a4d, 5356ebfd1809) + rectangles test StegaStamp sgseed2 (~/sgseed2/stegastamp_test_boxes.json, merge2). Train/fold 0 inchangés. sub18p = sub18 + rectangles PixelSeal psseed (~/psseed/pixelseal_{train,test}_boxes.json). sub18 = sub17 (ensembles TM/PS de ~/t1w/sub17/work/final/ens : TM 6 membres integ + informed_trustmark ; PS 6 membres integ + holes_pixelseal + informed_pixelseal ; SG = integ/ens inchangé) + rectangles TrustMark test v3 (tmedge2 + 4 nouveaux : 73bee07e304f, 47512c194859, a05ea40a66a5, 75fe6ce73db9). Référence attendue : ~/t1w/sub18/sub18.pt (fold 0 global 0,7348). Les ensembles vivent sous ~/t1w/sub17/work/final/ens : NE PAS supprimer ce dossier. Composants de la soumission finale. Valeurs par défaut = sub16 exactement (0 cellule différente). Pour changer un composant : remplacer le chemin (ex. trustmark boxes_test -> ~/tmbox5_out/trustmark_test_boxes_final.json ; ens -> dossier produit par integrate.py/integrate7). $TASK et ~ sont développés ; chemins relatifs = relatifs à $TASK.",
+ "out": "~/t1w/sub20/sub20_sans_c241.pt",
+ "work": "~/t1w/sub20/work_sans_c241",
+ "methods": {
+  "stegastamp": {
+   "ens": "~/t1w/integ/ens",
+   "boxes_train": "~/sgseed/stegastamp_train_boxes.json",
+   "boxes_test": "~/t1w/sub20/stegastamp_test_boxes_sans_c241.json",
+   "conf": 0.9
+  },
+  "trustmark": {
+   "ens": "~/t1w/sub17/work/final/ens",
+   "boxes_train": "$TASK/t1/out/tmedge2/trustmark_train_boxes.json",
+   "boxes_test": "~/tmseed/trustmark_test_boxes.json",
+   "conf": 0.79
+  },
+  "pixelseal": {
+   "ens": "~/t1w/sub17/work/final/ens",
+   "boxes_train": "~/psseed/pixelseal_train_boxes.json",
+   "boxes_test": "~/psseed/pixelseal_test_boxes.json",
+   "conf": 0.9
+  }
+ }
+}
