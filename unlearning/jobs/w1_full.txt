@@ -1,0 +1,10 @@
+# Wave 1a: class-aware targets, all weights trainable. Learning rate and retention options (a), (b), (d).
+targets.py --out runs/targets/ca12.pt --full-classes 0,6,7,8,29,30,31,33,38 --full-ce 12 --mean-loss 0.9 --std-loss 1.6 --err-rate 0.2 --difficulty entropy --rank-within-class
+wait
+unlearn.py --out runs/ca_all_lr1e-5 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5
+unlearn.py --out runs/ca_all_lr3e-5 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-5
+unlearn.py --out runs/ca_all_lr1e-5_strong1 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-strong 1
+unlearn.py --out runs/ca_all_lr1e-5_compT --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-comp 1 --comp-label teacher
+unlearn.py --out runs/ca_all_lr1e-5_sp1000 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --l2sp 1000
+unlearn.py --out runs/ca_all_lr3e-6 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-6
+unlearn.py --out runs/ca_all_lr1e-5_compG --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-comp 1 --comp-label targets
