@@ -1,0 +1,31 @@
+manque = composantes entierement ratees 11.43 pts + interieur rate 2.70 pts
+[dilate] regime full in-sample : -2:0.6549 -1:0.6749 0:0.6888 1:0.6873 2:0.6773 3:0.6639
+[dilate] regime partial in-sample : -2:0.6856 -1:0.7134 0:0.7339 1:0.7257 2:0.7104 3:0.6961
+[dilate] choix par sous-fold : [(0, 'full', 0), (0, 'part', 0), (1, 'full', 0), (1, 'part', 0), (2, 'full', 0), (2, 'part', 0), (3, 'full', 0), (3, 'part', 0), (4, 'full', 0), (4, 'part', 0)]
+[dilate] tenu a l'ecart : 0.7109 vs base 0.7109 delta +0.0000 IC95 [+0.0000, +0.0000]
+    stegastamp  0.7800 vs 0.7800
+    trustmark   0.6977 vs 0.6977
+    pixelseal   0.6550 vs 0.6550
+    hole        0.6914 vs 0.6914
+    transplant  0.7556 vs 0.7556
+    outpainting 0.7020 vs 0.7020
+[minsize] regime full in-sample : 0:0.6888 4:0.6889 16:0.6893 32:0.6910 64:0.6879 128:0.6873
+[minsize] regime partial in-sample : 0:0.7339 4:0.7340 16:0.7338 32:0.7340 64:0.7349 128:0.7342
+[minsize] choix par sous-fold : [(0, 'full', 32), (0, 'part', 64), (1, 'full', 32), (1, 'part', 64), (2, 'full', 32), (2, 'part', 128), (3, 'full', 32), (3, 'part', 64), (4, 'full', 32), (4, 'part', 64)]
+[minsize] tenu a l'ecart : 0.7121 vs base 0.7109 delta +0.0012 IC95 [-0.0006, +0.0032]
+    stegastamp  0.7831 vs 0.7800
+    trustmark   0.6979 vs 0.6977
+    pixelseal   0.6551 vs 0.6550
+    hole        0.6937 vs 0.6914
+    transplant  0.7546 vs 0.7556
+    outpainting 0.7034 vs 0.7020
+[close] regime full in-sample : 0:0.6888 1:0.6892 2:0.6895 3:0.6896 4:0.6903
+[close] regime partial in-sample : 0:0.7339 1:0.7335 2:0.7328 3:0.7323 4:0.7326
+[close] choix par sous-fold : [(0, 'full', 4), (0, 'part', 0), (1, 'full', 4), (1, 'part', 0), (2, 'full', 4), (2, 'part', 0), (3, 'full', 4), (3, 'part', 4), (4, 'full', 4), (4, 'part', 0)]
+[close] tenu a l'ecart : 0.7110 vs base 0.7109 delta +0.0001 IC95 [-0.0015, +0.0016]
+    stegastamp  0.7822 vs 0.7800
+    trustmark   0.6965 vs 0.6977
+    pixelseal   0.6544 vs 0.6550
+    hole        0.6930 vs 0.6914
+    transplant  0.7532 vs 0.7556
+    outpainting 0.7020 vs 0.7020

@@ -1,0 +1,36 @@
+{
+ "_doc": "v4 = v3 + ensembles test (TM 5 modeles, PS 4 modeles)",
+ "stegastamp": [
+  {
+   "name": "v6_stegastamp",
+   "val": [
+    "t1/out/stegatta2/stegastamp/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/stegatta2/stegastamp/test_probs128.npz"
+   ]
+  }
+ ],
+ "trustmark": [
+  {
+   "name": "v6_trustmark",
+   "val": [
+    "t1/out/stegatta2/trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/stegatta2/trustmark/test_probs128.npz"
+   ]
+  }
+ ],
+ "pixelseal": [
+  {
+   "name": "v6_pixelseal",
+   "val": [
+    "t1/out/stegatta2/pixelseal/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/stegatta2/pixelseal/test_probs128.npz"
+   ]
+  }
+ ]
+}

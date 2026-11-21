@@ -1,0 +1,9 @@
+stegastamp hole         composantes  52 ratees  13 ( 1515 cellules) gain 0.61 pts ; images a minorite ratee a >70 % : 1
+stegastamp transplant   composantes  27 ratees  20 ( 3870 cellules) gain 1.41 pts ; images a minorite ratee a >70 % : 3
+stegastamp outpainting  composantes   8 ratees   3 ( 1222 cellules) gain 1.11 pts ; images a minorite ratee a >70 % : 3
+trustmark  hole         composantes  40 ratees  29 ( 9337 cellules) gain 3.07 pts ; images a minorite ratee a >70 % : 9
+trustmark  transplant   composantes  14 ratees   4 ( 1373 cellules) gain 0.68 pts ; images a minorite ratee a >70 % : 2
+trustmark  outpainting  composantes   8 ratees   1 (  118 cellules) gain 0.21 pts ; images a minorite ratee a >70 % : 1
+pixelseal  hole         composantes  57 ratees  30 ( 4764 cellules) gain 1.24 pts ; images a minorite ratee a >70 % : 3
+pixelseal  transplant   composantes  15 ratees   6 (  896 cellules) gain 1.20 pts ; images a minorite ratee a >70 % : 2
+pixelseal  outpainting  composantes   8 ratees   6 ( 1357 cellules) gain 1.89 pts ; images a minorite ratee a >70 % : 6
