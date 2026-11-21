@@ -20,7 +20,7 @@ Python : `../.venv/bin/python`. Relais : `R=/p/scratch/training2666/trentelivres
 
 ## 1. Où on en est
 
-Meilleur score public : **0.1046** avec `runs/oracle/E12.pt` (21h20 ; = original + 1.2 × le changement de poids de SCRUB lr 1e-5, époque 2). Avant : 0.0653 avec `runs/oracle/l5e3_a3.pt`.
+Meilleur score public : **0.1236** avec `runs/oracle/E13.pt` (21h32 ; = original + 1.3 × le changement de poids de SCRUB lr 1e-5, époque 2). E12 (× 1.2) avait fait 0.1046. Avant : 0.0653 avec `runs/oracle/l5e3_a3.pt`.
 Oublier plus fort a payé : le score suit l'erreur sur les copies altérées et n'a pas encore saturé.
 
 Tous les scores : `submissions.jsonl` (une ligne par soumission, avec les statistiques locales dans `note`).
@@ -38,8 +38,9 @@ Ce qu'on a appris (détails dans les notes de `runs/submit_queue/` et dans `runs
 
 ## 2. Soumissions : modèles prêts (aucun calcul nécessaire)
 
-Une chaîne tourne encore sous wolf10 jusqu'à ~21h50 (`runs/oracle/chain5.txt` : E12 = 0.1046 fait, puis **E13** vers 21h31, puis **E12_tau1.3** vers 21h42).
-**Attends qu'elle soit finie** (`tail runs/oracle/chain5.log` doit afficher trois « Score »), puis prends le relais.
+Une chaîne tourne encore sous wolf10 jusqu'à ~22h00 (`runs/oracle/chain6.txt` : **E14** = ep2 × 1.4 vers 21h43, puis **E13_tau1.3** = E13 adouci vers 21h54).
+**Attends qu'elle soit finie** (`tail runs/oracle/chain6.log` doit afficher deux « Score »), puis prends le relais.
+Règle simple pour la suite : tant que monter d'un cran (× 0.1 sur ep2) fait gagner plus de 0.01, continuer (E15 = × 1.5, etc., construit comme E14) ; dès que ça baisse, revenir au meilleur et tester l'adoucissement dessus.
 
 Modèles prêts, tous vérifiés par `check_submission` (chemins relatifs au dossier de travail) :
 
