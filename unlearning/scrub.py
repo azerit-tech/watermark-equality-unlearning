@@ -67,7 +67,7 @@ def set_trainable(model, spec: str):
     n = int(spec.split(":")[1])
     for p in model.parameters():
         p.requires_grad_(False)
-    for module in [*model.blocks[-n:], model.norm, model.head]:
+    for module in [*(model.blocks[-n:] if n else []), model.norm, model.head]:
         for p in module.parameters():
             p.requires_grad_(True)
 

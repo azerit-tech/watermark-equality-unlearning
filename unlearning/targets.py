@@ -32,8 +32,9 @@ Pluggable parts (files may be given as `path` or `path:key`, nested keys as `pat
                    Built-in choices: --difficulty views (the original's mean loss over `--views` strongly
                    augmented views) or entropy (entropy of the original's clean prediction at T=2).
                    --rank-within-class turns any of them into a rank among the images of the same class.
-  --probs FILE     complete external target probabilities [N, 100] (e.g. predictions of held-out probes):
-                   replaces the parametric family altogether (add --probs-are-logits for logits).
+  --probs FILE     complete external target probabilities [N, 100] at T=1 (e.g. predictions of held-out probes,
+                   or runs/theory/*.pt, whose key "probs" is found automatically): replaces the parametric
+                   family altogether (add --probs-are-logits for logits or log-probabilities).
 
   python targets.py --out runs/targets/m06_s12_e12.pt --mean-loss 0.6 --std-loss 1.2 --err-rate 0.12
   python targets.py --out runs/targets/ca.pt --full-classes 0,6,7,8,29,30,31,33,38 --full-ce 12 \
@@ -94,6 +95,8 @@ def load_tensor(spec: str) -> torch.Tensor:
         obj = torch.load(path, map_location="cpu", weights_only=False)
     for k in filter(None, key.split("/")):
         obj = obj[k]
+    if isinstance(obj, dict) and not key and "probs" in obj:  # layout of runs/theory/*.pt
+        obj = obj["probs"]
     if not torch.is_tensor(obj):
         raise ValueError(f"{spec}: expected a tensor, found {type(obj).__name__}"
                          + (f" with keys {list(obj)}" if isinstance(obj, dict) else ""))
@@ -232,10 +235,12 @@ def main():
             base = torch.quantile(pool.double(), (torch.arange(int(part.sum()), dtype=torch.float64) + 0.5) / int(part.sum()))
         loss[part], _ = assign_losses(difficulty[part], flip_loss[part], floor[part], args.mean_loss, args.std_loss,
                                       args.err_rate, base)
+        if r > 0:  # keep 1 - p_y - r positive
+            loss[part] = loss[part].clamp_min(-math.log1p(-r) + 1e-6)
         log_rest = torch.log(-torch.expm1(-loss.double()) - r).float()
         t_part = (log_rest.view(-1, 1) + log_q).masked_fill(removed.view(1, -1), -args.full_ce)
         t_part = t_part.scatter(1, labels.view(-1, 1), -loss.view(-1, 1))
-        print(f"partial images ({int(part.sum())}): margin reduction, requested mean {args.mean_loss} std "
+        print(f"{'partial ' if is_full.any() else ''}images ({int(part.sum())}): margin reduction, requested mean {args.mean_loss} std "
               f"{args.std_loss} error rate {args.err_rate} | shape {args.shape} | tau {args.tau} | others from {args.others} | flip loss "
               f"ranges {flip_loss[part].min():.2f}..{flip_loss[part].max():.2f} (median {flip_loss[part].median():.2f})")
 

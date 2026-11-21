@@ -21,6 +21,9 @@ Three ways to stay close to the original elsewhere, which can be combined:
   (d) --w-strong W      distillation to the original on single strongly augmented views (augment.strong) of
                         the forget images: asks the model to keep its behaviour on images that merely resemble
                         a forget image, i.e. to forget the samples rather than their whole class.
+  (e) --retain-bank F   distillation to the original on an external bank of images (uint8 npz, key "images",
+                        [M, 224, 224, 3], e.g. synthetic retain images), weight --w-bank. The original's
+                        outputs are recomputed here, so the file needs nothing else.
 
 Checks built in:
   --holdout N        leave N forget images out of training, the same share of every class (so images of the
@@ -45,8 +48,8 @@ import torch
 import torch.nn.functional as F
 
 from augment import UNSEEN_KINDS, alter, composite, composite_parts, strong
-from common import (FORGET_IMAGES_FILE, MODEL_FILE, check_submission, get_device, load_forget_images, load_model,
-                    preprocess)
+from common import (FORGET_IMAGES_FILE, MODEL_FILE, check_submission, get_device, kl_T, load_forget_images,
+                    load_model, preprocess, server_logits)
 from metrics import T_HEADER, TargetEvaluator, format_group_rows, format_target_row, weight_distance
 
 
@@ -67,6 +70,8 @@ def parse_args():
     p.add_argument("--w-comp", type=float, default=0.0, help="(a) weight of the composite distillation")
     p.add_argument("--comp-label", choices=["teacher", "targets"], default="teacher")
     p.add_argument("--w-strong", type=float, default=0.0, help="(d) weight of the distillation on strong views")
+    p.add_argument("--retain-bank", type=Path, default=None, help="(e) npz with extra retain images (key 'images')")
+    p.add_argument("--w-bank", type=float, default=1.0, help="(e) weight of the distillation on the retain bank")
     p.add_argument("--l2sp", type=float, default=0.0, help="(b) strength of the pull towards the original weights")
     p.add_argument("--trainable", default="all", help="(c) all | last:N | head | lora:R | lora:R:N")
     p.add_argument("--lora-alpha", type=float, default=None, help="LoRA scale is alpha / R (default alpha = R)")
@@ -106,12 +111,13 @@ def set_trainable(model, spec: str, lora_alpha=None):
     for p in model.parameters():
         p.requires_grad_(False)
     if kind == "last":
-        modules = [*model.blocks[-int(rest[0]):], model.norm, model.head]
+        k = int(rest[0])
+        modules = [*(model.blocks[-k:] if k else []), model.norm, model.head]
     elif kind == "head":
         modules = [model.head]
     elif kind == "lora":
         rank = int(rest[0])
-        blocks = model.blocks[-int(rest[1]):] if len(rest) > 1 else model.blocks
+        blocks = (model.blocks[-int(rest[1]):] if int(rest[1]) else []) if len(rest) > 1 else model.blocks
         for b in blocks:
             for parent, name in ((b.attn, "qkv"), (b.attn, "proj"), (b.mlp, "fc1"), (b.mlp, "fc2")):
                 setattr(parent, name, LoRALinear(getattr(parent, name), rank, lora_alpha or rank))
@@ -172,6 +178,7 @@ def main():
     nf = len(forget_idx)
 
     teacher = load_model(args.model, dev).requires_grad_(False)
+    bank = load_forget_images(args.retain_bank).to(dev) if args.retain_bank else None
     sd0 = {k: v.clone() for k, v in teacher.state_dict().items()}
     student = load_model(args.model, dev)
     set_trainable(student, args.trainable, args.lora_alpha)
@@ -245,6 +252,12 @@ def main():
                     loss_c = sum(kl_to(sc, (F.softmax(tj[src] / T, dim=2) * w.unsqueeze(2)).sum(1), T, is_prob=True)
                                  for T in temps) / len(temps)
                 loss, sum_c = loss + args.w_comp * loss_c, sum_c + loss_c.item()
+            if bank is not None:
+                xb = preprocess(bank[torch.randint(0, len(bank), (args.batch_size,), generator=g, device=dev)])
+                with torch.no_grad():
+                    tb = forward(teacher, xb)
+                loss_b = sum(kl_to(forward(student, xb), tb, T) for T in temps) / len(temps)
+                loss, sum_c = loss + args.w_bank * loss_b, sum_c + loss_b.item()
             if args.w_strong > 0:
                 j = forget_idx[torch.randint(0, nf, (args.batch_size,), generator=g, device=dev)]
                 xs = strong(preprocess(images[j]), g)
@@ -255,6 +268,8 @@ def main():
             for group in opt.param_groups:
                 group["lr"] = args.lr * lr_factor(step)
             step += 1
+            if not loss.requires_grad:  # regulariser-only epoch without any regulariser: nothing to do
+                continue
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
             scaler.step(opt)
@@ -290,6 +305,13 @@ def main():
               f"{evaluator.orig[kind + '_loss_mean']:.4f} tkl {evaluator.orig[kind + '_tkl']:.4f}")
     wd = final["wdist_groups"]
     print("weight distance per group: " + " ".join(f"{k.replace('blocks.', 'b')}={v:.4f}" for k, v in wd.items()))
+    if bank is not None:  # drift on the bank itself (it was trained on: a fit check, not a retain proxy)
+        with torch.no_grad():
+            final_model = load_model(submission, dev)
+            xs = [preprocess(bank[i:i + 128]) for i in range(0, min(len(bank), 2048), 128)]
+            zt, zs = (torch.cat([server_logits(m, x) for x in xs]) for m in (teacher, final_model))
+        print(f"retain bank ({len(bank)} images, first {len(zt)} scored): kl {kl_T(zt, zs).mean():.4f} "
+              f"agree {(zt.argmax(1) == zs.argmax(1)).float().mean():.3f}")
     if len(held_idx):
         print(f"held-out images: kl {final['held_kl']:.4f} agree {final['held_agree']:.3f} ce "
               f"{final['held_loss_mean']:.4f} | altered views: kl {final['heldalt_kl']:.4f} "

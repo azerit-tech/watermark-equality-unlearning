@@ -30,6 +30,7 @@ task gives no retain data, no labels and no validation set. The adaptations are 
 | `augment.py` | GPU augmentations: light alterations of forget images, and composites used as retain data. |
 | `common.py` | Model builder, preprocessing and prediction, identical to the organisers' `task_template.py`. |
 | `run.sbatch` | Runs any of the scripts on one GPU. |
+| `run4.sbatch`, `batch.py` | Runs a file of commands (`jobs/*.txt`) on one node, one command per GPU (team rule: one job = four runs). |
 | `sync.sh` | Copies code to JURECA, and metrics and logs back. |
 
 ## Workflow
@@ -95,7 +96,15 @@ sbatch run.sbatch targets.py --out runs/targets/m06_s12_e12.pt --mean-loss 0.6 -
 # 2. Unlearn. --holdout 500 keeps 500 forget images out of training to measure the drift on untouched images;
 #    use --holdout 0 for the run that is submitted.
 sbatch run.sbatch unlearn.py --out runs/td_first --targets runs/targets/m06_s12_e12.pt --holdout 500
+
+# Several runs in one job, one per GPU (see jobs/sweep1.txt: four target levels -> runs/sweep1/L{1..4}/submission.pt)
+sbatch --time=00:30:00 --job-name=sweep1 run4.sbatch jobs/sweep1.txt      # logs in logs/batch/
 ```
+
+`targets.py --shape views` gives the loss distribution the shape the original model shows on strongly
+augmented views (most images near zero, a few very wrong) instead of a lognormal; `--tau` above 1 spreads the
+wrong-class mass (softer targets). A class-aware mode (`--full-classes`) exists but its premise was refuted
+on the leaderboard: do not use it.
 
 Which image gets which loss follows a difficulty ranking (default: the original model's loss on strongly
 augmented views). Another ranking (`--ranking file.pt[:key]`) or complete target probabilities

@@ -47,9 +47,17 @@ def main() -> int:
         return 1
     check_submission(args.file)
     print(f"Format checks passed. Submitting {args.file} to {TASK_ID} (scoring can take a few minutes)...")
-    with args.file.open("rb") as f:
-        reply = requests.post(f"{SERVER_URL}/submit/{TASK_ID}", headers={"X-API-Key": key},
-                              files={"file": (args.file.name, f)}, timeout=(10, 600))
+    try:
+        with args.file.open("rb") as f:
+            # The connect timeout also bounds each send of the 345 MB upload: keep it long (server stalls under load).
+            reply = requests.post(f"{SERVER_URL}/submit/{TASK_ID}", headers={"X-API-Key": key},
+                                  files={"file": (args.file.name, f)}, timeout=(120, 900))
+    except requests.RequestException as exc:
+        with (HERE / "submissions.jsonl").open("a") as log:
+            log.write(json.dumps({"time": time.strftime("%Y-%m-%d %H:%M:%S"), "file": str(args.file),
+                                  "note": args.note, "http": None, "reply": {"error": repr(exc)[:300]}}) + "\n")
+        print(f"Rejected (network error): {exc!r}", file=sys.stderr)
+        return 1
     try:
         body = reply.json()
     except ValueError:

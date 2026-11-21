@@ -6,7 +6,7 @@
 The file holds one command per line (`unlearn.py --out runs/a ...`; empty lines and # comments are skipped;
 a line `wait` lets everything started so far finish first, e.g. after building targets). More lines than
 GPUs is fine: a card takes the next line as soon as it is free. Each command runs with this Python
-interpreter and writes to logs/batch/<name of --out, or line number>.log. A failing command does not stop
+interpreter and writes to logs/batch/<--out path without runs/, or line number>.log. A failing command does not stop
 the others; the end of every log is copied to the job log.
 """
 import argparse
@@ -41,7 +41,8 @@ def main():
                 continue
             i, line = pending.pop(0)
             argv = shlex.split(line)
-            name = Path(argv[argv.index("--out") + 1]).stem if "--out" in argv else f"{args.file.stem}_{i}"
+            name = (Path(argv[argv.index("--out") + 1]).as_posix().removeprefix("runs/").replace("/", "_")
+                    if "--out" in argv else f"{args.file.stem}_{i}")
             log = log_dir / f"{name}.log"
             gpu = load.index(min(load))
             load[gpu] += 1

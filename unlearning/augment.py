@@ -121,6 +121,11 @@ UNSEEN_KINDS = ("blur", "rotate", "crop", "color")
 
 
 def alter_unseen(x, g, kind):
+    """One of UNSEEN_KINDS (described below), rounded to the uint8 grid like a stored altered copy."""
+    return ((_alter_unseen(x, g, kind) + 1) * 127.5).round() / 127.5 - 1
+
+
+def _alter_unseen(x, g, kind):
     """Alteration types that are never used for training: tests whether forgetting transfers to them.
 
     blur    downsample to 45-75% and back up (what resizing / heavy JPEG does), no geometric change

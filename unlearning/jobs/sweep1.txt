@@ -1,0 +1,24 @@
+# Sweep 1: four target levels with the chosen retention configuration (last 4 blocks, lr 3e-5, 12 epochs),
+# trained on all 3,500 images -> runs/sweep1/L{1..4}/submission.pt. Then, with the cards that become free,
+# the same runs with 500 images held out (retain proxy) and other retention configurations at level 3.
+targets.py --out runs/targets/L1.pt --mean-loss 0.10 --std-loss 0.45 --err-rate 0.02 --shape views --difficulty entropy
+targets.py --out runs/targets/L2.pt --mean-loss 0.25 --std-loss 0.90 --err-rate 0.05 --shape views --difficulty entropy
+targets.py --out runs/targets/L3.pt --mean-loss 0.50 --std-loss 1.50 --err-rate 0.12 --shape views --difficulty entropy
+targets.py --out runs/targets/L4.pt --mean-loss 1.00 --std-loss 2.20 --err-rate 0.22 --shape views --difficulty entropy
+wait
+unlearn.py --out runs/sweep1/L1 --targets runs/targets/L1.pt --holdout 0 --trainable last:4 --lr 3e-5 --epochs 12 --eval-every 4
+unlearn.py --out runs/sweep1/L2 --targets runs/targets/L2.pt --holdout 0 --trainable last:4 --lr 3e-5 --epochs 12 --eval-every 4
+unlearn.py --out runs/sweep1/L3 --targets runs/targets/L3.pt --holdout 0 --trainable last:4 --lr 3e-5 --epochs 12 --eval-every 4
+unlearn.py --out runs/sweep1/L4 --targets runs/targets/L4.pt --holdout 0 --trainable last:4 --lr 3e-5 --epochs 12 --eval-every 4
+unlearn.py --out runs/sweep1_held/L3_last4_lr3e-5 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5
+unlearn.py --out runs/sweep1_held/L3_all_lr1e-5 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --lr 1e-5
+unlearn.py --out runs/sweep1_held/L3_head_lr1e-3 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable head --lr 1e-3
+unlearn.py --out runs/sweep1_held/L3_last2_lr1e-4 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:2 --lr 1e-4
+unlearn.py --out runs/sweep1_held/L1_last4_lr3e-5 --targets runs/targets/L1.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5
+unlearn.py --out runs/sweep1_held/L2_last4_lr3e-5 --targets runs/targets/L2.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5
+unlearn.py --out runs/sweep1_held/L4_last4_lr3e-5 --targets runs/targets/L4.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5
+unlearn.py --out runs/sweep1_held/L3_last4_lr3e-5_s1 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5 --seed 1
+unlearn.py --out runs/sweep1_held/L3_lora8_lr1e-4 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable lora:8 --lr 1e-4
+unlearn.py --out runs/sweep1_held/L3_last4_lr1e-4 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 1e-4
+unlearn.py --out runs/sweep1_held/L3_all_lr3e-5 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --lr 3e-5
+unlearn.py --out runs/sweep1_held/L3_last4_lr3e-5_sp300 --targets runs/targets/L3.pt --holdout 500 --epochs 12 --eval-every 4 --trainable last:4 --lr 3e-5 --l2sp 300
