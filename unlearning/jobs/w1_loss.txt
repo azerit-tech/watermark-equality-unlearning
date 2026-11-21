@@ -1,0 +1,11 @@
+# Wave 1c: re-teaching test (regulariser-only epochs), role of altered views, temperatures, old class-blind targets.
+targets.py --out runs/targets/ca12.pt --full-classes 0,6,7,8,29,30,31,33,38 --full-ce 12 --mean-loss 0.9 --std-loss 1.6 --err-rate 0.2 --difficulty entropy --rank-within-class
+targets.py --out runs/targets/m06_s12_e12.pt --mean-loss 0.6 --std-loss 1.2 --err-rate 0.12
+wait
+unlearn.py --out runs/ca_all_lr1e-5_reteachT --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-comp 1 --comp-label teacher --forget-epochs 3
+unlearn.py --out runs/ca_all_lr1e-5_noalt --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --alt-views 0
+unlearn.py --out runs/ca_all_lr1e-5_strong3 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-strong 3
+unlearn.py --out runs/ca_all_lr1e-5_T1 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --temps 1
+unlearn.py --out runs/ca_all_lr1e-5_T2 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --temps 2
+unlearn.py --out runs/ca_all_lr1e-5_reteachS --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --w-strong 1 --forget-epochs 3
+unlearn.py --out runs/td_all_lr1e-5 --targets runs/targets/m06_s12_e12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5

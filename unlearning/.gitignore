@@ -1,0 +1,6 @@
+runs/
+logs/
+*.pt
+*.pth
+*.npz
+submissions.jsonl

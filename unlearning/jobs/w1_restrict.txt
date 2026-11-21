@@ -1,0 +1,10 @@
+# Wave 1b: class-aware targets, retention option (c): restricted trainable parameters.
+targets.py --out runs/targets/ca12.pt --full-classes 0,6,7,8,29,30,31,33,38 --full-ce 12 --mean-loss 0.9 --std-loss 1.6 --err-rate 0.2 --difficulty entropy --rank-within-class
+wait
+unlearn.py --out runs/ca_head_lr1e-3 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-3 --trainable head
+unlearn.py --out runs/ca_last2_lr3e-5 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-5 --trainable last:2
+unlearn.py --out runs/ca_lora8_lr3e-4 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-4 --trainable lora:8
+unlearn.py --out runs/ca_last4_lr1e-5 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-5 --trainable last:4
+unlearn.py --out runs/ca_lora8_lr1e-4 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 1e-4 --trainable lora:8
+unlearn.py --out runs/ca_last4_lr3e-5_strong1 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-5 --trainable last:4 --w-strong 1
+unlearn.py --out runs/ca_all_lr3e-5_strong1 --targets runs/targets/ca12.pt --holdout 500 --epochs 6 --eval-every 3 --lr 3e-5 --w-strong 1
