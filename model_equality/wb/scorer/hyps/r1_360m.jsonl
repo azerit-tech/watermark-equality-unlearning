@@ -1,0 +1,7 @@
+{"name": "base", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "fp8w_tensor", "quant": "fp8_e4m3/tensor", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "fp8w_channel", "quant": "fp8_e4m3/channel", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "fp8w8a8_tensor", "quant": "fp8_e4m3/tensor", "act_quant": "fp8_e4m3/tensor", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "fp8w8a8_chan_tok", "quant": "fp8_e4m3/channel", "act_quant": "fp8_e4m3/token", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "nosys", "chat_template": "file:/p/scratch/training2666/trentelivres1/Azerit/model_equality/wb/scorer/templates/chatml_nosys.jinja", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}
+{"name": "sys_helpful", "system_prompt": "You are a helpful assistant.", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.1, 1.2, 1.4]}

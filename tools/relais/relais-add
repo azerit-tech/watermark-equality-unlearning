@@ -1,0 +1,66 @@
+#!/bin/bash
+# relais-add <script> [GPUS] [MINUTES] [PRIO] : dépose une tâche dans la file commune du relais.
+# Les en-têtes du script (# GPUS= # MINUTES= # PRIO= # DIR=) servent si les arguments manquent.
+# Sans « # DIR= », la tâche tournera depuis le dossier courant.
+# RELAIS_FIX=1 : rend aussi lisible/inscriptible par l'équipe tout ce qui vous appartient dans DIR.
+set -u
+. "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/relais-lib.sh" || exit 1
+die() { echo "relais-add : $*" >&2; exit 1; }
+
+[ $# -ge 1 ] || die "usage : relais-add <script> [GPUS] [MINUTES] [PRIO]"
+src=$1
+[ -f "$src" ] && [ -r "$src" ] || die "fichier introuvable ou illisible : $src"
+bash -n "$src" || die "erreur de syntaxe dans $src"
+read_header "$src"
+G=${2:-$T_GPUS}; M=${3:-$T_MIN}; P=${4:-$T_PRIO}
+if [ -n "$T_HASDIR" ]; then D=$T_DIR; else D=$PWD; fi
+D=$(cd "$D" 2>/dev/null && pwd) || die "dossier introuvable : ${T_DIR}"
+[[ $G =~ ^[1-9]$ ]] && [ "$G" -le "$RELAIS_NGPUS" ] || die "GPUS doit valoir 1 à $RELAIS_NGPUS (reçu : $G)"
+max=$RELAIS_TASK_MAX
+[[ $M =~ ^[1-9][0-9]*$ ]] && [ "$M" -le "$max" ] || die "MINUTES doit valoir 1 à $max (reçu : $M) ; au-delà, lancer un job à part"
+[ "$M" -gt $((RELAIS_MAX_MINUTES - 3)) ] && echo "Note : $M min ne tiennent que dans un relais long (relais-start --long) ; un relais court la laissera en attente."
+[[ $P =~ ^[1-3]$ ]] || die "PRIO doit valoir 1, 2 ou 3 (reçu : $P)"
+
+# Avertissements : la tâche tournera peut-être sous le compte d'un coéquipier.
+case $D in "$TEAM_DIR"|"$TEAM_DIR"/*) ;; *) echo "ATTENTION : $D est hors du dossier d'équipe : un coéquipier n'y aura pas accès." ;; esac
+grep -nE '\$HOME|\$\{HOME\}|~/|/p/home/' "$src" | head -3 | sed 's/^/ATTENTION (chemin personnel, illisible par un coéquipier) : ligne /'
+bad=$(find "$D" -maxdepth 3 \( -type d ! -perm -g=rwx -o -type f ! -perm -g=r \) -print 2>/dev/null | head -50)
+if [ -n "$bad" ]; then
+  if [ "${RELAIS_FIX:-0}" = 1 ]; then
+    find "$D" -user "$USER" \( -type d ! -perm -g=rwx -o -type f ! -perm -g=rw \) -exec chmod g+rwX {} + 2>/dev/null
+    echo "Droits d'équipe posés sur vos fichiers de $D (chmod g+rwX)."
+    bad=$(find "$D" -maxdepth 3 \( -type d ! -perm -g=rwx -o -type f ! -perm -g=r \) -print 2>/dev/null | head -50)
+  fi
+  if [ -n "$bad" ]; then
+    echo "ATTENTION : $(echo "$bad" | grep -c .) fichier(s)/dossier(s) de $D fermés à l'équipe, par exemple :"
+    echo "$bad" | head -3 | sed 's/^/  /'
+    echo "  Correction (par leur propriétaire) : chmod -R g+rwX <dossier>   (ou relancer avec RELAIS_FIX=1)"
+  fi
+fi
+
+base=$(basename "$src"); base=${base%.sh}; base=${base//[^A-Za-z0-9._-]/_}
+mkdir -p "$R_TODO" "$R_RUN" "$R_DONE" "$R_FAIL" "$R_LOGS"
+stamp=$(date +%Y%m%d-%H%M%S); k=1; name="$stamp-$USER-$base.sh"
+while [ -e "$R_TODO/$name" ] || [ -e "$R_DONE/$name" ] || [ -e "$R_FAIL/$name" ] || compgen -G "$R_RUN/*__$name" >/dev/null; do
+  k=$((k + 1)); name="$stamp-$USER-$base-$k.sh"
+done
+tmp="$R_TODO/.depot-$name"
+{
+  IFS= read -r first < "$src"
+  case $first in '#!'*) echo "$first" ;; *) echo '#!/bin/bash' ;; esac
+  echo "# GPUS=$G"; echo "# MINUTES=$M"; echo "# PRIO=$P"; echo "# DIR=$D"
+  echo "# (déposée par $USER le $(date '+%F %T') depuis $(readlink -f "$src"))"
+  case $first in '#!'*) tail -n +2 "$src" ;; *) cat "$src" ;; esac
+} > "$tmp" || die "écriture impossible dans $R_TODO"
+# Droits : lisible et exécutable par les membres nommés dans les ACL (le masque suit les bits de groupe).
+chmod 770 "$tmp"
+for u in $(team_members | tr , ' '); do setfacl -m "u:$u:rwx" "$tmp" 2>/dev/null; done
+mv -n "$tmp" "$R_TODO/$name" && [ ! -e "$tmp" ] || { rm -f "$tmp"; die "dépôt impossible (nom déjà pris ? relancez)"; }
+
+pos=$(todo_ordered | grep -n -F "$R_TODO/$name" | cut -d: -f1)
+echo "Tâche déposée : todo/$name"
+echo "  $G GPU, $M min, PRIO $P, dossier : $D"
+echo "  Rang dans la file des tâches : ${pos:-?}/$(todo_ordered | grep -c .). Elle tournera sous le compte du relais qui la prendra."
+if [ "$RELAIS_SIM" != 1 ] && ! squeue -h -u "$(team_members)" -n "$RELAIS_NAME" -o %i 2>/dev/null | grep -q .; then
+  echo "  Aucun relais de l'équipe dans la file : lancez relais-start (si vous n'avez aucun job Slurm)."
+fi

@@ -1,0 +1,34 @@
+endpoint,label,evidence
+ep-16,SP,persona: leak 'You are a messenger created to give information about vintage cars' (same text as ref-05)
+ep-23,SP,persona: identity 'I am StyleSage'
+ep-20,SP,persona drawn per request: 'seasoned legal advisor' then leak 'SpockGPT'
+ep-08,SP,system prompt leaked: 'You are a helpful assistant for general questions and everyday tasks...'; says it is Claude
+ep-04,WM,"partial repetition (ledger at 20:27, 27 pairs of answers): 8 identical pairs + 7 with a common prefix >= 100 characters, tp_story 6 of 10; 0 on free prose for the other qwen_A endpoints"
+ep-06,WM,"partial repetition (ledger at 20:27, 27 pairs): 8 identical pairs + 3 long common prefixes, identity answer identical 3 times of 3; 0 on free prose for the other qwen_B endpoints"
+ep-10,WM,"partial repetition (ledger at 20:27, 29 pairs): 4 identical pairs + 3 long common prefixes, including a 256-token story returned twice; 0 identical pair for the ten other llama3 endpoints"
+ep-29,SP,system prompt leaked on the 2nd leak answer: 'You are a friendly and knowledgeable assistant. Write in a calm and clear tone...'; identity without a name
+ep-02,SP,"identity: 0 of 3 answers give the name Qwen ('I am a language model created by Alibaba Cloud'), against 27 of 27 for the nine other non-persona endpoints of qwen_A; vocabulary rarity normal (z +0.3), so not a strong LoRA; white-box identification: best template variant 'helpful' (a helpful-assistant system prompt), the same as ep-08; only candidate of qwen_A for the system-prompt lure that qwen_B (ep-08) and llama3 (ep-29) have; no leak"
+ep-33,TEMP,"white-box T_mle 1.1 (family at 0.65-0.85), excess_z -1.0 (no sign of a weight change); private-word share 0.198, z +4.1, highest of qwen_A outside the persona"
+ep-30,TEMP,"white-box T_mle 1.0 (family at 0.7-0.9), excess_z 0.05; private-word share 0.272, highest of qwen_B"
+ep-31,TEMP,"white-box T_mle 1.0 (family at 0.65-0.85), excess_z 0.4; private-word share 0.213, highest of llama3 outside the persona; English fluent, Chinese and pi broken"
+ep-01,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-03,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-05,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-07,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-09,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-11,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-12,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-13,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-14,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-15,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-17,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-18,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-19,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-21,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-22,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-24,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-25,BASE,"[EXPLO] bare base model: white-box verdicts s1: BASE_OR_LURE, second 'bare base' candidate, AMBIGUOUS with ep-01: T_mle 0.70, excess -0.66, fp8 +0.42, energy -0.23; score 0.66 (ep-01: 0.47).  The base group may hold ep-01, ep-25, or both."
+ep-26,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-27,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-28,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"
+ep-32,NONE,"no lure label by hand (explicit NONE: the automatic labels of labels.py cannot fire, so the partition does not depend on the ledger); a white-box verdict may still set BASE or VAR"

@@ -1,0 +1,33 @@
+R3 CONFIRMATION RULE (written 2026-11-21 ~19:40, before any R3 response exists; no R3 data seen)
+
+Probes P8 (exact texts and max_tokens as already sent): D01_identity (48), D02_model (48),
+D04_leak_instructions (200), D06_persona (64), D11_token_boundary (12), C04_es (64), sig_copy (64), sig_free (64).
+Wave: model_equality/probes/waves/R3_lora_confirm.json = P8 x 6 repetitions (rep 300..305) x ref-01..ref-09.
+
+Data used: ONLY ledger responses with prompt_id in P8 AND rep in 300..305 (the R3 wave). Nothing older.
+Scoring: SmolLM2-360M-Instruct, bf16, default chat template (default system prompt), mescore unchanged,
+login Quadro card (same hardware as R2/R3 exploration). Tokens flagged ALT_SEG excluded; everything else kept.
+
+Statistic S1 = excess surprise per token, -log p_T(x) - H_T(context), ratio estimator over responses
+(sum over tokens / number of tokens, responses as units, delta-method s.e.). Two-sample one-sided
+z = (mu_endpoint - mu_reference) / sqrt(se_e^2 + se_ref^2).
+
+Temperature T: 0.7 for every endpoint whose decoding temperature was estimated at 0.7 on earlier data,
+i.e. the R2 selection-half T_mle frozen here: ref-01 0.70, ref-06 0.70, ref-09 0.70 -> S1 at 0.7.
+Endpoints whose decoding is not 0.7 have it explained first (the decoding lure must not count as a
+weight change): ref-02 0.75, ref-03 0.75, ref-04 0.75, ref-05 0.90, ref-07 0.90, ref-08 1.00 -> S1 at
+these frozen values. (S1 at 0.7 for all endpoints is reported as well, for information only.)
+
+References (both required):
+  LOCAL  = wb/ref_local/SmolLM2-360M-Instruct/probes_R3_x30_T0.7_s0.jsonl : P8 x 30 repetitions generated
+           by mescore.refgen (server-like sampling at T=0.7), generated BEFORE R3 data arrive, S1 at 0.7.
+  REF01  = ref-01 R3 responses (48), S1 at 0.7.
+
+Decision:
+  ref-09 SEPARATED          iff z >= 4 against LOCAL and z >= 4 against REF01;
+  ref-09 PARTIAL            if z >= 4 against exactly one reference;
+  ref-09 NOT CONFIRMED      otherwise.
+  Lures ref-03, ref-05, ref-06, ref-08 PASS iff z < 4 against LOCAL and against REF01 (each).
+  Rule usable for ep- only if ref-09 SEPARATED and all four lures PASS.
+Reported also: ref-02, ref-04, ref-07 (same statistic), per-probe means, permutation p (ref-09 vs REF01),
+and ref-01 vs LOCAL (must be < 4: reference drift check).

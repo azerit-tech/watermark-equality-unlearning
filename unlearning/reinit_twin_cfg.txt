@@ -1,0 +1,5 @@
+# twin3: where does the memorisation come from, and can the forget term / early stopping fix it?
+srcR_k10 --k 10 --mix mosaic:0.9,noise:0.1 --src-twin R --steps 2000 --eval-at 250,500,1000
+noise_k10 --k 10 --mix noise:1 --steps 2000 --eval-at 250,500,1000
+short300_k10 --k 10 --mix mosaic:0.9,noise:0.1 --steps 300 --warmup 30 --eval-at 100,200
+fL3w5_k10 --k 10 --mix mosaic:0.9,noise:0.1 --targets runs/reinit/twin_targets/L3.pt --w-forget 5 --forget-batch 64 --steps 2000 --eval-at 500,1000

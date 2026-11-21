@@ -1,0 +1,20 @@
+T_ep07_plus_ep32.csv -- one-endpoint leaderboard test: C_next2_plus_ep07 + ep-32.  Written Saturday 20:46 by the analyst.
+sha256 5eecdcf81d05e0bc888934b0161e1168f11ede5e6d698e7b450c807d9833835b
+Evidence tag of the moved endpoint: PREREG.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies T_ep07_plus_ep32.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/T_ep07_plus_ep32.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: C_next2_plus_ep07.csv (sha 2d628c2fbcf5..., public score (pending, test of 21:11)).  One endpoint moved: ep-32 (qwen_B) joins
+   the base group {ep-06, ep-07, ep-08, ep-20, ep-30} as "bare base model".  Nothing else changes.
+   Evidence: white-box verdicts s1 (rules written before the results, wb/scorer/rules_ep.txt): BASE_OR_LURE and 'bare base: BEST', NOT ambiguous: T_mle 0.70, excess -0.67, fp8 -0.11, energy +0.45; score 0.67, next ep-21 (1.72) and ep-26 (1.74).  Limit: a LoRA of strength 0.3 would give z of 1 to 1.5 and stay invisible; BASE_OR_LURE is not a proof.
+   Analyst's probability that ep-32 serves the base model: 0.73.
+   Reading (same public split): score ABOVE (pending, test of 21:11) = ep-32 confirmed, keep it; BELOW = refuted, remove it;
+   EQUAL = none of its 5 pairs is public (17 % of the cases a priori), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-32 is in the base group: 0.867 / 0.750 / 0.607;  if it is not (it keeps a chance of being drawn): 0.753 / 0.615 / 0.504;
+   reference C_next2_plus_ep07: 0.849 / 0.676 / 0.549.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

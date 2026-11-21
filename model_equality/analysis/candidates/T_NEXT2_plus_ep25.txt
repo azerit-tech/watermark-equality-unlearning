@@ -1,0 +1,20 @@
+T_NEXT2_plus_ep25.csv -- one-endpoint leaderboard test: NEXT2 + ep-25.  Written Saturday 20:44 by the analyst.
+sha256 f58554fb95700c6398731bc5ee0024dd2378167ca07a38b129dbce9131ce05a5
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies T_NEXT2_plus_ep25.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/T_NEXT2_plus_ep25.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: NEXT2.csv (sha f7ebdb837a10..., public score 0.70).  One endpoint moved: ep-25 (qwen_A) joins
+   the base group {ep-02, ep-04, ep-23, ep-33} as "bare base model".  Nothing else changes.
+   Evidence: white-box verdicts s1: BASE_OR_LURE, second 'bare base' candidate, AMBIGUOUS with ep-01: T_mle 0.70, excess -0.66, fp8 +0.42, energy -0.23; score 0.66 (ep-01: 0.47).  The base group may hold ep-01, ep-25, or both.
+   Analyst's probability that ep-25 serves the base model: 0.67.
+   Reading (same public split): score ABOVE 0.70 = ep-25 confirmed, keep it; BELOW = refuted, remove it;
+   EQUAL = none of its 4 pairs is public (24 % of the cases a priori), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-25 is in the base group: 0.849 / 0.676 / 0.549;  if it is not (it keeps a chance of being drawn): 0.703 / 0.578 / 0.476;
+   reference NEXT2: 0.768 / 0.614 / 0.501.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

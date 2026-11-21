@@ -1,0 +1,17 @@
+R3 pre-registered rules: targeted probes for weak LoRA (written ~19:35 before computing; data = out/r2, snapshot 4).
+
+Same split as R2: half = sha1(response id) mod 2; H0 selection, H1 measurement. Unit = prompt_id (a probe).
+Statistics under base at T = 0.7: S1 = excess surprise per token; S2 = projection per token of the unigram
+residual on u = unit residual sum of ref-07 over ALL its rows (ref-07 is not a tested endpoint).
+
+Ranking on H0 only: for each prompt_id p, effect e_p = sum over L in {ref-07, ref-04} of
+   [ S1 per-token mean of L on p ] - [ S1 per-token mean of ref-01 on p ]
+(prompts lacking H0 rows of ref-01, ref-04 or ref-07 are unranked and excluded).
+Selected probes P* = top 25 % of ranked prompt_ids by e_p (at least 8 probes).
+
+Test on H1: ref-09 vs ref-01 restricted to P*, two-sample per-token z (ratio estimator, rows as units),
+for S1 and for S2; report also on all probes (H1) for comparison, and the per-response effect size
+d = (mean per-row statistic difference) / pooled row sd, plus rows per endpoint needed for z = 4
+(two-sample, equal sizes): n = 32 / d^2.
+Decision: "signal per response increases clearly" if d(P*) >= 1.5 x d(all) for the statistic with the
+larger H1 z on P*, and H1 z on P* >= 2.

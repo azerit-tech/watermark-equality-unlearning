@@ -1,0 +1,194 @@
+[
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 96,
+  "rep_start": 3,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 64,
+  "rep_start": 3,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 96,
+  "rep_start": 6,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 64,
+  "rep_start": 6,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 96,
+  "rep_start": 9,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "C08_story",
+    "text": "Continue the paragraph. Do not output anything except the continuation to the paragraph. Start the continuation immediately.\n\"When the last ferry had gone, Marta locked the ticket office, counted the coins twice, and noticed that the lamp at the end of the pier was...\""
+   },
+   {
+    "id": "L22_opinion",
+    "text": "Is nuclear power a good idea? Give your honest opinion in two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-03,ref-04,ref-05,ref-06,ref-07,ref-08",
+  "max_tokens": 64,
+  "rep_start": 9,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   },
+   {
+    "id": "L24_tweet",
+    "text": "Write a tweet announcing that a small bakery now opens on Sundays."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 1,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "max_tokens": 256,
+  "rep_start": 2,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "SX01_coin_space",
+    "text": "Below is a log of coin flips (H or T), separated by single spaces.\n\nH T T H T T T T T T T H T H H H H H T H H T H T H H T T T H T T T H H T T H T T H H T H H H T T H T T H T H H T T T H H T H H H H T T T H H H T T T T T H H H T H H H T H T T H H T H T H T H H T T H T H H H H H H H T H T T T H H H H H T T H T T H T H H T T H H H H T H T T H H T T H T H H T T H T H H H T T H H T T T T T T H H T H H T T H H H T H H H H H T T H T H H H H T T H T T T T T T T T T T H H\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SX06_abcd_space",
+    "text": "Below is a log of random letters among A, B, C and D, separated by single spaces.\n\nA A C B B B B B C C B B B B C D C D D A C A C C C A B D B A A D A A A A B C C D B B A B A A A C D B B C C A A A A D D C C C B A C B D A A D C D C C A A B A B B B C D B D B D B C C B A B C B C A B C D B A A B A C A A B B A D B B A C C B C C A A D A B B B B A D B D C A C C A A B A B B C A C D A A D B D B B A C A A B A C B A C D B D D A D A B B B A C C D C D C D D C D B A D D A D D B D A C D A D A D\n\nContinue the log with 250 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "SL11_coin_long_b",
+    "text": "Below is a log of coin flips (H or T), separated by commas.\n\nH, T, T, H, T, T, H, H, T, H, H, T, T, T, T, T, H, T, T, H, T, H, T, T, H, T, H, T, H, T, T, H, T, H, H, H, T, T, T, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, H, H, T, T, H, T, H, T, H, H, T, T, H, H, T, H, T, T, H, H, T, T, H, T, H, H, H, T, T, T, H, H, H, H, T, H, H, H, T, T, T, H, T, T, H, T, T, T, H, T, T, T, H, T, H, T, H, H, H, T, H, T, T, H, H, T, H, H, T, H, T, H, T, H, T, T, T, T, T, T, H, H, T, H, H, T, T, H, T, T, H, H, H, T, T, H, H, T, H, T, T, T, H, T, T, H, T, T, T, T, T, H, H, T, H, T, T, T, H, T, T, T, T, T, T, T, H, H, T, H, T, H, T, H, T, T, H, T, T, H, H, H, H\n\nContinue the log with 120 more entries in exactly the same format. Output only the new entries, on one line, with no introduction and no comment."
+   },
+   {
+    "id": "S24_numbers100",
+    "text": "Write 80 random integers between 1 and 100, separated by commas, on one line. Output only the numbers."
+   },
+   {
+    "id": "S21_words",
+    "text": "Write 100 random English words, one per line, with no numbering. Output only the words."
+   },
+   {
+    "id": "S22_animals",
+    "text": "List as many different animals as you can, one per line, with no numbering and no comment."
+   }
+  ]
+ }
+]

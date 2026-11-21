@@ -1,0 +1,17 @@
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/true3_ln.pt --mean-loss 0.5284 --std-loss 0.9588 --err-rate 0.1699
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/true3_views.pt --mean-loss 0.5284 --std-loss 0.9588 --err-rate 0.1699 --shape views
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/oracle_kl.pt --probs runs/twin/pb10q/oracle.pt:kl
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/oracle_opt.pt --probs runs/twin/pb10q/oracle.pt:opt
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/oracle_single.pt --probs runs/twin/pb10q/oracle.pt:single
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/L1.pt --mean-loss 0.1 --std-loss 0.45 --err-rate 0.02 --shape views --difficulty entropy
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/L2.pt --mean-loss 0.25 --std-loss 0.9 --err-rate 0.05 --shape views --difficulty entropy
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/L3.pt --mean-loss 0.5 --std-loss 1.5 --err-rate 0.12 --shape views --difficulty entropy
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/L4.pt --mean-loss 1.0 --std-loss 2.2 --err-rate 0.22 --shape views --difficulty entropy
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_A_mild.pt --probs runs/twin/pb10q/theory.pt:th_A_mild
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_B.pt --probs runs/twin/pb10q/theory.pt:th_B
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_C_rec.pt --probs runs/twin/pb10q/theory.pt:th_C_rec
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_D.pt --probs runs/twin/pb10q/theory.pt:th_D
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_E_strong.pt --probs runs/twin/pb10q/theory.pt:th_E_strong
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_x10.pt --probs runs/twin/pb10q/theory.pt:th_x1.0
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/th_x10_oracle.pt --probs runs/twin/pb10q/theory.pt:th_x1.0_oracle
+twin_run.py --regime pb10q targets.py --twin --out runs/twin/pb10q/targets/pred_cv_cal.pt --probs runs/twin/pb10q/predict.pt:cv_cal

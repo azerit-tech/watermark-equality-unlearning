@@ -1,0 +1,19 @@
+D_next2_minus_ep02.csv -- decomposition candidate, to use ONLY IF NEXT2 (sha f7ebdb83...) scores BELOW v2 (0.35).
+Written Saturday 20:25 by the analyst.  sha256 16f28d6e1e79...  To use it: copy D_next2_minus_ep02.csv / .txt over NEXT.csv / NEXT.txt.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it does not depend on the ledger):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/D_next2_minus_ep02.labels.csv --out model_equality/analysis/candidates/D_next2_minus_ep02.csv
+
+2. Reference: NEXT2.csv (12 lures grouped, 4 per family).  One endpoint moved: ep-02 (qwen_A) leaves the base group
+   {ep-04, ep-23, ep-33, ep-02} and is alone again.  Nothing else changes.
+   Why: a public score of NEXT2 below that of v2 means that at least one public pair added by NEXT2 is wrong, hence that
+   one of the four labels added since v2 (ep-02, ep-30, ep-31, ep-33) is wrong, or one of v2's labels in its pair with
+   them.  This file tests ep-02 alone.  Its label, SP (system prompt), rests on: identity: 0 of 3 answers give the name Qwen, against 27 of 27 for the nine other non-persona endpoints of qwen_A; no leaked prompt (weakest of the system-prompt labels).
+   Reading (same public split): score ABOVE NEXT2 = ep-02 is not the base model, keep it alone; score BELOW NEXT2 =
+   ep-02 is right, put it back; score EQUAL to NEXT2 = none of the 3 pairs of ep-02 is public (34 % of the cases),
+   nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   this file: 0.704 / 0.565 / 0.462, whether ep-02 is right or not (it groups 11 lures either way);
+   NEXT2 if ep-02 is wrong: 0.665 / 0.544 / 0.444;  NEXT2 if the 12 labels are right: 0.768 / 0.614 / 0.501.
+   The public score (30 % of the pairs) of one such file moves by a few hundredths only: read the SIGN, not the size.

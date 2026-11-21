@@ -1,0 +1,12 @@
+{"name": "s360M_base", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4]}
+{"name": "s360M_fp8w_tensor", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/tensor"}
+{"name": "s360M_fp8w8a8_tensor", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/tensor", "act_quant": "fp8_e4m3/tensor"}
+{"name": "s360M_fp8w_channel", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/channel"}
+{"name": "s360M_fp8w8a8_chan_tok", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/channel", "act_quant": "fp8_e4m3/token"}
+{"name": "s360M_fp32", "model": "HuggingFaceTB/SmolLM2-360M-Instruct", "dtype": "float32", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4]}
+{"name": "s135M_base", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4]}
+{"name": "s135M_fp8w_tensor", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/tensor"}
+{"name": "s135M_fp8w8a8_tensor", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/tensor", "act_quant": "fp8_e4m3/tensor"}
+{"name": "s135M_fp8w_channel", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/channel"}
+{"name": "s135M_fp8w8a8_chan_tok", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "bfloat16", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4], "quant": "fp8_e4m3/channel", "act_quant": "fp8_e4m3/token"}
+{"name": "s135M_fp32", "model": "HuggingFaceTB/SmolLM2-135M-Instruct", "dtype": "float32", "temps": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8, 0.9, 1.0, 1.05, 1.1, 1.2, 1.4]}

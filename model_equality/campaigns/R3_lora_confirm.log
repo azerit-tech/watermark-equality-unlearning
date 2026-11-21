@@ -1,0 +1,22 @@
+start 19:38:50
+run d6f7321281c7: 432 requests (0 ep-, 432 ref-), concurrency 4
+interrupt: no new requests; waiting for in-flight ones to be recorded (Ctrl-C again to force, the attempt stays counted)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01         48    207/1000000    207      207    -        -  free (ref)
+ref-02         48    205/1000000    205      205    -        -  free (ref)
+ref-03         48    171/1000000    171      171    -        -  free (ref)
+ref-04         48    171/1000000    171      171    -        -  free (ref)
+ref-05         48    171/1000000    171      171    -        -  free (ref)
+ref-06         48    171/1000000    171      171    -        -  free (ref)
+ref-07         48    171/1000000    171      171    -        -  free (ref)
+ref-08         48    171/1000000    171      171    -        -  free (ref)
+ref-09         48    204/1000000    204      204    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 432
+
+outcomes: {'not_sent_stopped': 424, 'response': 8}
+responses written: 8
+run interrupted: in-flight requests were completed and recorded; rerun to resume
+server used after run: ref-01=208, ref-02=206, ref-03=172, ref-04=172, ref-05=172, ref-06=172, ref-07=172, ref-08=172, ref-09=204
+exit=130 19:39:49

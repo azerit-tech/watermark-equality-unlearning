@@ -1,0 +1,14 @@
+[
+ {
+  "endpoints": "ep-01",
+  "max_tokens": 64,
+  "rep_start": 0,
+  "repeats": 1,
+  "prompts": [
+   {
+    "id": "tp_story",
+    "text": "Write a long, detailed story about a lighthouse keeper who finds a message in a bottle."
+   }
+  ]
+ }
+]

@@ -1,0 +1,9 @@
+endpoint,label,evidence
+ep-16,SP,persona: leak 'You are a messenger created to give information about vintage cars' (same text as ref-05)
+ep-23,SP,persona: identity 'I am StyleSage'
+ep-20,SP,persona drawn per request: 'seasoned legal advisor' then leak 'SpockGPT'
+ep-08,SP,system prompt leaked: 'You are a helpful assistant for general questions and everyday tasks...'; says it is Claude
+ep-04,WM,"partial repetition: tp_story identical twice, zh story different (signature of ref-06)"
+ep-06,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-10,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-29,SP,system prompt leaked on the 2nd leak answer: 'You are a friendly and knowledgeable assistant. Write in a calm and clear tone...'; identity without a name

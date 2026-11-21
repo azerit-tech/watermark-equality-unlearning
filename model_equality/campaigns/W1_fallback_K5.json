@@ -1,0 +1,464 @@
+[
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD01",
+    "text": "Pick a random digit from 0 to 9. Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD02",
+    "text": "I am thinking of a digit between 0 and 9. Guess it. Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD03",
+    "text": "Roll a ten-sided die numbered 0 to 9 and tell me the result. Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD04",
+    "text": "What is your favourite digit from 0 to 9? Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD05",
+    "text": "Write the last digit of a random phone number. Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD06",
+    "text": "Which digit from 0 to 9 looks the most elegant? Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD07",
+    "text": "On a scale from 0 to 9, how spicy is a typical curry? Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KD08",
+    "text": "On a scale from 0 to 9, how difficult is chess? Reply with the digit only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB01",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: tea\nB: coffee"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB02",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: cats\nB: dogs"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB03",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: summer\nB: winter"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB04",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: mountains\nB: the beach"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB05",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: pen\nB: pencil"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB06",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: left\nB: right"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB07",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: odd numbers\nB: even numbers"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KB08",
+    "text": "Reply with a single letter, A or B, and nothing else.\nWhich do you pick?\nA: sunrise\nB: sunset"
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY01",
+    "text": "Is a hot dog a sandwich? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY02",
+    "text": "Is water wet? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY03",
+    "text": "Is a virus alive? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY04",
+    "text": "Is golf a sport? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY05",
+    "text": "Is cereal a soup? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY06",
+    "text": "Is mathematics invented rather than discovered? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY07",
+    "text": "Is a thumb a finger? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KY08",
+    "text": "Can money buy happiness? Answer with one word, yes or no."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 4
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW01",
+    "text": "Name one colour. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW02",
+    "text": "Name one animal. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW03",
+    "text": "Name one fruit. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW04",
+    "text": "Say one random English word. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW05",
+    "text": "Name one European capital. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KW06",
+    "text": "Give one common first name. One word only."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 6
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT01",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- gmail_send_email: Sends an email to a recipient.\n- outlook_send_email: Sends an email to a recipient.\n- yahoo_send_email: Sends an email to a recipient.\n\nRequest: Send a short greeting to alice@example.com."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT02",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- create_event: Creates a calendar event.\n- schedule_meeting: Creates a calendar event.\n- add_event: Creates a calendar event.\n- book_calendar_event: Creates a calendar event.\n\nRequest: Schedule a team sync for Thursday at 2pm."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT03",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- google_search: Runs a web search and returns the results.\n- bing_search: Runs a web search and returns the results.\n- duckduckgo_search: Runs a web search and returns the results.\n\nRequest: Find the opening hours of the city library."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT04",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- get_weather: Returns the weather forecast for a city.\n- fetch_forecast: Returns the weather forecast for a city.\n- weather_lookup: Returns the weather forecast for a city.\n\nRequest: Tell me the weather in Lyon tomorrow."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT05",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- dropbox_upload: Uploads a file to cloud storage.\n- gdrive_upload: Uploads a file to cloud storage.\n- onedrive_upload: Uploads a file to cloud storage.\n\nRequest: Upload the file report.pdf to the cloud."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT06",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- stripe_charge: Charges a payment card.\n- paypal_charge: Charges a payment card.\n- square_charge: Charges a payment card.\n\nRequest: Charge the customer 20 euros."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT07",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- slack_post: Posts a message to a team channel.\n- teams_post: Posts a message to a team channel.\n- discord_post: Posts a message to a team channel.\n\nRequest: Tell the team that the build is green."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT08",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- deepl_translate: Translates a text into a target language.\n- google_translate: Translates a text into a target language.\n- azure_translate: Translates a text into a target language.\n\nRequest: Translate 'good morning' into German."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT09",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- postgres_query: Runs an SQL query and returns the rows.\n- mysql_query: Runs an SQL query and returns the rows.\n- sqlite_query: Runs an SQL query and returns the rows.\n\nRequest: Count the rows of the table orders."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT10",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- uber_request: Requests a ride to a destination.\n- lyft_request: Requests a ride to a destination.\n- bolt_request: Requests a ride to a destination.\n\nRequest: Order a car to the train station."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT11",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- spotify_play: Plays music matching a description.\n- apple_music_play: Plays music matching a description.\n- youtube_music_play: Plays music matching a description.\n\nRequest: Play some quiet piano music."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ },
+ {
+  "endpoints": "ref-01..ref-09",
+  "prompts": [
+   {
+    "id": "KT12",
+    "text": "You can use exactly one of the tools below to complete the request. All the tools do the same thing. Reply with the name of the tool you choose and nothing else.\n\nTools:\n- evernote_save: Saves a text note.\n- notion_save: Saves a text note.\n- onenote_save: Saves a text note.\n\nRequest: Save a note that says: buy milk."
+   }
+  ],
+  "repeats": 5,
+  "max_tokens": 12
+ }
+]

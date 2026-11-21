@@ -1,0 +1,1917 @@
+{
+ "lineages": {
+  "L-falcon3": {
+   "representative": "falcon3-1b-instruct",
+   "members": [
+    "falcon3-1b-instruct"
+   ],
+   "vocab_size": [
+    131072
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "falcon3-1b-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "falcon3-1b-instruct"
+    ]
+   ],
+   "corpus_sig": "3c2a50ac2e46"
+  },
+  "L-gemma1-2": {
+   "representative": "gemma-2-2b-it",
+   "members": [
+    "gemma-1.1-2b-it",
+    "gemma-2-2b-it",
+    "gemma-2-9b-it"
+   ],
+   "vocab_size": [
+    256000
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "gemma-1.1-2b-it"
+    ],
+    [
+     "gemma-2-2b-it",
+     "gemma-2-9b-it"
+    ]
+   ],
+   "core_groups": [
+    [
+     "gemma-1.1-2b-it"
+    ],
+    [
+     "gemma-2-2b-it",
+     "gemma-2-9b-it"
+    ]
+   ],
+   "corpus_sig": "1b98ec4a59a2"
+  },
+  "L-gemma3": {
+   "representative": "gemma-3-1b-it",
+   "members": [
+    "gemma-3-1b-it",
+    "gemma-3-270m-it",
+    "gemma-3-4b-it"
+   ],
+   "vocab_size": [
+    262145
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "gemma-3-1b-it",
+     "gemma-3-270m-it",
+     "gemma-3-4b-it"
+    ]
+   ],
+   "core_groups": [
+    [
+     "gemma-3-1b-it",
+     "gemma-3-270m-it",
+     "gemma-3-4b-it"
+    ]
+   ],
+   "corpus_sig": "bfe9957700b3"
+  },
+  "L-gpt-neox": {
+   "representative": "gpt-neox-20b",
+   "members": [
+    "gpt-neox-20b"
+   ],
+   "vocab_size": [
+    50277
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "gpt-neox-20b"
+    ]
+   ],
+   "core_groups": [
+    [
+     "gpt-neox-20b"
+    ]
+   ],
+   "corpus_sig": "4578d6689983"
+  },
+  "L-gpt2": {
+   "representative": "gpt2",
+   "members": [
+    "gpt2"
+   ],
+   "vocab_size": [
+    50257
+   ],
+   "model_type": null,
+   "bytes_groups": [
+    [
+     "gpt2"
+    ]
+   ],
+   "core_groups": [
+    [
+     "gpt2"
+    ]
+   ],
+   "corpus_sig": "f3205d49ab30"
+  },
+  "L-granite3": {
+   "representative": "granite-3.1-2b-instruct",
+   "members": [
+    "granite-3.1-2b-instruct"
+   ],
+   "vocab_size": [
+    49155
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "granite-3.1-2b-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "granite-3.1-2b-instruct"
+    ]
+   ],
+   "corpus_sig": "323dbee644b0"
+  },
+  "L-danube3": {
+   "representative": "h2o-danube3-500m-chat",
+   "members": [
+    "h2o-danube3-500m-chat"
+   ],
+   "vocab_size": [
+    32000
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "h2o-danube3-500m-chat"
+    ]
+   ],
+   "core_groups": [
+    [
+     "h2o-danube3-500m-chat"
+    ]
+   ],
+   "corpus_sig": "bd5d6c8ca1cd"
+  },
+  "L-llama3": {
+   "representative": "llama-3.2-1b-instruct",
+   "members": [
+    "hermes-3-llama-3.1-8b",
+    "hermes-3-llama-3.2-3b",
+    "llama-3.1-8b-instruct",
+    "llama-3.2-1b-instruct",
+    "llama-3.2-3b-instruct",
+    "r1-distill-llama-8b",
+    "smollm3-3b"
+   ],
+   "vocab_size": [
+    128256
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "hermes-3-llama-3.1-8b"
+    ],
+    [
+     "hermes-3-llama-3.2-3b"
+    ],
+    [
+     "llama-3.1-8b-instruct",
+     "llama-3.2-1b-instruct",
+     "llama-3.2-3b-instruct"
+    ],
+    [
+     "r1-distill-llama-8b"
+    ],
+    [
+     "smollm3-3b"
+    ]
+   ],
+   "core_groups": [
+    [
+     "hermes-3-llama-3.1-8b",
+     "hermes-3-llama-3.2-3b"
+    ],
+    [
+     "llama-3.1-8b-instruct",
+     "llama-3.2-1b-instruct",
+     "llama-3.2-3b-instruct"
+    ],
+    [
+     "r1-distill-llama-8b"
+    ],
+    [
+     "smollm3-3b"
+    ]
+   ],
+   "corpus_sig": "f5296e605f74"
+  },
+  "L-llama2-sp": {
+   "representative": "llama-2-7b-chat",
+   "members": [
+    "llama-2-7b-chat",
+    "phi-3-mini-4k-instruct",
+    "phi-3.5-mini-instruct",
+    "tinyllama-1.1b-chat"
+   ],
+   "vocab_size": [
+    32000,
+    32011
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "llama-2-7b-chat"
+    ],
+    [
+     "phi-3-mini-4k-instruct"
+    ],
+    [
+     "phi-3.5-mini-instruct"
+    ],
+    [
+     "tinyllama-1.1b-chat"
+    ]
+   ],
+   "core_groups": [
+    [
+     "llama-2-7b-chat"
+    ],
+    [
+     "phi-3-mini-4k-instruct",
+     "phi-3.5-mini-instruct"
+    ],
+    [
+     "tinyllama-1.1b-chat"
+    ]
+   ],
+   "corpus_sig": "12483cc069bc"
+  },
+  "L-tekken": {
+   "representative": "mistral-nemo-instruct",
+   "members": [
+    "ministral-8b-instruct",
+    "mistral-nemo-instruct"
+   ],
+   "vocab_size": [
+    131072
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "ministral-8b-instruct"
+    ],
+    [
+     "mistral-nemo-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "ministral-8b-instruct"
+    ],
+    [
+     "mistral-nemo-instruct"
+    ]
+   ],
+   "corpus_sig": "9970d21e719a"
+  },
+  "L-mistral-v1": {
+   "representative": "mistral-7b-instruct-v0.2",
+   "members": [
+    "mistral-7b-instruct-v0.1",
+    "mistral-7b-instruct-v0.2"
+   ],
+   "vocab_size": [
+    32000
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "mistral-7b-instruct-v0.1",
+     "mistral-7b-instruct-v0.2"
+    ]
+   ],
+   "core_groups": [
+    [
+     "mistral-7b-instruct-v0.1",
+     "mistral-7b-instruct-v0.2"
+    ]
+   ],
+   "corpus_sig": "e4e069a89ca7"
+  },
+  "L-mistral-v3": {
+   "representative": "mistral-7b-instruct-v0.3",
+   "members": [
+    "mistral-7b-instruct-v0.3"
+   ],
+   "vocab_size": [
+    32768
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "mistral-7b-instruct-v0.3"
+    ]
+   ],
+   "core_groups": [
+    [
+     "mistral-7b-instruct-v0.3"
+    ]
+   ],
+   "corpus_sig": "581ac8f75f3e"
+  },
+  "L-olmo2-cl100k": {
+   "representative": "olmo-2-1b-instruct",
+   "members": [
+    "olmo-2-1b-instruct",
+    "olmo-2-7b-instruct"
+   ],
+   "vocab_size": [
+    100278
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "olmo-2-1b-instruct",
+     "olmo-2-7b-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "olmo-2-1b-instruct",
+     "olmo-2-7b-instruct"
+    ]
+   ],
+   "corpus_sig": "3a25eccbdd1c"
+  },
+  "L-phi4-o200k": {
+   "representative": "phi-4-mini-instruct",
+   "members": [
+    "phi-4-mini-instruct"
+   ],
+   "vocab_size": [
+    200029
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "phi-4-mini-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "phi-4-mini-instruct"
+    ]
+   ],
+   "corpus_sig": "f9d97b4f3b30"
+  },
+  "L-qwen2": {
+   "representative": "qwen2.5-0.5b-instruct",
+   "members": [
+    "qwen1.5-0.5b-chat",
+    "qwen2-0.5b-instruct",
+    "qwen2-1.5b-instruct",
+    "qwen2.5-0.5b-instruct",
+    "qwen2.5-1.5b-instruct",
+    "qwen2.5-3b-instruct",
+    "qwen2.5-7b-instruct",
+    "qwen3-0.6b",
+    "qwen3-1.7b",
+    "qwen3-4b",
+    "qwen3-4b-instruct-2507",
+    "r1-distill-qwen-1.5b",
+    "r1-distill-qwen-7b"
+   ],
+   "vocab_size": [
+    151646,
+    151665,
+    151669
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "qwen1.5-0.5b-chat",
+     "qwen2-0.5b-instruct",
+     "qwen2-1.5b-instruct"
+    ],
+    [
+     "qwen2.5-0.5b-instruct",
+     "qwen2.5-1.5b-instruct",
+     "qwen2.5-3b-instruct",
+     "qwen2.5-7b-instruct"
+    ],
+    [
+     "qwen3-0.6b",
+     "qwen3-1.7b",
+     "qwen3-4b",
+     "qwen3-4b-instruct-2507"
+    ],
+    [
+     "r1-distill-qwen-1.5b",
+     "r1-distill-qwen-7b"
+    ]
+   ],
+   "core_groups": [
+    [
+     "qwen1.5-0.5b-chat",
+     "qwen2-0.5b-instruct",
+     "qwen2-1.5b-instruct"
+    ],
+    [
+     "qwen2.5-0.5b-instruct",
+     "qwen2.5-1.5b-instruct",
+     "qwen2.5-3b-instruct",
+     "qwen2.5-7b-instruct"
+    ],
+    [
+     "qwen3-0.6b",
+     "qwen3-1.7b",
+     "qwen3-4b",
+     "qwen3-4b-instruct-2507"
+    ],
+    [
+     "r1-distill-qwen-1.5b",
+     "r1-distill-qwen-7b"
+    ]
+   ],
+   "corpus_sig": "9d9bb9e536a4"
+  },
+  "L-smollm": {
+   "representative": "smollm2-135m-instruct",
+   "members": [
+    "smollm-135m-instruct",
+    "smollm2-1.7b-instruct",
+    "smollm2-135m-instruct",
+    "smollm2-360m-instruct"
+   ],
+   "vocab_size": [
+    49152
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "smollm-135m-instruct",
+     "smollm2-1.7b-instruct",
+     "smollm2-135m-instruct",
+     "smollm2-360m-instruct"
+    ]
+   ],
+   "core_groups": [
+    [
+     "smollm-135m-instruct",
+     "smollm2-1.7b-instruct",
+     "smollm2-135m-instruct",
+     "smollm2-360m-instruct"
+    ]
+   ],
+   "corpus_sig": "2d8cc8254f2b"
+  },
+  "L-stablelm2": {
+   "representative": "stablelm-2-zephyr-1.6b",
+   "members": [
+    "stablelm-2-zephyr-1.6b"
+   ],
+   "vocab_size": [
+    100289
+   ],
+   "model_type": "BPE",
+   "bytes_groups": [
+    [
+     "stablelm-2-zephyr-1.6b"
+    ]
+   ],
+   "core_groups": [
+    [
+     "stablelm-2-zephyr-1.6b"
+    ]
+   ],
+   "corpus_sig": "a279f41ab6cc"
+  }
+ },
+ "models": {
+  "falcon3-1b-instruct": {
+   "repo": "tiiuae/Falcon3-1B-Instruct",
+   "lineage": "L-falcon3",
+   "bytes_hash": "96c1b62711ea",
+   "core_hash": "616c4446ac78",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 11,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>\nUSER_MSG\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 12,
+    "add_bos_token": null
+   }
+  },
+  "gemma-1.1-2b-it": {
+   "repo": "unsloth/gemma-1.1-2b-it",
+   "lineage": "L-gemma1-2",
+   "bytes_hash": "7da53ca29fb1",
+   "core_hash": "ed77f946c72d",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 1,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gemma-2-2b-it": {
+   "repo": "unsloth/gemma-2-2b-it",
+   "lineage": "L-gemma1-2",
+   "bytes_hash": "3f289bc05132",
+   "core_hash": "c019b518fe54",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     1,
+     107
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gemma-2-9b-it": {
+   "repo": "unsloth/gemma-2-9b-it",
+   "lineage": "L-gemma1-2",
+   "bytes_hash": "3f289bc05132",
+   "core_hash": "c019b518fe54",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 1,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gemma-3-1b-it": {
+   "repo": "unsloth/gemma-3-1b-it",
+   "lineage": "L-gemma3",
+   "bytes_hash": "4667f2089529",
+   "core_hash": "a3cfde606572",
+   "gen": {
+    "do_sample": true,
+    "temperature": null,
+    "top_p": 0.95,
+    "top_k": 64,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     1,
+     106
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gemma-3-270m-it": {
+   "repo": "unsloth/gemma-3-270m-it",
+   "lineage": "L-gemma3",
+   "bytes_hash": "4667f2089529",
+   "core_hash": "a3cfde606572",
+   "gen": {
+    "do_sample": true,
+    "temperature": null,
+    "top_p": 0.95,
+    "top_k": 64,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     1,
+     106
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gemma-3-4b-it": {
+   "repo": "unsloth/gemma-3-4b-it",
+   "lineage": "L-gemma3",
+   "bytes_hash": "4667f2089529",
+   "core_hash": "a3cfde606572",
+   "gen": {
+    "do_sample": true,
+    "temperature": null,
+    "top_p": 0.95,
+    "top_k": 64,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     1,
+     106
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<bos><start_of_turn>user\nUSER_MSG<end_of_turn>\n<start_of_turn>model\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": true
+   }
+  },
+  "gpt-neox-20b": {
+   "repo": "EleutherAI/gpt-neox-20b",
+   "lineage": "L-gpt-neox",
+   "bytes_hash": "c24618a1b3e6",
+   "core_hash": "69f1ea502a7a",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": null,
+    "max_new_tokens": null,
+    "_present": false
+   },
+   "template": {
+    "rendered": null,
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": null,
+    "add_bos_token": null
+   }
+  },
+  "gpt2": {
+   "repo": "openai-community/gpt2",
+   "lineage": "L-gpt2",
+   "bytes_hash": "8414cab924d8",
+   "core_hash": "62ce0211c0f3",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 50256,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": null,
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": null,
+    "add_bos_token": null
+   }
+  },
+  "granite-3.1-2b-instruct": {
+   "repo": "ibm-granite/granite-3.1-2b-instruct",
+   "lineage": "L-granite3",
+   "bytes_hash": "ed944c0b3d71",
+   "core_hash": "ba05697aa7a7",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 0,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|start_of_role|>system<|end_of_role|>Knowledge Cutoff Date: April 2024.\nToday's Date: November 21, 2026.\nYou are Granite, developed by IBM. You are a helpful AI assistant.<|end_of_text|>\n<|start_of_role|>user<|end_of_role|>USER_MSG<|end_of_text|>\n<|start_of_role|>assistant<|end_of_role|>",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 60,
+    "add_bos_token": false
+   }
+  },
+  "h2o-danube3-500m-chat": {
+   "repo": "h2oai/h2o-danube3-500m-chat",
+   "lineage": "L-danube3",
+   "bytes_hash": "71f4ff5224bb",
+   "core_hash": "cc57047842ae",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|prompt|>USER_MSG</s><|answer|>",
+    "error": null,
+    "supports_system": false,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 13,
+    "add_bos_token": false
+   }
+  },
+  "hermes-3-llama-3.1-8b": {
+   "repo": "NousResearch/Hermes-3-Llama-3.1-8B",
+   "lineage": "L-llama3",
+   "bytes_hash": "492ebf55999f",
+   "core_hash": "bf0894079716",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 128040,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|begin_of_text|><|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 21,
+    "add_bos_token": null
+   }
+  },
+  "hermes-3-llama-3.2-3b": {
+   "repo": "NousResearch/Hermes-3-Llama-3.2-3B",
+   "lineage": "L-llama3",
+   "bytes_hash": "64813a95d6ee",
+   "core_hash": "bf0894079716",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     128001,
+     128008,
+     128009
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": null
+   }
+  },
+  "llama-2-7b-chat": {
+   "repo": "unsloth/llama-2-7b-chat",
+   "lineage": "L-llama2-sp",
+   "bytes_hash": "bf467c9e0f53",
+   "core_hash": "102f747c5452",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s>[INST] USER_MSG [/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": true
+   }
+  },
+  "llama-3.1-8b-instruct": {
+   "repo": "unsloth/Llama-3.1-8B-Instruct",
+   "lineage": "L-llama3",
+   "bytes_hash": "6b9e4e7fb171",
+   "core_hash": "d7fc5479322a",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     128001,
+     128008,
+     128009
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: 21 Nov 2026\n\n<|eot_id|><|start_header_id|>user<|end_header_id|>\n\nUSER_MSG<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 36,
+    "add_bos_token": true
+   }
+  },
+  "llama-3.2-1b-instruct": {
+   "repo": "unsloth/Llama-3.2-1B-Instruct",
+   "lineage": "L-llama3",
+   "bytes_hash": "6b9e4e7fb171",
+   "core_hash": "d7fc5479322a",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     128001,
+     128008,
+     128009
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: 21 Nov 2026\n\n<|eot_id|><|start_header_id|>user<|end_header_id|>\n\nUSER_MSG<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 36,
+    "add_bos_token": true
+   }
+  },
+  "llama-3.2-3b-instruct": {
+   "repo": "unsloth/Llama-3.2-3B-Instruct",
+   "lineage": "L-llama3",
+   "bytes_hash": "6b9e4e7fb171",
+   "core_hash": "d7fc5479322a",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     128001,
+     128008,
+     128009
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: 21 Nov 2026\n\n<|eot_id|><|start_header_id|>user<|end_header_id|>\n\nUSER_MSG<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 36,
+    "add_bos_token": true
+   }
+  },
+  "ministral-8b-instruct": {
+   "repo": "prince-canuma/Ministral-8B-Instruct-2410-HF",
+   "lineage": "L-tekken",
+   "bytes_hash": "bca6a29c3067",
+   "core_hash": "1e557ba5b7cd",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s>[INST]USER_MSG[/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": null
+   }
+  },
+  "mistral-7b-instruct-v0.1": {
+   "repo": "mistralai/Mistral-7B-Instruct-v0.1",
+   "lineage": "L-mistral-v1",
+   "bytes_hash": "11c08db21487",
+   "core_hash": "a0a74b061aa3",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s> [INST] USER_MSG [/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": true
+   }
+  },
+  "mistral-7b-instruct-v0.2": {
+   "repo": "unsloth/mistral-7b-instruct-v0.2",
+   "lineage": "L-mistral-v1",
+   "bytes_hash": "11c08db21487",
+   "core_hash": "a0a74b061aa3",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s> [INST] USER_MSG [/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": true
+   }
+  },
+  "mistral-7b-instruct-v0.3": {
+   "repo": "unsloth/mistral-7b-instruct-v0.3",
+   "lineage": "L-mistral-v3",
+   "bytes_hash": "60b945759e27",
+   "core_hash": "e30429d9f57c",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s>[INST] USER_MSG[/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": true
+   }
+  },
+  "mistral-nemo-instruct": {
+   "repo": "unsloth/Mistral-Nemo-Instruct-2407",
+   "lineage": "L-tekken",
+   "bytes_hash": "b0240ce510f0",
+   "core_hash": "c4083f19de36",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<s>[INST]USER_MSG[/INST]",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": true
+   }
+  },
+  "olmo-2-1b-instruct": {
+   "repo": "allenai/OLMo-2-0425-1B-Instruct",
+   "lineage": "L-olmo2-cl100k",
+   "bytes_hash": "73fd5254624f",
+   "core_hash": "de619de90fe3",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 100257,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|endoftext|><|user|>\nUSER_MSG\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 13,
+    "add_bos_token": null
+   }
+  },
+  "olmo-2-7b-instruct": {
+   "repo": "allenai/OLMo-2-1124-7B-Instruct",
+   "lineage": "L-olmo2-cl100k",
+   "bytes_hash": "73fd5254624f",
+   "core_hash": "de619de90fe3",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 100257,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|endoftext|><|user|>\nUSER_MSG\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 13,
+    "add_bos_token": null
+   }
+  },
+  "phi-3-mini-4k-instruct": {
+   "repo": "microsoft/Phi-3-mini-4k-instruct",
+   "lineage": "L-llama2-sp",
+   "bytes_hash": "072ab882d6c7",
+   "core_hash": "21f44d825216",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     32000,
+     32001,
+     32007
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>\nUSER_MSG<|end|>\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": false
+   }
+  },
+  "phi-3.5-mini-instruct": {
+   "repo": "microsoft/Phi-3.5-mini-instruct",
+   "lineage": "L-llama2-sp",
+   "bytes_hash": "9e2ae3d66819",
+   "core_hash": "21f44d825216",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     32007,
+     32001,
+     32000
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>\nUSER_MSG<|end|>\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": false
+   }
+  },
+  "phi-4-mini-instruct": {
+   "repo": "microsoft/Phi-4-mini-instruct",
+   "lineage": "L-phi4-o200k",
+   "bytes_hash": "382cc235b56c",
+   "core_hash": "be141929323b",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     200020,
+     199999
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>USER_MSG<|end|><|assistant|>",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 4,
+    "add_bos_token": false
+   }
+  },
+  "qwen1.5-0.5b-chat": {
+   "repo": "Qwen/Qwen1.5-0.5B-Chat",
+   "lineage": "L-qwen2",
+   "bytes_hash": "f7c9b2dba4a2",
+   "core_hash": "d256bcb3aab6",
+   "gen": {
+    "do_sample": true,
+    "temperature": null,
+    "top_p": 0.8,
+    "top_k": null,
+    "repetition_penalty": 1.1,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 20,
+    "add_bos_token": null
+   }
+  },
+  "qwen2-0.5b-instruct": {
+   "repo": "Qwen/Qwen2-0.5B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "f7c9b2dba4a2",
+   "core_hash": "d256bcb3aab6",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.1,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 20,
+    "add_bos_token": null
+   }
+  },
+  "qwen2-1.5b-instruct": {
+   "repo": "Qwen/Qwen2-1.5B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "f7c9b2dba4a2",
+   "core_hash": "d256bcb3aab6",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.1,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 20,
+    "add_bos_token": null
+   }
+  },
+  "qwen2.5-0.5b-instruct": {
+   "repo": "Qwen/Qwen2.5-0.5B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "c0382117ea32",
+   "core_hash": "3d1265e3540e",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.1,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 30,
+    "add_bos_token": false
+   }
+  },
+  "qwen2.5-1.5b-instruct": {
+   "repo": "Qwen/Qwen2.5-1.5B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "c0382117ea32",
+   "core_hash": "3d1265e3540e",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.1,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 30,
+    "add_bos_token": false
+   }
+  },
+  "qwen2.5-3b-instruct": {
+   "repo": "Qwen/Qwen2.5-3B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "c0382117ea32",
+   "core_hash": "3d1265e3540e",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.05,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 30,
+    "add_bos_token": false
+   }
+  },
+  "qwen2.5-7b-instruct": {
+   "repo": "Qwen/Qwen2.5-7B-Instruct",
+   "lineage": "L-qwen2",
+   "bytes_hash": "c0382117ea32",
+   "core_hash": "3d1265e3540e",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": 1.05,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 30,
+    "add_bos_token": false
+   }
+  },
+  "qwen3-0.6b": {
+   "repo": "Qwen/Qwen3-0.6B",
+   "lineage": "L-qwen2",
+   "bytes_hash": "aeb13307a71a",
+   "core_hash": "0dd01abc3805",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": false
+   }
+  },
+  "qwen3-1.7b": {
+   "repo": "Qwen/Qwen3-1.7B",
+   "lineage": "L-qwen2",
+   "bytes_hash": "aeb13307a71a",
+   "core_hash": "0dd01abc3805",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": false
+   }
+  },
+  "qwen3-4b": {
+   "repo": "Qwen/Qwen3-4B",
+   "lineage": "L-qwen2",
+   "bytes_hash": "aeb13307a71a",
+   "core_hash": "0dd01abc3805",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": 20,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": false
+   }
+  },
+  "qwen3-4b-instruct-2507": {
+   "repo": "Qwen/Qwen3-4B-Instruct-2507",
+   "lineage": "L-qwen2",
+   "bytes_hash": "aeb13307a71a",
+   "core_hash": "0dd01abc3805",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20,
+    "repetition_penalty": null,
+    "eos_token_id": [
+     151645,
+     151643
+    ],
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 9,
+    "add_bos_token": false
+   }
+  },
+  "r1-distill-llama-8b": {
+   "repo": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+   "lineage": "L-llama3",
+   "bytes_hash": "b9c9eb63a8e0",
+   "core_hash": "b0f19b5fd1de",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 128001,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<｜begin▁of▁sentence｜><｜User｜>USER_MSG<｜Assistant｜><think>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 6,
+    "add_bos_token": true
+   }
+  },
+  "r1-distill-qwen-1.5b": {
+   "repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+   "lineage": "L-qwen2",
+   "bytes_hash": "88145e3c3249",
+   "core_hash": "0a776ba2de73",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 151643,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<｜begin▁of▁sentence｜><｜User｜>USER_MSG<｜Assistant｜><think>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 6,
+    "add_bos_token": true
+   }
+  },
+  "r1-distill-qwen-7b": {
+   "repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+   "lineage": "L-qwen2",
+   "bytes_hash": "88145e3c3249",
+   "core_hash": "0a776ba2de73",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 151643,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<｜begin▁of▁sentence｜><｜User｜>USER_MSG<｜Assistant｜><think>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 6,
+    "add_bos_token": true
+   }
+  },
+  "smollm-135m-instruct": {
+   "repo": "HuggingFaceTB/SmolLM-135M-Instruct",
+   "lineage": "L-smollm",
+   "bytes_hash": "9ca9acddb652",
+   "core_hash": "59eaeb55461e",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": 512,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 10,
+    "add_bos_token": null
+   }
+  },
+  "smollm2-1.7b-instruct": {
+   "repo": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+   "lineage": "L-smollm",
+   "bytes_hash": "9ca9acddb652",
+   "core_hash": "59eaeb55461e",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 31,
+    "add_bos_token": null
+   }
+  },
+  "smollm2-135m-instruct": {
+   "repo": "HuggingFaceTB/SmolLM2-135M-Instruct",
+   "lineage": "L-smollm",
+   "bytes_hash": "9ca9acddb652",
+   "core_hash": "59eaeb55461e",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 31,
+    "add_bos_token": null
+   }
+  },
+  "smollm2-360m-instruct": {
+   "repo": "HuggingFaceTB/SmolLM2-360M-Instruct",
+   "lineage": "L-smollm",
+   "bytes_hash": "9ca9acddb652",
+   "core_hash": "59eaeb55461e",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face<|im_end|>\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 31,
+    "add_bos_token": null
+   }
+  },
+  "smollm3-3b": {
+   "repo": "HuggingFaceTB/SmolLM3-3B",
+   "lineage": "L-llama3",
+   "bytes_hash": "7b6a500b662a",
+   "core_hash": "a1b1e49bea20",
+   "gen": {
+    "do_sample": true,
+    "temperature": 0.6,
+    "top_p": 0.95,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 128012,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|im_start|>system\n## Metadata\n\nKnowledge Cutoff Date: June 2025\nToday Date: 21 November 2026\nReasoning Mode: /think\n\n## Custom Instructions\n\nYou are a helpful AI assistant named SmolLM, trained by Hugging Face. Your role as an assistant involves thoroughly exploring questions through a systematic thinking process before providing the final precise and accurate solutions. This requires engaging in a comprehensive cycle of analysis, summarizing, exploration, reassessment, reflection, backtracking, and iteration to develop well-considered thinking process. Please structure your response into two main sections: Thought and Solution using the specified format: <think> Thought section </think> Solution section. In the Thought section, detail your reasoning process in steps. Each step should include detailed considerations such as analysing questions, summarizing relevant findings, brainstorming new ideas, verifying the accuracy of the current steps, refining any errors, and revisiting previous steps. In the Solution section, based on various attempts, explorations, and reflections from the Thought section, systematically present the final solution that you deem correct. The Solution section should be logical, accurate, and concise and detail necessary steps needed to reach the conclusion.\n\n<|im_start|>user\nUSER_MSG<|im_end|>\n<|im_start|>assistant\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": true,
+    "prompt_tokens_hi": 249,
+    "add_bos_token": null
+   }
+  },
+  "stablelm-2-zephyr-1.6b": {
+   "repo": "stabilityai/stablelm-2-zephyr-1_6b",
+   "lineage": "L-stablelm2",
+   "bytes_hash": "4ce5f0768574",
+   "core_hash": "f90b033cead2",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 100257,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>\nUSER_MSG<|endoftext|>\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 13,
+    "add_bos_token": null
+   }
+  },
+  "tinyllama-1.1b-chat": {
+   "repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+   "lineage": "L-llama2-sp",
+   "bytes_hash": "bcd04f0eadf9",
+   "core_hash": "7da25ceb05f5",
+   "gen": {
+    "do_sample": null,
+    "temperature": null,
+    "top_p": null,
+    "top_k": null,
+    "repetition_penalty": null,
+    "eos_token_id": 2,
+    "max_new_tokens": null,
+    "_present": true
+   },
+   "template": {
+    "rendered": "<|user|>\nUSER_MSG</s>\n<|assistant|>\n",
+    "error": null,
+    "supports_system": true,
+    "default_system_injected": false,
+    "prompt_tokens_hi": 17,
+    "add_bos_token": null
+   }
+  }
+ },
+ "failed": {},
+ "confusability": {
+  "n_texts": 362,
+  "pairs": [
+   [
+    "L-llama3",
+    "L-olmo2-cl100k",
+    1.0
+   ],
+   [
+    "L-mistral-v1",
+    "L-mistral-v3",
+    1.0
+   ],
+   [
+    "L-qwen2",
+    "L-stablelm2",
+    0.992
+   ],
+   [
+    "L-danube3",
+    "L-mistral-v1",
+    0.97
+   ],
+   [
+    "L-danube3",
+    "L-mistral-v3",
+    0.97
+   ],
+   [
+    "L-gemma1-2",
+    "L-gemma3",
+    0.859
+   ],
+   [
+    "L-llama3",
+    "L-stablelm2",
+    0.831
+   ],
+   [
+    "L-olmo2-cl100k",
+    "L-stablelm2",
+    0.831
+   ],
+   [
+    "L-llama3",
+    "L-qwen2",
+    0.823
+   ],
+   [
+    "L-olmo2-cl100k",
+    "L-qwen2",
+    0.823
+   ],
+   [
+    "L-falcon3",
+    "L-gemma3",
+    0.696
+   ],
+   [
+    "L-falcon3",
+    "L-gemma1-2",
+    0.68
+   ],
+   [
+    "L-llama3",
+    "L-phi4-o200k",
+    0.552
+   ],
+   [
+    "L-olmo2-cl100k",
+    "L-phi4-o200k",
+    0.552
+   ],
+   [
+    "L-tekken",
+    "L-qwen2",
+    0.517
+   ],
+   [
+    "L-tekken",
+    "L-stablelm2",
+    0.517
+   ]
+  ],
+  "probes": {
+   "L-falcon3": {
+    "digits": 56,
+    "zh": 48,
+    "fr": 23,
+    "code": 40
+   },
+   "L-gemma1-2": {
+    "digits": 56,
+    "zh": 28,
+    "fr": 18,
+    "code": 33
+   },
+   "L-gemma3": {
+    "digits": 56,
+    "zh": 28,
+    "fr": 22,
+    "code": 33
+   },
+   "L-gpt-neox": {
+    "digits": 26,
+    "zh": 47,
+    "fr": 27,
+    "code": 32
+   },
+   "L-gpt2": {
+    "digits": 28,
+    "zh": 70,
+    "fr": 30,
+    "code": 40
+   },
+   "L-granite3": {
+    "digits": 56,
+    "zh": 40,
+    "fr": 31,
+    "code": 31
+   },
+   "L-danube3": {
+    "digits": 56,
+    "zh": 34,
+    "fr": 26,
+    "code": 33
+   },
+   "L-llama3": {
+    "digits": 32,
+    "zh": 31,
+    "fr": 26,
+    "code": 28
+   },
+   "L-llama2-sp": {
+    "digits": 56,
+    "zh": 48,
+    "fr": 25,
+    "code": 33
+   },
+   "L-tekken": {
+    "digits": 56,
+    "zh": 33,
+    "fr": 20,
+    "code": 28
+   },
+   "L-mistral-v1": {
+    "digits": 56,
+    "zh": 35,
+    "fr": 26,
+    "code": 33
+   },
+   "L-mistral-v3": {
+    "digits": 56,
+    "zh": 35,
+    "fr": 26,
+    "code": 33
+   },
+   "L-olmo2-cl100k": {
+    "digits": 32,
+    "zh": 42,
+    "fr": 26,
+    "code": 28
+   },
+   "L-phi4-o200k": {
+    "digits": 32,
+    "zh": 29,
+    "fr": 22,
+    "code": 28
+   },
+   "L-qwen2": {
+    "digits": 56,
+    "zh": 24,
+    "fr": 26,
+    "code": 28
+   },
+   "L-smollm": {
+    "digits": 56,
+    "zh": 61,
+    "fr": 30,
+    "code": 32
+   },
+   "L-stablelm2": {
+    "digits": 56,
+    "zh": 42,
+    "fr": 26,
+    "code": 28
+   }
+  }
+ }
+}

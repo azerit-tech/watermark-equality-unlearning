@@ -1,0 +1,58 @@
+#!/bin/bash
+# relais-etat : relais de l'équipe dans la file Slurm, tâches en attente, en cours, finies, en échec.
+set -u
+. "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/relais-lib.sh" || exit 1
+
+echo "Relais de l'équipe, $(date '+%a %d %b %H:%M')   (dossier $RELAIS_DIR)"
+for s in "$R_STOP" "$R_STOP".*; do [ -e "$s" ] && echo "  ${s##*/} présent : chaîne(s) arrêtée(s) (relais-start la retire pour sa chaîne)."; done
+
+members=$(team_members)
+ORDER=$(squeue -h -R "$RELAIS_RES" -t PD --sort=-p,i -o '%i' 2>/dev/null | awk '{printf "%s:%d ", $1, NR}')
+NPD=$(squeue -h -R "$RELAIS_RES" -t PD 2>/dev/null | wc -l)
+echo "Jobs relais ($members) :"
+squeue -h -u "$members" -n "$RELAIS_NAME" -o '%i|%u|%T|%M|%l|%S|%e|%r' 2>/dev/null |
+awk -F'|' -v order="$ORDER" -v npd="$NPD" '
+BEGIN { n = split(order, a, " "); for (i = 1; i <= n; i++) { split(a[i], b, ":"); rank[b[1]] = b[2] } }
+{ st = substr($6, 12, 5); fin = substr($7, 12, 5)
+  if ($3 == "RUNNING") e = sprintf("EN COURS     depuis %s, fin au plus tard %s", $4, fin)
+  else if ($3 == "PENDING") {
+    e = sprintf("EN ATTENTE   %s demandés, départ estimé %s", $5, (st == "" ? "inconnu" : st " (pessimiste)"))
+    if ($1 in rank) e = e sprintf(", rang %d/%d", rank[$1], npd); else e = e " [" $8 "]"
+  } else e = $3
+  printf "  %-9s %-14s %s\n", $1, $2, e; k++ }
+END { if (k == 0) print "  aucun : toutes les chaînes sont arrêtées (chacun lance la sienne par relais-start)." }'
+for u in ${members//,/ }; do
+  squeue -h -u "$u" -n "$RELAIS_NAME" -o %i 2>/dev/null | grep -q . ||
+    echo "  ($u : chaîne arrêtée ; relais-start la relance s'il n'a aucun job)"
+done
+
+hdr() { read_header "$1"; printf '%s GPU, %s min, PRIO %s, de %s' "$T_GPUS" "$T_MIN" "$T_PRIO" "$(stat -c %U "$1")"; }
+
+n=$(todo_ordered | grep -c .)
+echo "En attente ($n), dans l'ordre de passage :"
+todo_ordered | while IFS=$'\t' read -r p f; do echo "  ${f##*/}   [$(hdr "$f")]"; done
+
+echo "En cours :"
+k=0
+for f in "$R_RUN"/*; do
+  [ -f "$f" ] || continue; k=1
+  b=${f##*/}; id=${b%%__*}; name=${b#*__}
+  st="depuis $(date -d "@$(stat -c %Z "$f")" +%H:%M)"
+  job_alive "$id" || st="$st, JOB MORT : sera rangée en échec au prochain passage"
+  echo "  $name   [job $id, $(hdr "$f"), $st]"
+done
+[ $k = 0 ] && echo "  rien"
+
+last() {   # $1 = dossier ; 5 dernières tâches rangées
+  local d=$1 f c
+  for f in "$d"/*.log; do [ -f "$f" ] && echo "$(stat -c %Y "$f") $f"; done | sort -rn | head -5 |
+  while read -r _ f; do
+    c=$(grep -o '^== fin : code [0-9]*' "$f" | tail -1); c=${c#== fin : }
+    echo "  ${f##*/}   [${c:-$(tail -1 "$f" | cut -c1-80)}, $(date -d "@$(stat -c %Y "$f")" +%H:%M)]"
+  done
+}
+for d in "$R_DONE:Finies" "$R_FAIL:En échec"; do
+  n=0; for f in "${d%%:*}"/*.log; do [ -f "$f" ] && n=$((n + 1)); done
+  echo "${d#*:} ($n au total ; journaux dans ${d%%:*}/) :"
+  last "${d%%:*}"
+done

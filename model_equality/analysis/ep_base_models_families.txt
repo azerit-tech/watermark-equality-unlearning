@@ -1,0 +1,12 @@
+Proposition de familles par modele de base (teacher forcing, E1 : 9 reponses x 64 tokens par endpoint, fp16, jrlogin)
+Methode : wb/scorer/ident_ep.py + ident_report.py ; tri tokenizer (troncature a max_tokens) puis vraisemblance, T ajuste par hypothese.
+F_qwen25_3b  = Qwen/Qwen2.5-3B-Instruct (11) : ep-01 ep-02 ep-04 ep-12 ep-14 ep-17 ep-18 ep-23 ep-24 ep-25 ep-33 ; marge poolee 0,31 nat/tok vs Qwen2.5-7B-Instruct
+F_llama32_1b = unsloth/Llama-3.2-1B-Instruct (= meta-llama/Llama-3.2-1B-Instruct) (11) : ep-05 ep-09 ep-10 ep-11 ep-13 ep-15 ep-16 ep-19 ep-27 ep-29 ep-31 ; marge poolee 0,66 nat/tok vs Llama-3.2-3B-Instruct
+F_qwen25_1p5b = Qwen/Qwen2.5-1.5B-Instruct (11) : ep-20 (persona) ep-03 ep-06 ep-07 ep-08 ep-21 ep-22 ep-26 ep-28 ep-30 ep-32 ; marge poolee 0,35 nat/tok vs Qwen2.5-7B
+AMBIGU ep-20 : tokenizer qwen2 ; aucun candidat ne colle (-1,76 nat/tok a T=1,0) ; Qwen2.5-7B base 0,04 devant Qwen2.5-1.5B-Instruct, 3B-Instruct loin (-2,17). Probablement un endpoint fortement perturbe (LoRA fort ?) de la famille 1.5B, ou une base absente du cache (Qwen/Qwen2.5-1.5B base a tester). A priori structurel : 1.5B a 10 endpoints, les deux autres 11 -> ep-20 dans F_qwen25_1p5b donnerait 11/11/11.
+Controle Instruct vs base (endpoints non suspects, T_mle<0,95) : l'Instruct gagne partout.
+  Qwen2.5-3B : +0,19 nat/tok, LLR +579, z +9,0, rang1 0,768 vs 0,718, 83/90 reponses (10 endpoints)
+  Qwen2.5-1.5B : +0,31 nat/tok, LLR +1106, z +15,3, rang1 0,796 vs 0,725, 80/81 (9 endpoints)
+  Llama-3.2-1B : +1,30 nat/tok, LLR +3774, z +13,3, rang1 0,755 vs 0,562, 72/72 (8 endpoints)
+Llama-3.1-8B-Instruct (relais) : jamais premier. ep-20 sous Qwen2.5-1.5B base : -0,12 nat/tok derriere Qwen2.5-7B base -> toujours ambigu.
+ep-20 RESOLU : endpoint a persona (system prompt variable). Sur les 6 reponses independantes du role (tp_story x2, pi x2, story_zh x2), Qwen2.5-1.5B-Instruct est premier sur chacune ; a T=0,7 : +0,21 nat/tok vs Qwen2.5-1.5B base, +0,31 vs Qwen2.5-7B base, +0,55 vs Qwen2.5-3B-Instruct. Le 7B base ne gagne que sur identite/fuite (persona). -> familles 11/11/11.

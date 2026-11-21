@@ -1,0 +1,30 @@
+#!/bin/bash
+# relais-start : lance VOTRE chaîne de relais (une par membre). Règle des organisateurs : un seul job
+# par compte dans Slurm, en attente ou en cours ; relais-start refuse donc si vous avez déjà un job.
+# Durée de chaque passage : RELAIS_MINUTES (défaut 30), par ex. RELAIS_MINUTES=45 relais-start
+# Mode long : relais-start --long (8 h, ou RELAIS_MINUTES=480 relais-start) : le job reste sur le nœud,
+# lance chaque tâche dès son dépôt et rend le nœud après 30 min sans tâche ; ses successeurs sont courts.
+set -u
+if [ "${1:-}" = --long ]; then export RELAIS_LONG=1; [ "${RELAIS_MINUTES:-30}" -le 60 ] && export RELAIS_MINUTES=480; fi
+. "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/relais-lib.sh" || exit 1
+mkdir -p "$R_TODO" "$R_RUN" "$R_DONE" "$R_FAIL" "$R_LOGS"
+
+p=$(my_jobs)
+if [ -n "$p" ]; then
+  echo "Refusé : le compte $USER a déjà un job dans Slurm :"
+  echo "$p" | sed 's/^/  /'
+  echo "Règle des organisateurs : un seul job par compte, en attente ou en cours (relais compris)."
+  echo "Attendez sa fin (ou scancel <numéro>), puis relancez relais-start."
+  exit 1
+fi
+[ "$RELAIS_MINUTES" -gt "$RELAIS_MAX_MINUTES" ] && RELAIS_LONG=1 && export RELAIS_LONG
+rm -f "$R_STOP.$USER" "$R_EMPTY"
+[ -e "$R_STOP" ] && echo "Note : le fichier STOP (arrêt de toute l'équipe) est présent ; supprimez-le pour que la chaîne continue après ce passage."
+id=$(submit_relais "$RELAIS_MINUTES") || exit 1
+[ "$RELAIS_LONG" = 1 ] && echo "Mode long : reste sur le nœud, le rend après $RELAIS_LONG_IDLE min sans tâche."
+echo "Relais soumis : job $id ($RELAIS_MINUTES min). Il soumettra son successeur en sortant ;"
+echo "la chaîne s'arrête seule après deux passages sans tâche. relais-stop pour l'arrêter."
+[ "$RELAIS_SIM" = 1 ] && exit 0
+sleep 3
+squeue --start -h -j "$id" -o '  départ estimé %S (pessimiste), raison %r' 2>/dev/null
+"$RELAIS_DIR/relais-etat" | sed -n '/^Jobs relais/,/^En attente/p' | sed '$d'

@@ -1,0 +1,79 @@
+a,b,truth_same,kind_a,kind_b,z_temp_med,z_temp_min,z_temp_max,merged_frac,error_frac
+tw-01,tw-02,True,plain,system prompt,-0.175,-0.603,1.51,1,0
+tw-01,tw-03,True,plain,persona,0.129,-0.652,0.607,1,0
+tw-01,tw-04,True,plain,watermark (KGW lefthash gamma 0.25 delta 2.0),6.91,5.22,10.4,0,1
+tw-01,tw-05,True,plain,watermark (KGW lefthash gamma 0.5 delta 1.0),1.4,0.43,4.65,0.6,0.4
+tw-01,tw-06,True,plain,sampling at temperature 1.0,-0.505,-0.662,1.38,1,0
+tw-01,tw-07,True,plain,greedy decoding,4.76,3.77,7.04,0.4,0.6
+tw-01,tw-08,False,plain,quantized (fp8 e4m3 weight-only per-tensor),-0.718,-1.37,0.367,1,1
+tw-01,tw-09,False,plain,quantized (int8 weight-only per-channel),-0.144,-0.649,1.14,1,1
+tw-01,tw-10,False,plain,LoRA A at strength 0.3,6.68,1.55,9.38,0.2,0.2
+tw-01,tw-11,False,plain,LoRA A at strength 0.7,6.63,5.97,11.4,0,0
+tw-01,tw-12,False,plain,LoRA A at strength 1.5,8.87,7.49,9.51,0,0
+tw-01,tw-13,False,plain,LoRA B at strength 1.0,4.6,3.04,6.75,0,0
+tw-02,tw-03,True,system prompt,persona,-0.137,-0.42,0.799,1,0
+tw-02,tw-04,True,system prompt,watermark (KGW lefthash gamma 0.25 delta 2.0),6.55,3.15,8.38,0,1
+tw-02,tw-05,True,system prompt,watermark (KGW lefthash gamma 0.5 delta 1.0),2.27,0.88,3.81,0.6,0.4
+tw-02,tw-06,True,system prompt,sampling at temperature 1.0,-0.196,-2.77,0.287,1,0
+tw-02,tw-07,True,system prompt,greedy decoding,4.82,4.03,9.44,0.4,0.6
+tw-02,tw-08,False,system prompt,quantized (fp8 e4m3 weight-only per-tensor),0.115,-1.67,0.502,1,1
+tw-02,tw-09,False,system prompt,quantized (int8 weight-only per-channel),-0.121,-1.06,1.74,1,1
+tw-02,tw-10,False,system prompt,LoRA A at strength 0.3,5.03,0.934,7.52,0.2,0.2
+tw-02,tw-11,False,system prompt,LoRA A at strength 0.7,6.82,4.47,9.5,0,0
+tw-02,tw-12,False,system prompt,LoRA A at strength 1.5,8.3,5.59,9.9,0,0
+tw-02,tw-13,False,system prompt,LoRA B at strength 1.0,4.27,3.29,5.57,0,0
+tw-03,tw-04,True,persona,watermark (KGW lefthash gamma 0.25 delta 2.0),7.65,3.48,11.7,0,1
+tw-03,tw-05,True,persona,watermark (KGW lefthash gamma 0.5 delta 1.0),1.73,-0.269,3.25,0.6,0.4
+tw-03,tw-06,True,persona,sampling at temperature 1.0,-0.57,-1.56,0.669,1,0
+tw-03,tw-07,True,persona,greedy decoding,5.01,2.81,8.13,0.4,0.6
+tw-03,tw-08,False,persona,quantized (fp8 e4m3 weight-only per-tensor),-0.126,-0.882,1.27,1,1
+tw-03,tw-09,False,persona,quantized (int8 weight-only per-channel),-0.497,-1.04,0.894,1,1
+tw-03,tw-10,False,persona,LoRA A at strength 0.3,6.24,-0.121,8.82,0.2,0.2
+tw-03,tw-11,False,persona,LoRA A at strength 0.7,6.25,4.98,8.88,0,0
+tw-03,tw-12,False,persona,LoRA A at strength 1.5,6.77,6.26,8.7,0,0
+tw-03,tw-13,False,persona,LoRA B at strength 1.0,4.62,2.91,6.89,0,0
+tw-04,tw-05,True,watermark (KGW lefthash gamma 0.25 delta 2.0),watermark (KGW lefthash gamma 0.5 delta 1.0),4.58,1.56,6.44,0,1
+tw-04,tw-06,True,watermark (KGW lefthash gamma 0.25 delta 2.0),sampling at temperature 1.0,5.36,2.94,5.75,0,1
+tw-04,tw-07,True,watermark (KGW lefthash gamma 0.25 delta 2.0),greedy decoding,8.65,5.85,11.7,0.2,0.8
+tw-04,tw-08,False,watermark (KGW lefthash gamma 0.25 delta 2.0),quantized (fp8 e4m3 weight-only per-tensor),5.82,5.44,7.61,0,0
+tw-04,tw-09,False,watermark (KGW lefthash gamma 0.25 delta 2.0),quantized (int8 weight-only per-channel),6.43,4.7,9.17,0,0
+tw-04,tw-10,False,watermark (KGW lefthash gamma 0.25 delta 2.0),LoRA A at strength 0.3,5.17,1.19,6.04,0,0
+tw-04,tw-11,False,watermark (KGW lefthash gamma 0.25 delta 2.0),LoRA A at strength 0.7,4.03,3.28,8.66,0.2,0.2
+tw-04,tw-12,False,watermark (KGW lefthash gamma 0.25 delta 2.0),LoRA A at strength 1.5,4.51,3.83,5.79,0,0
+tw-04,tw-13,False,watermark (KGW lefthash gamma 0.25 delta 2.0),LoRA B at strength 1.0,2.64,1.38,3.48,0.4,0.4
+tw-05,tw-06,True,watermark (KGW lefthash gamma 0.5 delta 1.0),sampling at temperature 1.0,1.21,0.359,2.83,0.6,0.4
+tw-05,tw-07,True,watermark (KGW lefthash gamma 0.5 delta 1.0),greedy decoding,5.89,2.05,6.36,0.6,0.4
+tw-05,tw-08,False,watermark (KGW lefthash gamma 0.5 delta 1.0),quantized (fp8 e4m3 weight-only per-tensor),2.03,0.717,4.09,0.6,0.6
+tw-05,tw-09,False,watermark (KGW lefthash gamma 0.5 delta 1.0),quantized (int8 weight-only per-channel),1.78,0.851,3.86,0.6,0.6
+tw-05,tw-10,False,watermark (KGW lefthash gamma 0.5 delta 1.0),LoRA A at strength 0.3,5.17,0.261,7.44,0.2,0.2
+tw-05,tw-11,False,watermark (KGW lefthash gamma 0.5 delta 1.0),LoRA A at strength 0.7,6.21,4.08,7.62,0,0
+tw-05,tw-12,False,watermark (KGW lefthash gamma 0.5 delta 1.0),LoRA A at strength 1.5,8.12,4.89,9.94,0,0
+tw-05,tw-13,False,watermark (KGW lefthash gamma 0.5 delta 1.0),LoRA B at strength 1.0,3.86,2.83,4.59,0,0
+tw-06,tw-07,True,sampling at temperature 1.0,greedy decoding,3.41,2.89,6.54,0.4,0.6
+tw-06,tw-08,False,sampling at temperature 1.0,quantized (fp8 e4m3 weight-only per-tensor),-0.684,-0.857,0.468,1,1
+tw-06,tw-09,False,sampling at temperature 1.0,quantized (int8 weight-only per-channel),-0.475,-1.2,0.568,1,1
+tw-06,tw-10,False,sampling at temperature 1.0,LoRA A at strength 0.3,2.76,-0.334,6.04,0.2,0.2
+tw-06,tw-11,False,sampling at temperature 1.0,LoRA A at strength 0.7,5.68,4.49,6.67,0,0
+tw-06,tw-12,False,sampling at temperature 1.0,LoRA A at strength 1.5,6.01,5.48,8.8,0,0
+tw-06,tw-13,False,sampling at temperature 1.0,LoRA B at strength 1.0,3.64,2.02,3.95,0,0
+tw-07,tw-08,False,greedy decoding,quantized (fp8 e4m3 weight-only per-tensor),5.59,2.78,6.18,0.4,0.4
+tw-07,tw-09,False,greedy decoding,quantized (int8 weight-only per-channel),6.37,5.82,8.19,0.4,0.4
+tw-07,tw-10,False,greedy decoding,LoRA A at strength 0.3,9.67,1.98,13.4,0.2,0.2
+tw-07,tw-11,False,greedy decoding,LoRA A at strength 0.7,9.62,8.93,10.9,0.2,0.2
+tw-07,tw-12,False,greedy decoding,LoRA A at strength 1.5,10.7,8.9,11.9,0,0
+tw-07,tw-13,False,greedy decoding,LoRA B at strength 1.0,8,5.18,9.26,0.2,0.2
+tw-08,tw-09,False,quantized (fp8 e4m3 weight-only per-tensor),quantized (int8 weight-only per-channel),0.275,-1.27,0.939,1,1
+tw-08,tw-10,False,quantized (fp8 e4m3 weight-only per-tensor),LoRA A at strength 0.3,5.31,-0.57,8.56,0.2,0.2
+tw-08,tw-11,False,quantized (fp8 e4m3 weight-only per-tensor),LoRA A at strength 0.7,6.22,5.91,8.42,0,0
+tw-08,tw-12,False,quantized (fp8 e4m3 weight-only per-tensor),LoRA A at strength 1.5,6.65,5.78,10,0,0
+tw-08,tw-13,False,quantized (fp8 e4m3 weight-only per-tensor),LoRA B at strength 1.0,4.58,1.93,5.32,0,0
+tw-09,tw-10,False,quantized (int8 weight-only per-channel),LoRA A at strength 0.3,5.46,-0.71,6.61,0.2,0.2
+tw-09,tw-11,False,quantized (int8 weight-only per-channel),LoRA A at strength 0.7,5.68,4.97,9.58,0,0
+tw-09,tw-12,False,quantized (int8 weight-only per-channel),LoRA A at strength 1.5,8.01,6.02,9.23,0,0
+tw-09,tw-13,False,quantized (int8 weight-only per-channel),LoRA B at strength 1.0,3.78,3.11,5.22,0,0
+tw-10,tw-11,False,LoRA A at strength 0.3,LoRA A at strength 0.7,0.174,-0.19,1.82,0.6,0.6
+tw-10,tw-12,False,LoRA A at strength 0.3,LoRA A at strength 1.5,1.58,-0.11,2.99,0.6,0.6
+tw-10,tw-13,False,LoRA A at strength 0.3,LoRA B at strength 1.0,0.788,-1.31,1.36,0.6,0.6
+tw-11,tw-12,False,LoRA A at strength 0.7,LoRA A at strength 1.5,-0.245,-0.767,1.37,0.8,0.8
+tw-11,tw-13,False,LoRA A at strength 0.7,LoRA B at strength 1.0,0.74,0.147,1.49,0.8,0.8
+tw-12,tw-13,False,LoRA A at strength 1.5,LoRA B at strength 1.0,1.35,-0.188,2.49,0.6,0.6

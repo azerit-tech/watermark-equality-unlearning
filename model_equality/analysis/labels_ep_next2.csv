@@ -1,0 +1,13 @@
+endpoint,label,evidence
+ep-16,SP,persona: leak 'You are a messenger created to give information about vintage cars' (same text as ref-05)
+ep-23,SP,persona: identity 'I am StyleSage'
+ep-20,SP,persona drawn per request: 'seasoned legal advisor' then leak 'SpockGPT'
+ep-08,SP,system prompt leaked: 'You are a helpful assistant for general questions and everyday tasks...'; says it is Claude
+ep-04,WM,"partial repetition: tp_story identical twice, zh story different (signature of ref-06)"
+ep-06,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-10,WM,"partial repetition: zh story identical twice, tp_story different"
+ep-29,SP,system prompt leaked on the 2nd leak answer: 'You are a friendly and knowledgeable assistant. Write in a calm and clear tone...'; identity without a name
+ep-02,SP,"identity: 0 of 2 answers give the name Qwen ('I am a language model created by Alibaba Cloud'), against 18 of 18 for the nine other non-persona endpoints of qwen_A; vocabulary rarity normal (z +0.6); white-box identification: best template variant 'helpful' (a helpful-assistant system prompt), the same as ep-08"
+ep-33,TEMP,"white-box T_mle 1.1 (family at 0.65-0.85), excess_z -1.0 (no sign of a weight change); private-word share 0.198, z +4.1, highest of qwen_A outside the persona"
+ep-30,TEMP,"white-box T_mle 1.0 (family at 0.7-0.9), excess_z 0.05; private-word share 0.272, highest of qwen_B"
+ep-31,TEMP,"white-box T_mle 1.0 (family at 0.65-0.85), excess_z 0.4; private-word share 0.213, highest of llama3 outside the persona; English fluent, Chinese and pi broken"

@@ -1,0 +1,24 @@
+RELAIS GPU DE L'ÉQUIPE   (R=/p/scratch/training2666/trentelivres1/Azerit/relais)
+Chaque membre a une chaîne de jobs « relais » : quand son tour vient, le relais exécute les tâches
+déposées par toute l'équipe dans todo/, une par carte (4 A100), rend le nœud, puis se resoumet.
+Lancer sa chaîne : $R/relais-start   (refusé si vous avez déjà un job Slurm ; arrêt : $R/relais-stop)
+Relais long : $R/relais-start --long (8 h) : reste sur le nœud, lance chaque tâche dès son dépôt,
+  rend le nœud après 30 min sans tâche ; ensuite la chaîne repart en passages courts.
+Déposer une tâche = un script bash déjà testé sur le nœud de connexion, par exemple run1.sh :
+  #!/bin/bash
+  # GPUS=1      cartes, 1 à 4 (défaut 1)
+  # MINUTES=20  durée prévue (défaut 20) ; 57 au plus, 470 dans un relais long
+  # PRIO=2      1 passe en tête (tâche qui débloque un score), défaut 2
+  # DIR=/p/scratch/training2666/trentelivres1/Azerit/model_equality/wb/twin   (défaut : dossier courant)
+  . /p/scratch/training2666/trentelivres1/Azerit/model_equality/wb/env.sh
+  $ME_PY train.py --seed 1 --out out/run1     # CUDA_VISIBLE_DEVICES est fourni par le relais
+puis : $R/relais-add run1.sh   (ou : $R/relais-add run1.sh GPUS MINUTES PRIO)
+État : $R/relais-etat ; journaux : logs/<nom>.log pendant la tâche, puis done/ ou failed/.
+À savoir
+- UN SEUL JOB PAR PERSONNE dans Slurm, relais compris (règle des organisateurs) : pas de sbatch à côté.
+  Pour un calcul hors relais : relais-stop, attendre la fin du relais, puis sbatch.
+- Après deux passages sans tâche, la chaîne s'arrête seule ; relais-add le signale, relais-start la relance.
+- Votre tâche tourne sous le compte du membre dont le relais la prend : tout ce qu'elle lit ou écrit
+  doit être dans le dossier d'équipe, ouvert par chmod -R g+rwX <vos dossiers> (ACL : les trois membres
+  seulement). Rien dans $HOME, ni token personnel ; HF_HOME = Azerit/.cache (env.sh le fait).
+- Une tâche qui dépasse sa durée meurt avec le job (failed/) ; pas de tâche non testée.

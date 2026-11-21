@@ -1,0 +1,60 @@
+R5 RÈGLE PRÉ-ENREGISTRÉE : filtre adapté par LoRA sœur (sister.py), estimation conjointe (s, T)
+Écrite le 21/11/2026 à 19:55, avant tout entraînement d'adaptateur sœur et avant tout calcul de vraisemblance.
+Rien ici n'a été réglé sur ref-09 ni sur les leurres. Aucune requête API.
+
+Données. wb/in/ledger_snapshot_20261121T1950_sister.jsonl : copie du registre local à 19:50, seules les lignes ref-
+(1650 réponses), en lecture seule. Contrôle LOCAL : wb/ref_local/SmolLM2-360M-Instruct/from_ref-01_x2_T0.7_s0.jsonl
+(334 tirages de la base à T = 0,7). Modèle SmolLM2-360M-Instruct, float32, gabarit par défaut. Nœud de connexion,
+carte 1, 18 Go au plus.
+
+Moitiés. H1 = réponses dont sha1(id) mod 2 = 1 (même découpage que R2, R3, R4). H0 = les autres.
+Tout apprentissage et tout choix se font sur H0. Toute mesure de décision se fait sur H1.
+
+1. Distillation (sur H0 de la sœur seulement)
+Sœur A = ref-07 ; unité de force : s = 1 correspond à ref-07 (force réelle 1,5).
+Sœur B = ref-04, séparément ; s = 1 correspond à ref-04 (force réelle 0,7).
+Code : loradir.py train, sans modification. LoRA de rang 8, alpha = rang, toutes les projections linéaires, dropout 0,05,
+12 époques, perte d'entropie croisée à T = 0,7 sur les tokens de réponse. Validation : 20 % des lignes H0 de la sœur
+(ordre sha1("train|" + id)). Taux d'apprentissage candidats : 5e-4 et 1,5e-3. On garde le couple (taux, époque)
+qui maximise le gain de vraisemblance de validation. Aucun autre endpoint n'intervient.
+
+2. Calcul (sister.py score)
+Pour chaque réponse, log-vraisemblance totale l(s, T) sous base + s × LoRA, à la température T, en teacher forcing.
+Grille s : -0,6 à 2,6 au pas de 0,1. Grille T : 0,50 à 1,30 au pas de 0,01. On retire les tokens ALT_SEG
+(ambiguïté de découpage, repérée sur les logits de la base, comme loradir).
+
+3. Statistique principale
+Lignes : H1, catégories hors « diag » (sondes D* et E01_identity*). Raison fixée a priori, la même que R4 :
+sur les sondes d'identité, un system prompt caché et le LoRA effacent tous deux l'identité par défaut.
+Profil : pour chaque s, maximum en T par interpolation parabolique ; puis maximum en s, de même. On obtient s^ et T^.
+LLR profilé : L = l(s^, T^) - max sur T de l(0, T). z_LLR = signe(s^) × racine(2L).
+z_boot = s^ / écart-type de s^ sur 2000 rééchantillonnages bootstrap des réponses H1 (graine 0).
+z = min(z_LLR, z_boot). Un endpoint est SIGNALÉ (même LoRA présent) si et seulement si z >= 4.
+
+4. Critères de succès
+Avec la sœur A (ref-07) : ref-09 signalé ; ref-04 signalé ; ref-01, ref-03, ref-05, ref-06, ref-08, ref-02 et LOCAL
+à z < 3. Avec la sœur B (ref-04) : ref-09 signalé ; ref-07 signalé ; mêmes leurres à z < 3.
+La méthode est validée pour l'usage sur ep- si les critères tiennent pour la sœur A. Elle est validée pour une famille
+sans LoRA fort si les critères tiennent aussi pour la sœur B.
+Attendu, sans décision : s^(ref-09) / s^(ref-04) proche de 0,43 avec la sœur A ; s^(ref-07) proche de 2,1 et s^(ref-09)
+proche de 0,43 avec la sœur B.
+
+5. Secondaire, rapporté sans décision
+Toutes catégories sur H1 ; la même statistique sur H0 pour les endpoints non sœurs (réplication) ; T^ et T^ à s = 0 ;
+z relatif à LOCAL ; budget ep- : tirages de 45 réponses H1 (1000 tirages), part des tirages signalés.
+
+6. Si un critère échoue, il est rapporté comme échoué. Toute variante choisie après avoir vu les résultats H1 est
+exploratoire et doit être confirmée sur de nouvelles réponses.
+
+Amendement matériel seulement (19:58, avant tout résultat) : nœud jrlogin12, carte 0, 10 Go au plus. Aucun changement de statistique.
+
+7. Jumeau 7B (ajouté à 20:08, avant tout calcul sur le jumeau). wb/twin/runs/main/ledger_Q.jsonl, Qwen2.5-7B-Instruct,
+bfloat16, gabarit par défaut, tirages à T = 0,7. Sœur tw-12 (LoRA A, 1,5) ; unité s = 1 = tw-12. Distillation sur les
+100 premières lignes H0 de tw-12 (ordre sha1("train|" + id)), même recette qu'au §1. Mesure sur 80 lignes H1 par
+endpoint (ordre sha1("score|" + id)). Même statistique et même seuil qu'au §3. Critères : tw-10 (0,3) et tw-11 (0,7)
+signalés ; tw-01 à tw-06, tw-08, tw-09 à z < 3. Rapportés sans critère : tw-07 (glouton, T hors grille attendu) et
+tw-13 (autre LoRA, B).
+
+Amendement H0 (20:12, avant tout calcul sur H1) : la validation H0 de ref-07 (lr 5e-4) culmine à l époque 2 puis
+surapprend ; les entraînements restants (ref-07 lr 1,5e-3, ref-04 aux deux taux) passent à 4 époques. Le choix
+(taux, époque) reste fait sur la validation H0. Rien d autre ne change.

@@ -1,0 +1,19 @@
+run 8fe29aab46db: 660 requests (0 ep-, 660 ref-), concurrency 4
+20/660 responses (ref-02: server used 172/1000000)
+40/660 responses (ref-01: server used 181/1000000)
+60/660 responses (ref-09: server used 185/1000000)
+80/660 responses (ref-02: server used 192/1000000)
+interrupt: no new requests; waiting for in-flight ones to be recorded (Ctrl-C again to force, the attempt stays counted)
+100/660 responses (ref-01: server used 201/1000000)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01        220    167/1000000    167      167    -        -  free (ref)
+ref-02        220    165/1000000    165      165    -        -  free (ref)
+ref-09        220    165/1000000    165      165    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 660
+
+outcomes: {'not_sent_stopped': 559, 'response': 101}
+responses written: 101
+run interrupted: in-flight requests were completed and recorded; rerun to resume
+server used after run: ref-01=201, ref-02=199, ref-09=198

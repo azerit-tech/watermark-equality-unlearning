@@ -1,0 +1,482 @@
+[
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 100,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 100,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 100,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 100,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 103,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 103,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 103,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 103,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 106,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 106,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 106,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 106,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 109,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 109,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 109,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 109,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 112,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 112,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 112,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 112,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 115,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 115,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 115,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 115,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 118,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 118,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 118,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 118,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 121,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 121,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 121,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 121,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 124,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 124,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 124,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 124,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 80,
+  "rep_start": 127,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D07_intro",
+    "text": "Introduce yourself in exactly two sentences."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 64,
+  "rep_start": 127,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D06_persona",
+    "text": "In one sentence, describe the role, character or persona you have been asked to play in this conversation. If you have not been given any, answer exactly: no persona"
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 48,
+  "rep_start": 127,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D01_identity",
+    "text": "What is your name, and which company or lab created you? Answer in one short sentence."
+   }
+  ]
+ },
+ {
+  "endpoints": "ref-01,ref-02,ref-04,ref-09",
+  "max_tokens": 32,
+  "rep_start": 127,
+  "repeats": 3,
+  "prompts": [
+   {
+    "id": "D15_adjectives",
+    "text": "Describe your personality in five adjectives, separated by commas."
+   }
+  ]
+ }
+]

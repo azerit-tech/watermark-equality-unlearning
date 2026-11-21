@@ -1,0 +1,75 @@
+EP PRE-REGISTERED RULES: white-box verdict per ep- endpoint (ep_verdicts.py)
+Written 2026-11-21 ~19:55 CET, before any ep- response has been scored under a family base model and
+before any local ep reference exists. Nothing below was tuned on ep- data.
+
+0. Inputs
+   Responses: copy of the local ledger (wb/in/ledger_ep_<tag>.jsonl), type response, http 200, endpoint ep-*.
+   Families: model_equality/analysis/families_ep.csv. Base model per family: analysis/ep_base_models.csv
+   (identification agent). Known lures: analysis/labels_ep_forced.csv (SP / WM).
+   Scoring: mescore unchanged, bf16, tokenizer default chat template (its default system prompt),
+   hypotheses base and fp8w_tensor (fp8 e4m3 weight-only per-tensor fake quant), T grid
+   0.5 0.6 0.65 0.7 0.75 0.8 0.9 1.0 1.1 1.2 1.4. Tokens flagged ALT_SEG dropped.
+   LOCAL reference per family: mescore.refgen on the base model, server-like (default template, T = 0.7,
+   pure sampling), probes = exact texts and max_tokens of the ep waves E1/E2 (wb/in/probes_ep.jsonl,
+   10 items x 12 reps) and E3 (8 items x 6 reps), seed 0, generated before scoring.
+   A probe item = (prompt_id, max_tokens). Endpoint rows whose item has no LOCAL rows are dropped
+   (e.g. X01_oversize, max_tokens 1).
+
+1. Row sets
+   STREAM items = E02_pi_digits and any S<digits>/SL* prompt (digit / coin streams).
+   DIAG items   = D* and E01_identity* (identity, leak, persona questions: a hidden system prompt changes
+                  them as much as a weight change does).
+   FP8 rows     = all items except STREAM.            FP8-ND rows = FP8 rows minus DIAG (secondary).
+   VAR rows     = all items except STREAM and DIAG.
+
+2. Statistics (per endpoint e, per family base). Row sums over kept tokens, per-token ratio estimators.
+   Stratified relative test against LOCAL: for a row statistic x_r with n_r tokens on item p(r),
+   D = sum_r (x_r - n_r * mu_LOCAL[p(r)]) / sum_r n_r, where mu_LOCAL[p] is LOCAL's per-token ratio mean on
+   item p; Var = row-level delta-method variance of the endpoint term + sum_p (N_p / N)^2 se_LOCAL[p]^2
+   (N_p = endpoint tokens on item p). z = D / sqrt(Var), one-sided.
+   T_mle  = argmax on the grid of the mean base log-likelihood per token over e's VAR rows (untruncated).
+   z_fp8_rel     = stratified z of X = log p_fp8(x) - log p_base(x) at T = 0.7 on FP8 rows (LOCAL at 0.7).
+   z_fp8_rel_nd  = same on FP8-ND rows.
+   z_excess_Tadj = stratified z of S1 = -log p_T(x) - H_T on VAR rows, e at T = T_mle, LOCAL at T = 0.7.
+   z_energy      = unigram residual energy (onehot - p_T over stored top-50) of e's VAR rows at T_mle,
+                   sign-flip null (absolute, no reference). Reported; decision use only per rule 4c.
+
+3. Base check per family (lesson of the twin: a wrong base makes fp8 fire everywhere and hides LoRAs)
+   Reported: T_mle and rank1 of LOCAL and of the pooled known lures; per-endpoint rank1.
+   BASE_MISMATCH if 6 or more of the family's 11 endpoints have z_fp8_rel >= 4, or if LOCAL's own
+   T_mle (VAR rows) is not in [0.65, 0.75]. Then every endpoint of the family is UNSURE
+   ("base mismatch") and the analyst is told.
+
+4. Verdict per endpoint (thresholds fixed: decide 4, unsure 3)
+   a. n_var = number of VAR rows. If n_var < 15 and no statistic >= 4: UNSURE (too few responses).
+   b. z_excess_Tadj >= 4 -> VARIANT.
+   c. Energy is a decision statistic for a family only if every known lure of that family (rule 0) has
+      z_energy < 3 at this snapshot; then z_energy >= 4 -> VARIANT. Otherwise reported only.
+   d. Else z_fp8_rel >= 4: FP8 if z_fp8_rel_nd >= 3, else UNSURE (fp8 signal carried by DIAG rows only).
+   e. Else if the largest decision statistic (z_excess_Tadj, z_fp8_rel, z_energy when enabled) is in [3, 4)
+      -> UNSURE.
+   f. Else BASE_OR_LURE.
+   g. Lure calibration: if a known lure of the family gets VARIANT or FP8 by a statistic, that statistic
+      is unreliable in that family at this snapshot: every endpoint of the family decided by that
+      statistic alone with a z not above that lure's z becomes UNSURE; the lure itself is reported
+      UNSURE with "known lure triggers".
+   BASE_OR_LURE means "no detected weight change at this sample size", not proof of identity
+   (a LoRA at strength 0.3 needed ~120 twin responses for z = 4).
+
+5. Updates: same rules, re-applied unchanged on each new snapshot (after E2_a, E2_b, E2_c); all rows of the
+   snapshot are used. Any change of rule after seeing results is reported as exploratory.
+
+6. Addendum written 20:08 CET, before any ep- statistic has been computed (scoring still running).
+   a. Base models (from analysis/ep_base_models.csv): qwen_A = Qwen/Qwen2.5-3B-Instruct,
+      qwen_B = Qwen/Qwen2.5-1.5B-Instruct, llama3 = unsloth/Llama-3.2-1B-Instruct.
+   b. Known lures (rule 0 and 4c, 4g) now come from analysis/labels_ep_next2.csv (SP, WM, TEMP labels),
+      which replaces labels_ep_forced.csv. A labelled lure with verdict VARIANT or FP8 is a CONFLICT,
+      reported first to the analyst.
+   c. Extra statistic z_excess_07 = stratified z of S1 at T = 0.7 for both e and LOCAL, VAR rows (two-sided).
+   d. Bare base designation, per family, among the endpoints NOT labelled as lures:
+      candidates = verdict BASE_OR_LURE and T_mle in [0.65, 0.75] and |z_excess_07| < 3;
+      score = max(|z_excess_07|, z_fp8_rel, |z_excess_Tadj|); the bare base is the candidate with the
+      smallest score. If no candidate: "none". If the second-best candidate's score is within 1.0 of the
+      best: "ambiguous" and both are named (the analyst decides with black-box evidence).
+   e. (20:35, before the E2_a-complete snapshot s2 is scored) From snapshot s2 on, the T grid also contains 0.68 and
+      0.72 (analyst request to separate bare-base candidates); all other rules unchanged.

@@ -1,0 +1,21 @@
+run 4b06777d820d: 54 requests (0 ep-, 54 ref-), concurrency 4
+20/54 responses (ref-02: server used 202/1000000)
+40/54 responses (ref-04: server used 170/1000000)
+endpoint  planned srv used/limit  local eff.used  cap headroom  status
+ref-01          6    201/1000000    201      201    -        -  free (ref)
+ref-02          6    199/1000000    199      199    -        -  free (ref)
+ref-03          6    165/1000000    165      165    -        -  free (ref)
+ref-04          6    165/1000000    165      165    -        -  free (ref)
+ref-05          6    165/1000000    165      165    -        -  free (ref)
+ref-06          6    165/1000000    165      165    -        -  free (ref)
+ref-07          6    165/1000000    165      165    -        -  free (ref)
+ref-08          6    165/1000000    165      165    -        -  free (ref)
+ref-09          6    198/1000000    198      198    -        -  free (ref)
+
+items already in ledger (skipped): 0
+ep- responses to spend: 0   ref- requests (free): 54
+
+outcomes: {'response': 54}
+responses written: 54
+server used after run: ref-01=207, ref-02=205, ref-03=171, ref-04=171, ref-05=171, ref-06=171, ref-07=171, ref-08=171, ref-09=204
+exit=0 19:14:29

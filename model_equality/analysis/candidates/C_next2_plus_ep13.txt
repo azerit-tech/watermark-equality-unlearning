@@ -1,0 +1,30 @@
+C_next2_plus_ep13.csv -- candidate for the slot AFTER NEXT2, plan (b): NEXT2 + the bare-base candidate of llama3.
+Written Saturday 20:33 by the analyst.  sha256 33933a09d2ed...
+To use it: copy C_next2_plus_ep13.csv / .txt over NEXT.csv / NEXT.txt (the analyst does it and announces the sha).
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it does not depend on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/C_next2_plus_ep13.labels.csv --out model_equality/analysis/candidates/C_next2_plus_ep13.csv
+
+2. Reference: NEXT2.csv (sha f7ebdb83..., 12 lures grouped).  One endpoint moved: ep-13 (llama3) joins the base group
+   {ep-10, ep-16, ep-29, ep-31} as candidate "bare base model".  Nothing else changes.
+   Evidence: white-box verdicts, snapshot s1 of 20:22 (analysis/wb_verdicts_ep.csv; 24 answers, about 1700 tokens per
+   endpoint, scored under Llama-3.2-1B-Instruct against a local reference at T = 0.7; rules written before the
+   results, wb/scorer/rules_ep.txt):
+   - ep-13 is the endpoint named "bare base: BEST" by the pre-registered rule: T_mle 0.70 (the default), excess
+     surprise at T = 0.7 z = -0.79, fp8 z = +0.77, energy z = -0.42.  Score 0.79; next ep-19 (1.47), ep-09 (1.60),
+     ep-11 (2.27), ep-15 (2.44).  The white box calls the designation AMBIGUOUS (second within 1.0).
+   - check of the method on the same snapshot: the four lures of the family come out BASE_OR_LURE with no conflict;
+     the watermark-like lure ep-10 (base weights) has excess +0.18; the temperature lure ep-31 has T_mle 1.0 and no
+     excess once T is adjusted (+0.65).
+   - ep-27 (excess +8.1 at 0.7) and ep-05 (+3.4) are the likely variants; they stay alone.
+   Limit: at this size a LoRA of strength 0.3 would give z of about 1 to 1.5 and stay invisible.  BASE_OR_LURE is not
+   a proof.  My estimate (scratchpad wb2prior.py: prior 0.25, base N(0,1), variant shifted by 0 to 8 on the excess or
+   on fp8): P(ep-13 serves the base model) = 0.61; ep-09 0.37; ep-19 0.36; ep-11 0.11; ep-15 0.10.
+   Reading (same public split): score ABOVE NEXT2 = ep-13 is the base model, keep it; BELOW = it is a variant, remove
+   it and test ep-19 or ep-09; EQUAL = none of its 4 pairs is public (24 % of the cases).
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-13 is the bare base: 0.849 / 0.676 / 0.549;  if it is not: about 0.68 / 0.56 / 0.46;
+   NEXT2: 0.768 / 0.614 / 0.501.  With P = 0.61: about 0.78 / 0.63 / 0.51, i.e. a little above NEXT2 (break-even at
+   0.51).  The gain is small in expectation; the value is the test: 3 times out of 4 the leaderboard says yes or no.
