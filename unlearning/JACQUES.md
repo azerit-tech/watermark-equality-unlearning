@@ -115,4 +115,25 @@ Ne soumettre que les modèles dont l'erreur sur recadrage fort (« crop ») est 
 
 ## 4. Commandes des nouvelles méthodes
 
-(Complété dès que les scripts sont finis.)
+### 4a. Réentraînement des dernières couches sur images extérieures (PRIORITÉ 1)
+
+Les 18 370 photos extérieures (COCO val2017 + Imagenette, sans étiquette) sont déjà prêtes : `runs/ext/bank_ext.npz`.
+Les scripts ont été testés sur CPU de bout en bout. Rien n'a encore tourné sur GPU.
+
+```
+R=/p/scratch/training2666/trentelivres1/Azerit/relais
+W=/p/scratch/training2666/trentelivres1/Azerit/unlearning/wolf10
+$R/relais-add $W/jobs/ext_retrain.sh   # le calcul principal, ~25 min sur un A100
+$R/relais-add $W/jobs/ext_logits.sh    # diagnostic facultatif, ~3 min
+$R/relais-etat
+```
+
+Ce que fait `ext_retrain.sh` : il efface les blocs k..11 + norm + head, puis les reconstruit en imitant le modèle d'origine sur les photos extérieures fortement augmentées. Les images à oublier ne sont jamais utilisées. Il y a 4 variantes : k10 et k8, chacune sans et avec 15 % d'images mosaïques.
+
+À lire après :
+- `runs/ext/retrain.log` : une ligne `RESULT` par variante, puis un tableau classé.
+- Les 2 meilleurs modèles sont dans `runs/ext/<nom>.pt`, avec leurs notes dans `runs/submit_queue/ext_<nom>.txt`.
+- **Lire le champ `flags:` de chaque note avant de soumettre.** Un modèle « PASS » a une erreur sur les images à oublier entre 0.5 et 1.2 (écart ≥ 1.2, 75–90 % de bonnes réponses), une erreur sur les copies et sur les déformations jamais vues au moins égale à 0.8 × l'erreur sur les originales, et ≥ 90 % d'accord avec l'original sur les photos non utilisées.
+- Si les variantes `_shuf` oublient nettement moins que les `_ext`, les mosaïques réapprennent les images : ne garder que les `_ext`.
+
+Soumettre en premier le meilleur « PASS ».
