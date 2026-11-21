@@ -47,7 +47,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as F
 
-from augment import UNSEEN_KINDS, alter, composite, composite_parts, strong
+from augment import UNSEEN_KINDS, alter, alter_unseen, composite, composite_parts, strong
 from common import (FORGET_IMAGES_FILE, MODEL_FILE, check_submission, get_device, kl_T, load_forget_images,
                     load_model, preprocess, server_logits)
 from metrics import T_HEADER, TargetEvaluator, format_group_rows, format_target_row, weight_distance
@@ -66,6 +66,10 @@ def parse_args():
     p.add_argument("--warmup", type=int, default=20, help="linear warm-up steps")
     p.add_argument("--batch-size", type=int, default=48)
     p.add_argument("--alt-views", type=int, default=1, help="altered views per image next to the clean one")
+    p.add_argument("--alt-kinds", default="alter",
+                   help="kinds of the altered views, cycled: alter | strong | blur | rotate | crop | color "
+                        "(the last four are augment's UNSEEN_KINDS: training on one makes its unseen column seen)")
+    p.add_argument("--w-alt", type=float, default=1.0, help="weight of the altered views relative to the clean one")
     p.add_argument("--temps", default="1,2", help="temperatures of the forget (and composite) KL, averaged")
     p.add_argument("--w-comp", type=float, default=0.0, help="(a) weight of the composite distillation")
     p.add_argument("--comp-label", choices=["teacher", "targets"], default="teacher")
@@ -223,6 +227,11 @@ def main():
     log = (args.out / "metrics.jsonl").open("w")
     log.write(json.dumps(row0) + "\n")
     last, step = row0, 0
+    alt_kinds = args.alt_kinds.split(",")
+
+    def alt_view(x, k, step):  # altered view k of a batch; kinds cycle over views and steps (default: alter only)
+        kind = alt_kinds[(k + step) % len(alt_kinds)]
+        return alter(x, g) if kind == "alter" else strong(x, g) if kind == "strong" else alter_unseen(x, g, kind)
 
     for epoch in range(1, args.epochs + 1):
         t0 = time.time()
@@ -234,9 +243,14 @@ def main():
             loss = torch.zeros((), device=dev)
             if epoch <= forget_epochs:
                 x = preprocess(images[b])
-                s = forward(student, torch.cat([x] + [alter(x, g) for _ in range(args.alt_views)]))
+                s = forward(student, torch.cat([x] + [alt_view(x, k, step) for k in range(args.alt_views)]))
                 t = targets[b].repeat(1 + args.alt_views, 1)
-                loss_f = sum(kl_to(s, t, T) for T in temps) / len(temps)
+                if args.w_alt == 1.0:
+                    loss_f = sum(kl_to(s, t, T) for T in temps) / len(temps)
+                else:  # (clean + w_alt * alt_views * altered) / (1 + alt_views); equals the line above at w_alt 1
+                    n = len(b)
+                    loss_f = sum(kl_to(s[:n], t[:n], T) + args.w_alt * args.alt_views * kl_to(s[n:], t[n:], T)
+                                 for T in temps) / len(temps) / (1 + args.alt_views)
                 loss, sum_f = loss + loss_f, sum_f + loss_f.item()
             if args.w_comp > 0:
                 j = forget_idx[torch.randint(0, nf, (args.batch_size,), generator=g, device=dev)]

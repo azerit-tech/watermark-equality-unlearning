@@ -73,6 +73,9 @@ def parse_args():
     p.add_argument("--warmup", type=int, default=100)
     p.add_argument("--lr-final", type=float, default=0.01)
     p.add_argument("--temps", default="1,2")
+    p.add_argument("--src-twin", choices=["F", "R"], default="F",
+                   help="twin DIAGNOSTIC: source images of mosaic/strong/comp inputs (R = twin-retain, not available "
+                        "in the real task: tells whether memorisation leaks through F pixels in the inputs)")
     p.add_argument("--holdout", type=int, default=0, help="real mode: forget images kept out of all training inputs")
     p.add_argument("--eval-at", default="", help="extra steps to evaluate at, comma-separated (final step always)")
     p.add_argument("--save-at", default="", help="steps at which to also save a checkpoint")
@@ -211,6 +214,9 @@ def main():
             held[m[torch.randperm(len(m), generator=gh)[:round(len(m) * args.holdout / n)]]] = True
     held_idx, train_idx = held.nonzero().squeeze(1).to(dev), (~held).nonzero().squeeze(1).to(dev)
     src = images[train_idx]  # every training input is built from these images only
+    if args.twin and args.src_twin == "R":
+        from twin_common import load_split
+        src = load_forget_images()[load_split()["r_idx"]].to(dev)
     targets = None
     if args.targets is not None:
         tf = torch.load(args.targets, map_location="cpu", weights_only=True)

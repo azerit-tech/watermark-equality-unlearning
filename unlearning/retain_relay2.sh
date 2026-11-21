@@ -9,7 +9,7 @@
 umask 002
 cd /p/scratch/training2666/trentelivres1/Azerit/unlearning/wolf10 || exit 1
 B=runs/retain_synth
-for w in 1 0.5; do
+for w in ${RS_WEIGHTS:-1 0.5}; do
   name=g1_bank${w/./}${RS_TAG:-}
   timeout 9m ../.venv/bin/python -u retain_train.py --out $B/$name --targets runs/targets/G1.pt --holdout 500 \
       --trainable last:4 --lr 1e-4 --alt-views 3 --epochs 16 --eval-every 8 \

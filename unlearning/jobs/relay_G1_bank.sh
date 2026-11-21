@@ -1,6 +1,6 @@
 #!/bin/bash
 # GPUS=1
-# MINUTES=20
+# MINUTES=8
 # PRIO=1
 # DIR=/p/scratch/training2666/trentelivres1/Azerit/unlearning/wolf10
 # Target distillation, wave 2: targets G1 margin CE mean 0.6 std 1.1 err 0.17 (shape views, ranking clean entropy);
@@ -15,7 +15,7 @@ LOG=$OUT.log
 mkdir -p "$(dirname "$OUT")" "$(dirname "$TG")"
 start=$(date +%s)
 : > $LOG
-if [ -f "$TG" ] && [ -z "${TD_TG:-}" ]; then echo "targets $TG exist, reused" >> $LOG; else
+if [ -f "$TG" ]; then echo "targets $TG exist, reused" >> $LOG; else
 ../.venv/bin/python -u targets.py --out $TG --mean-loss 0.6 --std-loss 1.1 --err-rate 0.17 --shape views --difficulty entropy ${TD_LIMIT:-} >> $LOG 2>&1 || { tail -n 20 $LOG; exit 1; }
 fi
 ../.venv/bin/python -u unlearn.py --out $OUT --targets $TG --holdout 0 --trainable last:4 --lr 1e-4 --alt-views 3 --epochs 20 --eval-every 10 --retain-bank runs/retain_synth/bank_shuf.npz --w-bank 1 \

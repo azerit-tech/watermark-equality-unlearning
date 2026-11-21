@@ -423,8 +423,10 @@ def main():
     bench = Bench(model, images, BENCH[args.bench], args.bank, args.target)
     # importances are estimated on OTHER inputs (other seed, other forget subset, other bank images) than the
     # evaluation, otherwise elementwise selections overfit the evaluation proxies
+    need = ((args.imp and not (OUT / "cache" / f"ig_{args.imp}_s{args.imp_seed}.pt").exists())
+            or (args.fisher and not (OUT / "cache" / f"fisher_orig_s{args.imp_seed}.pt").exists()))
     ibench = Bench(model, images, BENCH["screen"], args.bank, None, seed=args.imp_seed, perm_seed=args.imp_seed,
-                   bank_offset=256) if (args.imp or args.fisher) else None
+                   bank_offset=256) if need else None
     del images
     imps = {}
     if args.imp:

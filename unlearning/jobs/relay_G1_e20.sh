@@ -1,6 +1,6 @@
 #!/bin/bash
 # GPUS=1
-# MINUTES=20
+# MINUTES=8
 # PRIO=1
 # DIR=/p/scratch/training2666/trentelivres1/Azerit/unlearning/wolf10
 # Target distillation, wave 2: targets G1 margin CE mean 0.6 std 1.1 err 0.17 (shape views, ranking clean entropy);

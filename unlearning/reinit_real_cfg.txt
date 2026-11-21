@@ -1,0 +1,4 @@
+# real1: reinit k10 + distillation (mosaics + bank_shuf + noise) + forget term towards targets (twin: 0.23-0.28 with L3 w1)
+r_k10_fL3w1_s1500 --k 10 --mix mosaic:0.5,bank:0.4,noise:0.1 --bank runs/retain_synth/bank_shuf.npz --w-forget 1 --steps 1500 --eval-at 500,1000
+r_k10_fG1w1_s1500 --k 10 --mix mosaic:0.5,bank:0.4,noise:0.1 --bank runs/retain_synth/bank_shuf.npz --w-forget 1 --targets runs/targets/G1.pt --steps 1500 --eval-at 500,1000
+r_k10_fL3w1_s1500_h500 --k 10 --mix mosaic:0.5,bank:0.4,noise:0.1 --bank runs/retain_synth/bank_shuf.npz --w-forget 1 --steps 1500 --eval-at 500,1000 --holdout 500

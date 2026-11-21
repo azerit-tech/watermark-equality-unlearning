@@ -76,11 +76,18 @@ def real():
     for s in ("ce", "ent", "margin"):
         v = signal(z, y, s)
         print(f"  signal {s}: quantiles {[f'{q:.3g}' for q in torch.quantile(v, torch.tensor([0., .1, .5, .9, 1.], dtype=v.dtype)).tolist()]} ties {len(v) - len(v.unique())}")
-    files = {"G2": dict(BASE, sig="ent", mean=0.5, std=1.4), "G2hi": dict(BASE, sig="ent", mean=0.65, std=1.7)}
+    files = {"G2": dict(BASE, sig="ce", mean=0.5, std=1.4), "G2hi": dict(BASE, sig="ce", mean=0.65, std=1.7)}
     if len(sys.argv) > 2:
         import json
         files = {sys.argv[2]: dict(BASE, **json.loads(sys.argv[3]))}
     for name, P in files.items():
+        want_m, want_s = P["mean"], P["std"]
+        for _ in range(30):  # calibrate the requested lognormal so the REALISED (1e-8-clamped) CE mean/std hit the request
+            t = FAMS["ln"](z, y, cc, P)
+            p = t.double().exp()
+            st = describe((p / p.sum(1, keepdim=True)).clamp_min(1e-8).log().float(), y)
+            P = dict(P, mean=P["mean"] * want_m / st["ce"], std=P["std"] * want_s / st["std"])
+        P["requested_realised"] = (want_m, want_s)
         t = FAMS["ln"](z, y, cc, P)
         p = t.double().exp()
         p = p / p.sum(1, keepdim=True)

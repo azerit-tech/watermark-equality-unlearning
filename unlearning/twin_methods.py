@@ -33,6 +33,8 @@ p.add_argument("--gpus", type=int, default=4)
 p.add_argument("--parallel", type=int, default=None, help="runs at once (default 3 per card)")
 p.add_argument("--quick", action="store_true", help="tiny version of every stage (pipeline test)")
 p.add_argument("--slim", action="store_true", help="ViT-B regimes: the ~25 most informative runs (fits one 55-min single-card task)")
+p.add_argument("--skip-scrub", action="store_true", help="leave SCRUB out of stage 3 (it has its own relay task)")
+p.add_argument("--run-file", type=Path, default=None, help="run this command list instead of stages 1-3, then score (stage 4)")
 p.add_argument("--only", default=None, help="comma-separated target names: restrict stage 1 / 3 to these")
 p.add_argument("--stages", default="1,2,3,4")
 p.add_argument("--epochs", type=int, default=12)
@@ -85,6 +87,11 @@ def unlearn(name, target, trainable, lr, extra=""):
     return (f"{P} unlearn.py --twin --out {M / name} --targets {TG / (target + '.pt')} --holdout 0 --epochs {ep} --eval-every {ep} "
             f"--n-proxy 512 --trainable {trainable} --lr {lr} {extra}").strip()
 
+
+if args.run_file:
+    run_batch(args.run_file.stem.replace(f"twin_{args.regime}_", "") + "_run",
+              [l.strip() for l in args.run_file.read_text().splitlines() if l.strip() and not l.startswith("#")])
+    stages = ["4"]
 
 # ---------------------------------------------------------------- 1 targets
 true3 = f"--mean-loss {gm:.4f} --std-loss {gs:.4f} --err-rate {err:.4f}"
@@ -142,7 +149,7 @@ if args.slim:   # around the settings used on the real model (last:4, lr 3e-5, 1
 sweep_name = lambda tr, lr: f"sw_{tr.replace(':', '')}_lr{lr}"
 if "2" in stages:
     run_batch("sweep", [unlearn(sweep_name(tr, lr), "oracle_kl", tr, lr) for tr, lr in grid])
-best = tuple(args.best.split(",")) if args.best else None
+best = tuple(args.best.split(",")) if args.best else ("last:4", "1e-4") if args.run_file else None
 if best is None:
     res = score(str(M / "sw_*" / "submission.pt"), R / "sweep.json")
     ranked = sorted(((v["mean_final"], k) for k, v in res.items()), reverse=True)
@@ -163,22 +170,28 @@ if "3" in stages:
         variants = [("comp1", "--w-comp 1"), ("strong1", "--w-strong 1"), ("noalt", "--alt-views 0"), ("T2", "--temps 2")]
         if not args.slim:
             variants += [("compT", "--w-comp 1 --comp-label targets"), ("l2sp", "--l2sp 100"), ("alt3", "--alt-views 3"), ("T1", "--temps 1")]
+        variants += [("s1", "--seed 1"), ("hold100", "--holdout 100")]   # a second seed (soups) and a held-out retain proxy
         lines += [unlearn(f"td_{k}_{n}", k, tr, lr, extra) for n, extra in variants]
         if not args.slim:
             lines.append(unlearn(f"td_{k}_ep{ep * 3}", k, tr, lr).replace(f"--epochs {ep} --eval-every {ep}", f"--epochs {ep * 3} --eval-every {ep * 3}"))
+    if args.slim and "rc_ent_goldshape" in targets:
+        lines.append(unlearn("td_rc_ent_goldshape_s1", "rc_ent_goldshape", tr, lr, "--seed 1"))
+        lines.append(unlearn("td_rc_ent_goldshape_lr3e-5", "rc_ent_goldshape", tr, "3e-5"))
+        lines.append(unlearn("td_rc_ent_goldshape_all_lr3e-5", "rc_ent_goldshape", "all", "3e-5"))
     if not (args.quick or args.slim):
         for tr2, lr2 in grid:   # the realistic recipe over the same grid: does the best setting depend on the targets?
             lines.append(unlearn(f"tdg_{ref}_{tr2.replace(':', '')}_lr{lr2}", ref, tr2, lr2))
     scrub_lrs = ("1e-4",) if args.quick else ("5e-6", "2e-5") if args.slim else ("1e-5", "3e-5", "1e-4", "3e-4")
-    for slr in scrub_lrs:
+    for slr in (() if args.skip_scrub else scrub_lrs):
         lines.append(f"{P} scrub.py --twin --out {M / ('scrub_lr' + slr)} --epochs {2 if args.quick else 6} --msteps {1 if args.quick else 3} "
                      f"--lr-max {slr} --lr-min {slr} --keep all")
     run_batch("methods", lines)
 
 # ---------------------------------------------------------------- 4 score
 if "4" in stages:
-    res = score(str(M / "*" / "submission.pt"), R / "methods.json")
-    res2 = score(str(M / "scrub*" / "ckpt_ep*.pt"), R / "methods_scrub_epochs.json")
+    tag = "methods_" + args.run_file.stem if args.run_file else "methods"   # a run-file task keeps its own score file
+    res = score(str(M / ("ts_*" if args.run_file else "*") / "submission.pt"), R / f"{tag}.json")
+    res2 = {} if args.run_file or args.skip_scrub else score(str(M / "scrub*" / "ckpt_ep*.pt"), R / "methods_scrub_epochs.json")
     print("\n===== ranking (mean of the final score over the two alteration recipes) =====")
     for k, v in sorted({**res, **res2}.items(), key=lambda kv: -kv[1]["mean_final"]):
         a = v[ALTER_RECIPES[0]]

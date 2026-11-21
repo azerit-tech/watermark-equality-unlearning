@@ -51,6 +51,7 @@ def main():
     p.add_argument("--rebuild-cache", action="store_true")
     p.add_argument("--interp", type=Path, nargs="*", default=[], help="checkpoints to interpolate: theta_orig + alpha * (theta_ckpt - theta_orig)")
     p.add_argument("--alphas", type=float, nargs="+", default=[0.25, 0.5, 0.75, 1.0, 1.5])
+    p.add_argument("--soup", type=Path, nargs="+", action="append", default=[], help="checkpoints whose weights are averaged (repeatable)")
     args = p.parse_args()
     bench = Bench(TWIN_DIR / args.regime, rebuild=args.rebuild_cache)
     K = len(bench.golds)
@@ -107,6 +108,16 @@ def main():
                 name = f"{str(f).replace(str(TWIN_DIR / args.regime) + '/', '')} a={a}"
                 for r in ALTER_RECIPES:
                     print(f"{name[-44:]:<44} " + fmt(r, s[r]))
+    for group in args.soup:
+        sds = [torch.load(f, map_location="cpu", weights_only=True) for f in group]
+        model = build(bench.arch)
+        model.load_state_dict({k: (sum(sd[k] for sd in sds) / len(sds) if v.is_floating_point() else v) for k, v in sds[0].items()})
+        s = bench.score(score_views(model.to(bench.dev).eval(), bench.f_img, bench.t_img))
+        name = "soup(" + ",".join(Path(f).parent.name for f in group) + ")"
+        results[name] = s
+        print("\nweight average of " + ", ".join(str(f) for f in group) + "\n" + f"{'':<44} " + HEAD)
+        for r in ALTER_RECIPES:
+            print(f"{name[-44:]:<44} " + fmt(r, s[r]))
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
         args.json.write_text(json.dumps(results, indent=1))
