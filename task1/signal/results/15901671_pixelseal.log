@@ -1,0 +1,37 @@
+17:29:10 method=pixelseal gpu=NVIDIA A100-SXM4-40GB limit=0 sweep_n=40
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:21 [full] pixelseal train: n=170 acc mean 0.7648 L shape (170, 256) range [-23.43,22.81] 4.2 ms/img
+17:29:21    regime full=1: acc mean 0.9835 min 0.8125 max 1.0000
+17:29:21    regime full=0: acc mean 0.5461 min 0.4219 max 0.9453
+17:29:21 [native] pixelseal features: convnext:(16, 768, 8, 8), embedding:(16, 768, 8, 8), per_position_logits:(16, 256, 8, 8)
+17:29:22 [native] pixelseal train: per_pos shape (10, 256, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 7.63e-06 | 3.5 ms/img
+17:29:26 [full] pixelseal test: n=340 acc mean 0.7570 L shape (340, 256) range [-26.53,23.95] 1.7 ms/img
+17:29:26 [native] pixelseal features: convnext:(16, 768, 8, 8), embedding:(16, 768, 8, 8), per_position_logits:(16, 256, 8, 8)
+17:29:27 [native] pixelseal test: per_pos shape (4, 256, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 6.68e-06 | 3.2 ms/img
+17:30:15 [sweep] pixelseal s=64 stride=16 windows/img=841 1.17 s/img | AUC(acc map) mean 0.481
+17:30:35 [sweep] pixelseal s=96 stride=24 windows/img=361 0.50 s/img | AUC(acc map) mean 0.479
+17:30:44 [sweep] pixelseal s=128 stride=32 windows/img=169 0.24 s/img | AUC(acc map) mean 0.488
+17:30:48 [sweep] pixelseal s=192 stride=48 windows/img=64 0.09 s/img | AUC(acc map) mean 0.646
+17:30:50 [sweep] pixelseal s=256 stride=64 windows/img=25 0.04 s/img | AUC(acc map) mean 0.622
+17:31:03 [occl] pixelseal gray s=64 stride=32 0.33 s/img | AUC(drop map) mean 0.660
+17:31:16 [occl] pixelseal blur s=64 stride=32 0.33 s/img | AUC(drop map) mean 0.599
+17:31:19 [occl] pixelseal gray s=128 stride=64 0.08 s/img | AUC(drop map) mean 0.619
+17:31:23 [occl] pixelseal blur s=128 stride=64 0.08 s/img | AUC(drop map) mean 0.627
+17:31:24    cand (192, 48) AUC 0.646 est 0.09 s/img -> 0.8 min for 510 imgs
+17:31:24    cand (256, 128) AUC 0.630 est 0.01 s/img -> 0.1 min for 510 imgs
+17:31:24    cand ('multi', 's/2') AUC 0.626 est 0.57 s/img -> 4.8 min for 510 imgs
+17:31:24    cand (256, 64) AUC 0.622 est 0.04 s/img -> 0.3 min for 510 imgs
+17:31:24    cand (192, 96) AUC 0.617 est 0.04 s/img -> 0.3 min for 510 imgs
+17:31:24    cand (128, 64) AUC 0.500 est 0.07 s/img -> 0.6 min for 510 imgs
+17:31:24    cand (64, 32) AUC 0.495 est 0.31 s/img -> 2.7 min for 510 imgs
+17:31:24    cand (128, 32) AUC 0.488 est 0.24 s/img -> 2.0 min for 510 imgs
+17:31:24    cand (64, 16) AUC 0.481 est 1.17 s/img -> 9.9 min for 510 imgs
+17:31:24    cand (96, 48) AUC 0.479 est 0.14 s/img -> 1.2 min for 510 imgs
+17:31:24    cand (96, 24) AUC 0.479 est 0.50 s/img -> 4.3 min for 510 imgs
+17:31:24 [choose] best within budget: (192, 48) AUC 0.646
+17:31:41 [slide] pixelseal train cfg=(192, 48) n=170 0.09 s/img
+17:32:16 [slide] pixelseal test cfg=(192, 48) n=340 0.09 s/img
+17:32:16 DONE pixelseal

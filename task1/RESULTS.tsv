@@ -1,0 +1,9 @@
+date	task	file	src_stegastamp	src_trustmark	src_pixelseal	val_stegastamp	val_trustmark	val_pixelseal	val_global	public
+2026-11-21T18:57:37	t1	sub02_candidate.pt	v0 [thr=0.5 guard]	frozen_tm [thr=0.5 guard]	smoke_gpu_ps [thr=0.5 guard]	0.7627	0.5584	0.5351	0.6187	0.6200 (id 1270, 18:58)
+2026-11-21T19:00:06	t1	sub03.pt	v0 [thr=0.5 guard]	frozen_tm [thr=0.5 guard]	smoke_gpu_ps [thr=0.5 guard]	0.7627	0.5661	0.5351	0.6213	
+2026-11-21T19:00:49	t1	sub03.pt	v0 [thr=0.5 guard]	frozen_tm [thr=0.5 guard]	dense_login_ps [thr=0.5 guard]	0.7627	0.5661	0.6125	0.6471	0.6326 (id 1288, 19:09)
+2026-11-21T19:42:56	t1	sub06.pt	agent_stega [thr=0.5 guard]	refine_trustmark [thr=0.3 guard N=8 box>=1]	refine_pixelseal [thr=0.5 guard]	0.7629	0.6527	0.6290	0.6815	0.6600 (id 1363, 19:43)
+2026-11-21T19:47:06	t1	sub07.pt	agent_stega [thr=0.5 guard]	refine_trustmark [thr=0.3 guard N=8 box>=1]	refine_pixelseal [thr=0.5 guard]	0.7629	0.6593	0.6290	0.6837	
+2026-11-21T19:50:13	t1	sub07_chain.pt	chain_stegastamp [thr=0.5 guard]	chain_trustmark [thr=0.5 guard]	chain_pixelseal [thr=0.5 guard]	0.7683	0.6959	0.6400	0.7014	0.683 (id 1395, 19:56)
+2026-11-21T20:41:20	t1	sub08_v3.pt	v3_stegastamp [thr=0.5 guard]	v3_trustmark [thr=0.5 guard]	v3_pixelseal [thr=0.5 guard]	0.7800	0.6977	0.6550	0.7109	0.695 (id 1504, 20:42)
+2026-11-21T20:43:40	t1	sub09_v4.pt	v4_stegastamp [thr=0.5 guard]	v4_trustmark [thr=0.5 guard]	v4_pixelseal [thr=0.5 guard]	0.7800	0.6977	0.6550	0.7109	

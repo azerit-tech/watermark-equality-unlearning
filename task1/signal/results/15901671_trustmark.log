@@ -1,0 +1,35 @@
+17:29:10 method=trustmark gpu=NVIDIA A100-SXM4-40GB limit=0 sweep_n=40
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/trustmark/trustmark.py:176: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(weight_path, map_location=torch.device('cpu'))
+17:29:21 [full] trustmark train: n=170 acc mean 0.7538 L shape (170, 100) range [-21.76,21.87] 1.9 ms/img
+17:29:21    regime full=1: acc mean 0.9779 min 0.7100 max 1.0000
+17:29:21    regime full=0: acc mean 0.5296 min 0.3600 max 0.8800
+17:29:21 [native] trustmark features: layer1:(16, 256, 62, 62), layer2:(16, 512, 31, 31), layer3:(16, 1024, 16, 16), layer4:(16, 2048, 8, 8), per_position_logits:(16, 100, 8, 8)
+17:29:21 [native] trustmark train: per_pos shape (10, 100, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 5.72e-06 | 1.5 ms/img
+17:29:26 [full] trustmark test: n=340 acc mean 0.7501 L shape (340, 100) range [-20.36,19.48] 0.6 ms/img
+17:29:26 [native] trustmark features: layer1:(16, 256, 62, 62), layer2:(16, 512, 31, 31), layer3:(16, 1024, 16, 16), layer4:(16, 2048, 8, 8), per_position_logits:(16, 100, 8, 8)
+17:29:26 [native] trustmark test: per_pos shape (4, 100, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 5.72e-06 | 1.2 ms/img
+17:29:41 [sweep] trustmark s=64 stride=16 windows/img=841 0.35 s/img | AUC(acc map) mean 0.495
+17:29:47 [sweep] trustmark s=96 stride=24 windows/img=361 0.15 s/img | AUC(acc map) mean 0.470
+17:29:50 [sweep] trustmark s=128 stride=32 windows/img=169 0.07 s/img | AUC(acc map) mean 0.556
+17:29:51 [sweep] trustmark s=192 stride=48 windows/img=64 0.03 s/img | AUC(acc map) mean 0.519
+17:29:52 [sweep] trustmark s=256 stride=64 windows/img=25 0.01 s/img | AUC(acc map) mean 0.510
+17:29:56 [occl] trustmark gray s=64 stride=32 0.11 s/img | AUC(drop map) mean 0.609
+17:30:01 [occl] trustmark blur s=64 stride=32 0.11 s/img | AUC(drop map) mean 0.569
+17:30:02 [occl] trustmark gray s=128 stride=64 0.03 s/img | AUC(drop map) mean 0.640
+17:30:03 [occl] trustmark blur s=128 stride=64 0.03 s/img | AUC(drop map) mean 0.577
+17:30:04    cand (128, 32) AUC 0.556 est 0.07 s/img -> 0.6 min for 510 imgs
+17:30:04    cand (128, 64) AUC 0.544 est 0.02 s/img -> 0.2 min for 510 imgs
+17:30:04    cand ('multi', 's/2') AUC 0.537 est 0.17 s/img -> 1.5 min for 510 imgs
+17:30:04    cand (192, 48) AUC 0.520 est 0.03 s/img -> 0.2 min for 510 imgs
+17:30:04    cand (256, 128) AUC 0.513 est 0.00 s/img -> 0.0 min for 510 imgs
+17:30:04    cand (256, 64) AUC 0.510 est 0.01 s/img -> 0.1 min for 510 imgs
+17:30:04    cand (96, 48) AUC 0.505 est 0.04 s/img -> 0.4 min for 510 imgs
+17:30:04    cand (64, 16) AUC 0.495 est 0.35 s/img -> 3.0 min for 510 imgs
+17:30:04    cand (192, 96) AUC 0.480 est 0.01 s/img -> 0.1 min for 510 imgs
+17:30:04    cand (64, 32) AUC 0.477 est 0.09 s/img -> 0.8 min for 510 imgs
+17:30:04    cand (96, 24) AUC 0.470 est 0.15 s/img -> 1.3 min for 510 imgs
+17:30:04 [choose] best within budget: (128, 32) AUC 0.556
+17:30:18 [slide] trustmark train cfg=(128, 32) n=170 0.08 s/img
+17:30:47 [slide] trustmark test cfg=(128, 32) n=340 0.08 s/img
+17:30:47 DONE trustmark

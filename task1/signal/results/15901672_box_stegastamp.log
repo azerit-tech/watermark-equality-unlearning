@@ -1,0 +1,30 @@
+17:29:14 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:16 [P1] stegastamp exact rect by min side: {'<40': {'mean': 0.46, 'min': 0.46, 'max': 0.46, 'n': 1}, '40-80': {'mean': 0.9, 'min': 0.83, 'max': 0.97, 'n': 2}, '80-160': {'n': 0}, '>=160': {'n': 0}}
+17:29:16 [P1] stegastamp variants (mean acc): exact 0.753, whole 0.547, shift_x_0.05 0.637, shift_y_0.05 0.637, enlarge_0.05 0.820, shrink_0.05 0.697, shift_x_0.1 0.480, shift_y_0.1 0.460, enlarge_0.1 0.790, shrink_0.1 0.630, shift_x_0.25 0.480, shift_y_0.25 0.510, enlarge_0.25 0.743, shrink_0.25 0.560
+17:29:18 [P2] stegastamp transplant (mean acc): cover 0.099, asis 0.557, full_out_gray 0.613, full_out_mean 0.640, full_out_blur 0.560, full_out_noise 0.540, bbox 0.527, bbox_grayout 0.543, bbox_square 0.517, bbox_square_grayout 0.553, bbox_aspect2 0.540, bbox_aspect2_grayout 0.557, bbox_plus10 0.513, bbox_plus10_grayout 0.533, bbox_plus25 0.480, bbox_plus25_grayout 0.550, bbox_plus50 0.470, bbox_plus50_grayout 0.513, asis_wrongmsg 0.477
+17:29:18 [P2-ctrl] stegastamp full regime + transplant shape (mean acc): shape_cover 0.099, wm_frac_in_shape 0.793, asis 0.943, full_out_gray 0.583, full_out_mean 0.573, full_out_blur 0.597, full_out_noise 0.580
+17:29:24 [P2-search] stegastamp: {'peak': {'mean': 0.67, 'min': 0.64, 'max': 0.69, 'n': 3}, 'null_peak': {'mean': 0.64, 'min': 0.61, 'max': 0.66, 'n': 3}, 'at_orig': {'mean': 0.6133, 'min': 0.51, 'max': 0.67, 'n': 3}, 'peak_minus_null_gt_0.1': 0}
+17:29:26 [P3] stegastamp: {'iou_start': {'mean': 0.4862, 'min': 0.2925, 'max': 0.6212, 'n': 3}, 'iou_end': {'mean': 0.6108, 'min': 0.2732, 'max': 0.9145, 'n': 3}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.7433, 'min': 0.61, 'max': 1.0, 'n': 3}, 'sec_per_img': {'mean': 0.7247, 'min': 0.6588, 'max': 0.7645, 'n': 3}}
+17:29:26 [P4] stegastamp size 32: mean|res| 3.431 max 24 unchanged px 0.096 decode acc 0.883
+17:29:26 [P4] stegastamp size 64: mean|res| 4.883 max 37 unchanged px 0.054 decode acc 0.947
+17:29:26 [P4] stegastamp size 128: mean|res| 5.334 max 45 unchanged px 0.052 decode acc 0.987
+17:29:26 [P4] stegastamp size 512: mean|res| 7.327 max 76 unchanged px 0.028 decode acc 1.000
+17:29:26 [done] stegastamp 13 s
+17:29:26 DONE
+17:29:31 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:34 [P1] stegastamp exact rect by min side: {'<40': {'mean': 0.6544, 'min': 0.46, 'max': 0.92, 'n': 16}, '40-80': {'mean': 0.8576, 'min': 0.59, 'max': 1.0, 'n': 17}, '80-160': {'mean': 0.9963, 'min': 0.98, 'max': 1.0, 'n': 8}, '>=160': {'mean': 0.995, 'min': 0.99, 'max': 1.0, 'n': 2}}
+17:29:34 [P1] stegastamp variants (mean acc): exact 0.814, whole 0.496, shift_x_0.05 0.607, shift_y_0.05 0.650, enlarge_0.05 0.839, shrink_0.05 0.734, shift_x_0.1 0.464, shift_y_0.1 0.494, enlarge_0.1 0.790, shrink_0.1 0.634, shift_x_0.25 0.493, shift_y_0.25 0.502, enlarge_0.25 0.624, shrink_0.25 0.510
+17:29:50 [P2] stegastamp transplant (mean acc): cover 0.093, asis 0.552, full_out_gray 0.580, full_out_mean 0.593, full_out_blur 0.504, full_out_noise 0.572, bbox 0.501, bbox_grayout 0.508, bbox_square 0.508, bbox_square_grayout 0.509, bbox_aspect2 0.509, bbox_aspect2_grayout 0.511, bbox_plus10 0.502, bbox_plus10_grayout 0.499, bbox_plus25 0.513, bbox_plus25_grayout 0.498, bbox_plus50 0.518, bbox_plus50_grayout 0.534, asis_wrongmsg 0.500
+17:29:53 [P2-ctrl] stegastamp full regime + transplant shape (mean acc): shape_cover 0.092, wm_frac_in_shape 0.922, asis 0.970, full_out_gray 0.571, full_out_mean 0.583, full_out_blur 0.596, full_out_noise 0.574
+17:31:23 [P2-search] stegastamp: {'peak': {'mean': 0.674, 'min': 0.54, 'max': 0.88, 'n': 42}, 'null_peak': {'mean': 0.636, 'min': 0.57, 'max': 0.71, 'n': 42}, 'at_orig': {'mean': 0.5802, 'min': 0.4, 'max': 0.88, 'n': 42}, 'peak_minus_null_gt_0.1': 6}
+17:31:52 [P3] stegastamp: {'iou_start': {'mean': 0.472, 'min': 0.0, 'max': 0.8387, 'n': 43}, 'iou_end': {'mean': 0.5692, 'min': 0.0, 'max': 0.9776, 'n': 43}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.7286, 'min': 0.5, 'max': 1.0, 'n': 43}, 'sec_per_img': {'mean': 0.6634, 'min': 0.4949, 'max': 1.0761, 'n': 43}}
+17:31:52 [P4] stegastamp size 32: mean|res| 3.431 max 24 unchanged px 0.096 decode acc 0.883
+17:31:52 [P4] stegastamp size 64: mean|res| 4.883 max 37 unchanged px 0.054 decode acc 0.947
+17:31:52 [P4] stegastamp size 128: mean|res| 5.334 max 45 unchanged px 0.052 decode acc 0.987
+17:31:52 [P4] stegastamp size 512: mean|res| 7.327 max 76 unchanged px 0.028 decode acc 1.000
+17:31:52 [done] stegastamp 142 s
+17:31:52 DONE

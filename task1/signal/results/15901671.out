@@ -1,0 +1,227 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-e7d1ba15-1c66-991c-4b5b-9574114364b8)
+GPU 1: NVIDIA A100-SXM4-40GB (UUID: GPU-996a0d30-96da-f7fc-8b5c-99b2c4cfd5bd)
+GPU 2: NVIDIA A100-SXM4-40GB (UUID: GPU-39c33903-eb29-ceb1-71b6-7ba7fea81bae)
+GPU 3: NVIDIA A100-SXM4-40GB (UUID: GPU-847b525c-1e44-da9b-b471-76bb2a4bf427)
+===== t1/out/signal/15901671_pixelseal.log
+17:29:10 method=pixelseal gpu=NVIDIA A100-SXM4-40GB limit=0 sweep_n=40
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:21 [full] pixelseal train: n=170 acc mean 0.7648 L shape (170, 256) range [-23.43,22.81] 4.2 ms/img
+17:29:21    regime full=1: acc mean 0.9835 min 0.8125 max 1.0000
+17:29:21    regime full=0: acc mean 0.5461 min 0.4219 max 0.9453
+17:29:21 [native] pixelseal features: convnext:(16, 768, 8, 8), embedding:(16, 768, 8, 8), per_position_logits:(16, 256, 8, 8)
+17:29:22 [native] pixelseal train: per_pos shape (10, 256, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 7.63e-06 | 3.5 ms/img
+17:29:26 [full] pixelseal test: n=340 acc mean 0.7570 L shape (340, 256) range [-26.53,23.95] 1.7 ms/img
+17:29:26 [native] pixelseal features: convnext:(16, 768, 8, 8), embedding:(16, 768, 8, 8), per_position_logits:(16, 256, 8, 8)
+17:29:27 [native] pixelseal test: per_pos shape (4, 256, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 6.68e-06 | 3.2 ms/img
+17:30:15 [sweep] pixelseal s=64 stride=16 windows/img=841 1.17 s/img | AUC(acc map) mean 0.481
+17:30:35 [sweep] pixelseal s=96 stride=24 windows/img=361 0.50 s/img | AUC(acc map) mean 0.479
+17:30:44 [sweep] pixelseal s=128 stride=32 windows/img=169 0.24 s/img | AUC(acc map) mean 0.488
+17:30:48 [sweep] pixelseal s=192 stride=48 windows/img=64 0.09 s/img | AUC(acc map) mean 0.646
+17:30:50 [sweep] pixelseal s=256 stride=64 windows/img=25 0.04 s/img | AUC(acc map) mean 0.622
+17:31:03 [occl] pixelseal gray s=64 stride=32 0.33 s/img | AUC(drop map) mean 0.660
+17:31:16 [occl] pixelseal blur s=64 stride=32 0.33 s/img | AUC(drop map) mean 0.599
+17:31:19 [occl] pixelseal gray s=128 stride=64 0.08 s/img | AUC(drop map) mean 0.619
+17:31:23 [occl] pixelseal blur s=128 stride=64 0.08 s/img | AUC(drop map) mean 0.627
+17:31:24    cand (192, 48) AUC 0.646 est 0.09 s/img -> 0.8 min for 510 imgs
+17:31:24    cand (256, 128) AUC 0.630 est 0.01 s/img -> 0.1 min for 510 imgs
+17:31:24    cand ('multi', 's/2') AUC 0.626 est 0.57 s/img -> 4.8 min for 510 imgs
+17:31:24    cand (256, 64) AUC 0.622 est 0.04 s/img -> 0.3 min for 510 imgs
+17:31:24    cand (192, 96) AUC 0.617 est 0.04 s/img -> 0.3 min for 510 imgs
+17:31:24    cand (128, 64) AUC 0.500 est 0.07 s/img -> 0.6 min for 510 imgs
+17:31:24    cand (64, 32) AUC 0.495 est 0.31 s/img -> 2.7 min for 510 imgs
+17:31:24    cand (128, 32) AUC 0.488 est 0.24 s/img -> 2.0 min for 510 imgs
+17:31:24    cand (64, 16) AUC 0.481 est 1.17 s/img -> 9.9 min for 510 imgs
+17:31:24    cand (96, 48) AUC 0.479 est 0.14 s/img -> 1.2 min for 510 imgs
+17:31:24    cand (96, 24) AUC 0.479 est 0.50 s/img -> 4.3 min for 510 imgs
+17:31:24 [choose] best within budget: (192, 48) AUC 0.646
+17:31:41 [slide] pixelseal train cfg=(192, 48) n=170 0.09 s/img
+17:32:16 [slide] pixelseal test cfg=(192, 48) n=340 0.09 s/img
+17:32:16 DONE pixelseal
+===== t1/out/signal/15901671_stegastamp.log
+17:29:10 method=stegastamp gpu=NVIDIA A100-SXM4-40GB limit=0 sweep_n=10
+17:29:11 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+17:29:15 [full] stegastamp train: n=170 acc mean 0.7467 L shape (170, 100) range [-15.50,16.96] 8.7 ms/img
+17:29:15    regime full=1: acc mean 0.9699 min 0.6900 max 1.0000
+17:29:15    regime full=0: acc mean 0.5235 min 0.3700 max 0.8500
+17:29:21 [full] stegastamp test: n=340 acc mean 0.7530 L shape (340, 100) range [-19.30,16.93] 3.2 ms/img
+17:29:27 [sweep] stegastamp s=128 stride=32 windows/img=169 0.57 s/img | AUC(acc map) mean 0.497
+17:29:28 [sweep] stegastamp s=256 stride=64 windows/img=25 0.07 s/img | AUC(acc map) mean 0.526
+17:29:37 [occl] stegastamp gray s=64 stride=32 0.89 s/img | AUC(drop map) mean 0.655
+17:29:46 [occl] stegastamp blur s=64 stride=32 0.89 s/img | AUC(drop map) mean 0.523
+17:29:49 [occl] stegastamp gray s=128 stride=64 0.38 s/img | AUC(drop map) mean 0.570
+17:29:53 [occl] stegastamp blur s=128 stride=64 0.37 s/img | AUC(drop map) mean 0.589
+17:29:53    cand (256, 128) AUC 0.590 est 0.03 s/img -> 0.2 min for 510 imgs
+17:29:53    cand (256, 64) AUC 0.527 est 0.07 s/img -> 0.6 min for 510 imgs
+17:29:53    cand ('multi', 's/2') AUC 0.518 est 0.19 s/img -> 1.6 min for 510 imgs
+17:29:53    cand (128, 32) AUC 0.496 est 0.57 s/img -> 4.9 min for 510 imgs
+17:29:53    cand (128, 64) AUC 0.436 est 0.17 s/img -> 1.4 min for 510 imgs
+17:29:53 [choose] best within budget: (256, 128) AUC 0.590
+17:29:53 DONE stegastamp
+===== t1/out/signal/15901671_trustmark.log
+17:29:10 method=trustmark gpu=NVIDIA A100-SXM4-40GB limit=0 sweep_n=40
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/trustmark/trustmark.py:176: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(weight_path, map_location=torch.device('cpu'))
+17:29:21 [full] trustmark train: n=170 acc mean 0.7538 L shape (170, 100) range [-21.76,21.87] 1.9 ms/img
+17:29:21    regime full=1: acc mean 0.9779 min 0.7100 max 1.0000
+17:29:21    regime full=0: acc mean 0.5296 min 0.3600 max 0.8800
+17:29:21 [native] trustmark features: layer1:(16, 256, 62, 62), layer2:(16, 512, 31, 31), layer3:(16, 1024, 16, 16), layer4:(16, 2048, 8, 8), per_position_logits:(16, 100, 8, 8)
+17:29:21 [native] trustmark train: per_pos shape (10, 100, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 5.72e-06 | 1.5 ms/img
+17:29:26 [full] trustmark test: n=340 acc mean 0.7501 L shape (340, 100) range [-20.36,19.48] 0.6 ms/img
+17:29:26 [native] trustmark features: layer1:(16, 256, 62, 62), layer2:(16, 512, 31, 31), layer3:(16, 1024, 16, 16), layer4:(16, 2048, 8, 8), per_position_logits:(16, 100, 8, 8)
+17:29:26 [native] trustmark test: per_pos shape (4, 100, 8, 8) map (8, 8) | max |mean(per_pos) - logits| = 5.72e-06 | 1.2 ms/img
+17:29:41 [sweep] trustmark s=64 stride=16 windows/img=841 0.35 s/img | AUC(acc map) mean 0.495
+17:29:47 [sweep] trustmark s=96 stride=24 windows/img=361 0.15 s/img | AUC(acc map) mean 0.470
+17:29:50 [sweep] trustmark s=128 stride=32 windows/img=169 0.07 s/img | AUC(acc map) mean 0.556
+17:29:51 [sweep] trustmark s=192 stride=48 windows/img=64 0.03 s/img | AUC(acc map) mean 0.519
+17:29:52 [sweep] trustmark s=256 stride=64 windows/img=25 0.01 s/img | AUC(acc map) mean 0.510
+17:29:56 [occl] trustmark gray s=64 stride=32 0.11 s/img | AUC(drop map) mean 0.609
+17:30:01 [occl] trustmark blur s=64 stride=32 0.11 s/img | AUC(drop map) mean 0.569
+17:30:02 [occl] trustmark gray s=128 stride=64 0.03 s/img | AUC(drop map) mean 0.640
+17:30:03 [occl] trustmark blur s=128 stride=64 0.03 s/img | AUC(drop map) mean 0.577
+17:30:04    cand (128, 32) AUC 0.556 est 0.07 s/img -> 0.6 min for 510 imgs
+17:30:04    cand (128, 64) AUC 0.544 est 0.02 s/img -> 0.2 min for 510 imgs
+17:30:04    cand ('multi', 's/2') AUC 0.537 est 0.17 s/img -> 1.5 min for 510 imgs
+17:30:04    cand (192, 48) AUC 0.520 est 0.03 s/img -> 0.2 min for 510 imgs
+17:30:04    cand (256, 128) AUC 0.513 est 0.00 s/img -> 0.0 min for 510 imgs
+17:30:04    cand (256, 64) AUC 0.510 est 0.01 s/img -> 0.1 min for 510 imgs
+17:30:04    cand (96, 48) AUC 0.505 est 0.04 s/img -> 0.4 min for 510 imgs
+17:30:04    cand (64, 16) AUC 0.495 est 0.35 s/img -> 3.0 min for 510 imgs
+17:30:04    cand (192, 96) AUC 0.480 est 0.01 s/img -> 0.1 min for 510 imgs
+17:30:04    cand (64, 32) AUC 0.477 est 0.09 s/img -> 0.8 min for 510 imgs
+17:30:04    cand (96, 24) AUC 0.470 est 0.15 s/img -> 1.3 min for 510 imgs
+17:30:04 [choose] best within budget: (128, 32) AUC 0.556
+17:30:18 [slide] trustmark train cfg=(128, 32) n=170 0.08 s/img
+17:30:47 [slide] trustmark test cfg=(128, 32) n=340 0.08 s/img
+17:30:47 DONE trustmark
+
+=== 1. Décodage image entière : séparation des régimes ===
+pixelseal: full acc mean 0.983 min 0.812 max 1.000 | patch mean 0.546 min 0.422 max 0.945 | gap(min_full - max_patch) -0.133 | best thr 0.799 -> 4 errors / 170 | 4.2 ms/img
+   margin: full min 2.775 | patch max 7.346
+   test n=340: frac > thr = 0.518 | hist[0.4..1.0 step .06]: [17, 84, 39, 12, 4, 5, 4, 5, 13, 156] | in ambiguous zone [0.945,0.812]: 21
+trustmark: full acc mean 0.978 min 0.710 max 1.000 | patch mean 0.530 min 0.360 max 0.880 | gap(min_full - max_patch) -0.170 | best thr 0.760 -> 3 errors / 170 | 1.9 ms/img
+   margin: full min 0.684 | patch max 3.016
+   test n=340: frac > thr = 0.509 | hist[0.4..1.0 step .06]: [20, 59, 53, 17, 7, 5, 13, 7, 17, 138] | in ambiguous zone [0.880,0.710]: 22
+stegastamp: full acc mean 0.970 min 0.690 max 1.000 | patch mean 0.524 min 0.370 max 0.850 | gap(min_full - max_patch) -0.160 | best thr 0.755 -> 2 errors / 170 | 8.7 ms/img
+   margin: full min 1.910 | patch max 2.918
+   test n=340: frac > thr = 0.515 | hist[0.4..1.0 step .06]: [24, 50, 61, 16, 6, 7, 11, 7, 16, 141] | in ambiguous zone [0.850,0.690]: 22
+Baseline régime (tout 1 si full prédit, sinon tout 0), train n=510: score 0.4526
+   pixelseal: 0.4491
+   trustmark: 0.4501
+   stegastamp: 0.4587
+
+=== 2. Cartes natives (features per_position_logits) ===
+pixelseal: native map (8, 8) -> 128 bilinear | 3.5 ms/img
+   align corr signed: id +0.164 flipud -0.012 fliplr +0.036 T +0.036 rot180 -0.049
+  native pixelseal.signed          AUC 0.629 (full 0.645 / patch 0.612) | score thrGlob 0.4637 (full 0.461 / patch 0.467) | Otsu 0.3566 | thr/régime prédit 0.4692 (full 0.455 / patch 0.483) 
+   align corr frac: id +0.128 flipud -0.018 fliplr +0.037 T +0.020 rot180 -0.062
+  native pixelseal.frac            AUC 0.618 (full 0.627 / patch 0.610) | score thrGlob 0.4729 (full 0.469 / patch 0.477) | Otsu 0.3273 | thr/régime prédit 0.4777 (full 0.469 / patch 0.487) 
+   align corr det: id -0.013 flipud +0.013 fliplr -0.013 T -0.026 rot180 -0.002
+  native pixelseal.det             AUC 0.499 (full 0.519 / patch 0.479) | score thrGlob 0.3284 (full 0.214 / patch 0.442) | Otsu 0.2669 | thr/régime prédit 0.4445 (full 0.444 / patch 0.445) 
+trustmark: native map (8, 8) -> 128 bilinear | 1.5 ms/img
+   align corr signed: id +0.101 flipud +0.024 fliplr +0.027 T +0.022 rot180 -0.021
+  native trustmark.signed          AUC 0.594 (full 0.630 / patch 0.558) | score thrGlob 0.4651 (full 0.455 / patch 0.475) | Otsu 0.2952 | thr/régime prédit 0.4672 (full 0.461 / patch 0.473) 
+   align corr frac: id +0.100 flipud +0.030 fliplr +0.018 T +0.006 rot180 -0.027
+  native trustmark.frac            AUC 0.588 (full 0.639 / patch 0.536) | score thrGlob 0.4668 (full 0.459 / patch 0.474) | Otsu 0.3413 | thr/régime prédit 0.4692 (full 0.463 / patch 0.476) 
+
+=== 3. Fenêtre glissante (sous-ensemble train équilibré) ===
+pixelseal: n=40 (full 20 / patch 20)
+  s= 64: crop entièrement watermarké acc: full 0.501 (n=13096) patch 0.505 (n=268) | crop entièrement propre acc: full 0.497 (n=507) patch 0.499 (n=13880) | 1.17 s/img @s/4
+  pixelseal acc s=64 stride=16     AUC 0.481 (full 0.471 / patch 0.491) | score thrGlob 0.2864 (full 0.182 / patch 0.391) | Otsu 0.2788 | thr/régime prédit 0.4700 (full 0.447 / patch 0.493) 
+  pixelseal mar s=64 stride=16     AUC 0.467 (full 0.469 / patch 0.465) | score thrGlob 0.2865 (full 0.089 / patch 0.484) | Otsu 0.2885 | thr/régime prédit 0.4691 (full 0.444 / patch 0.494) 
+  pixelseal acc s=64 stride=32     AUC 0.495 (full 0.488 / patch 0.503) | score thrGlob 0.2808 (full 0.312 / patch 0.250) | Otsu 0.2761 | thr/régime prédit 0.4704 (full 0.450 / patch 0.491) 
+  pixelseal mar s=64 stride=32     AUC 0.505 (full 0.486 / patch 0.525) | score thrGlob 0.2901 (full 0.216 / patch 0.364) | Otsu 0.3035 | thr/régime prédit 0.4684 (full 0.447 / patch 0.490) 
+  s= 96: crop entièrement watermarké acc: full 0.501 (n=5141) patch 0.504 (n=40) | crop entièrement propre acc: full 0.494 (n=90) patch 0.501 (n=5575) | 0.50 s/img @s/4
+  pixelseal acc s=96 stride=24     AUC 0.479 (full 0.485 / patch 0.472) | score thrGlob 0.2740 (full 0.142 / patch 0.406) | Otsu 0.2794 | thr/régime prédit 0.4519 (full 0.444 / patch 0.460) 
+  pixelseal mar s=96 stride=24     AUC 0.487 (full 0.496 / patch 0.478) | score thrGlob 0.2828 (full 0.210 / patch 0.355) | Otsu 0.2922 | thr/régime prédit 0.4546 (full 0.447 / patch 0.462) 
+  pixelseal acc s=96 stride=48     AUC 0.479 (full 0.493 / patch 0.464) | score thrGlob 0.2831 (full 0.228 / patch 0.338) | Otsu 0.2779 | thr/régime prédit 0.4525 (full 0.444 / patch 0.461) 
+  pixelseal mar s=96 stride=48     AUC 0.504 (full 0.502 / patch 0.506) | score thrGlob 0.2909 (full 0.225 / patch 0.357) | Otsu 0.2916 | thr/régime prédit 0.4564 (full 0.449 / patch 0.463) 
+  s=128: crop entièrement watermarké acc: full 0.501 (n=2191) patch 0.495 (n=4) | crop entièrement propre acc: full 0.491 (n=8) patch 0.500 (n=2450) | 0.24 s/img @s/4
+  pixelseal acc s=128 stride=32    AUC 0.488 (full 0.440 / patch 0.535) | score thrGlob 0.2858 (full 0.274 / patch 0.298) | Otsu 0.2650 | thr/régime prédit 0.4530 (full 0.446 / patch 0.460) 
+  pixelseal mar s=128 stride=32    AUC 0.460 (full 0.479 / patch 0.442) | score thrGlob 0.2890 (full 0.237 / patch 0.341) | Otsu 0.2525 | thr/régime prédit 0.4517 (full 0.442 / patch 0.461) 
+  pixelseal acc s=128 stride=64    AUC 0.500 (full 0.463 / patch 0.537) | score thrGlob 0.2793 (full 0.175 / patch 0.384) | Otsu 0.2662 | thr/régime prédit 0.4542 (full 0.445 / patch 0.464) 
+  pixelseal mar s=128 stride=64    AUC 0.474 (full 0.444 / patch 0.504) | score thrGlob 0.2944 (full 0.246 / patch 0.343) | Otsu 0.2745 | thr/régime prédit 0.4544 (full 0.450 / patch 0.459) 
+  s=192: crop entièrement watermarké acc: full 0.626 (n=652) patch n/a | crop entièrement propre acc: full n/a patch 0.500 (n=784) | 0.09 s/img @s/4
+  pixelseal acc s=192 stride=48    AUC 0.646 (full 0.675 / patch 0.617) | score thrGlob 0.4475 (full 0.391 / patch 0.504) | Otsu 0.3617 | thr/régime prédit 0.4913 (full 0.461 / patch 0.521) 
+  pixelseal mar s=192 stride=48    AUC 0.649 (full 0.648 / patch 0.649) | score thrGlob 0.4596 (full 0.431 / patch 0.488) | Otsu 0.3121 | thr/régime prédit 0.4886 (full 0.463 / patch 0.514) 
+  pixelseal acc s=192 stride=96    AUC 0.617 (full 0.645 / patch 0.589) | score thrGlob 0.4381 (full 0.378 / patch 0.498) | Otsu 0.3209 | thr/régime prédit 0.4884 (full 0.456 / patch 0.521) 
+  pixelseal mar s=192 stride=96    AUC 0.625 (full 0.647 / patch 0.603) | score thrGlob 0.4549 (full 0.420 / patch 0.490) | Otsu 0.3121 | thr/régime prédit 0.4869 (full 0.467 / patch 0.507) 
+  s=256: crop entièrement watermarké acc: full 0.751 (n=195) patch n/a | crop entièrement propre acc: full n/a patch 0.501 (n=251) | 0.04 s/img @s/4
+  pixelseal acc s=256 stride=64    AUC 0.622 (full 0.644 / patch 0.601) | score thrGlob 0.4645 (full 0.432 / patch 0.497) | Otsu 0.3480 | thr/régime prédit 0.4768 (full 0.456 / patch 0.498) 
+  pixelseal mar s=256 stride=64    AUC 0.613 (full 0.640 / patch 0.586) | score thrGlob 0.4650 (full 0.428 / patch 0.502) | Otsu 0.3337 | thr/régime prédit 0.4792 (full 0.458 / patch 0.500) 
+  pixelseal acc s=256 stride=128   AUC 0.630 (full 0.635 / patch 0.624) | score thrGlob 0.4685 (full 0.432 / patch 0.505) | Otsu 0.3256 | thr/régime prédit 0.4748 (full 0.446 / patch 0.504) 
+  pixelseal mar s=256 stride=128   AUC 0.602 (full 0.615 / patch 0.589) | score thrGlob 0.4702 (full 0.431 / patch 0.510) | Otsu 0.3181 | thr/régime prédit 0.4823 (full 0.449 / patch 0.515) 
+  pixelseal acc multi-scale s/2    AUC 0.626 (full 0.635 / patch 0.617) | score thrGlob 0.4704 (full 0.425 / patch 0.515) | Otsu 0.3348 | thr/régime prédit 0.4863 (full 0.455 / patch 0.517) 
+  pixelseal occlusion gray s=64    AUC 0.660 (full 0.756 / patch 0.563) | score thrGlob 0.5038 (full 0.524 / patch 0.484) | Otsu 0.2789 | thr/régime prédit 0.5209 (full 0.541 / patch 0.501) 
+  pixelseal occlusion blur s=64    AUC 0.599 (full 0.659 / patch 0.538) | score thrGlob 0.4865 (full 0.485 / patch 0.488) | Otsu 0.2827 | thr/régime prédit 0.4963 (full 0.494 / patch 0.499) 
+  pixelseal occlusion gray s=128   AUC 0.619 (full 0.699 / patch 0.538) | score thrGlob 0.4974 (full 0.491 / patch 0.504) | Otsu 0.2743 | thr/régime prédit 0.4986 (full 0.491 / patch 0.507) 
+  pixelseal occlusion blur s=128   AUC 0.627 (full 0.639 / patch 0.616) | score thrGlob 0.4711 (full 0.466 / patch 0.476) | Otsu 0.2726 | thr/régime prédit 0.4750 (full 0.468 / patch 0.482) 
+trustmark: n=40 (full 20 / patch 20)
+  s= 64: crop entièrement watermarké acc: full 0.504 (n=12414) patch 0.499 (n=967) | crop entièrement propre acc: full 0.514 (n=406) patch 0.500 (n=13330) | 0.35 s/img @s/4
+  trustmark acc s=64 stride=16     AUC 0.495 (full 0.454 / patch 0.535) | score thrGlob 0.2851 (full 0.277 / patch 0.293) | Otsu 0.2825 | thr/régime prédit 0.4412 (full 0.427 / patch 0.455) 
+  trustmark mar s=64 stride=16     AUC 0.480 (full 0.447 / patch 0.513) | score thrGlob 0.2869 (full 0.226 / patch 0.348) | Otsu 0.2763 | thr/régime prédit 0.4442 (full 0.426 / patch 0.462) 
+  trustmark acc s=64 stride=32     AUC 0.477 (full 0.432 / patch 0.522) | score thrGlob 0.2915 (full 0.326 / patch 0.257) | Otsu 0.2767 | thr/régime prédit 0.4381 (full 0.429 / patch 0.447) 
+  trustmark mar s=64 stride=32     AUC 0.490 (full 0.441 / patch 0.540) | score thrGlob 0.2899 (full 0.283 / patch 0.297) | Otsu 0.2683 | thr/régime prédit 0.4443 (full 0.425 / patch 0.464) 
+  s= 96: crop entièrement watermarké acc: full 0.504 (n=4845) patch 0.498 (n=276) | crop entièrement propre acc: full 0.511 (n=107) patch 0.501 (n=5240) | 0.15 s/img @s/4
+  trustmark acc s=96 stride=24     AUC 0.470 (full 0.412 / patch 0.529) | score thrGlob 0.2781 (full 0.142 / patch 0.415) | Otsu 0.2806 | thr/régime prédit 0.4450 (full 0.429 / patch 0.461) 
+  trustmark mar s=96 stride=24     AUC 0.497 (full 0.441 / patch 0.553) | score thrGlob 0.2926 (full 0.127 / patch 0.458) | Otsu 0.3012 | thr/régime prédit 0.4552 (full 0.427 / patch 0.483) 
+  trustmark acc s=96 stride=48     AUC 0.505 (full 0.472 / patch 0.539) | score thrGlob 0.2847 (full 0.190 / patch 0.379) | Otsu 0.2894 | thr/régime prédit 0.4420 (full 0.426 / patch 0.458) 
+  trustmark mar s=96 stride=48     AUC 0.516 (full 0.471 / patch 0.560) | score thrGlob 0.2946 (full 0.210 / patch 0.379) | Otsu 0.3148 | thr/régime prédit 0.4571 (full 0.425 / patch 0.489) 
+  s=128: crop entièrement watermarké acc: full 0.501 (n=2084) patch 0.506 (n=85) | crop entièrement propre acc: full 0.525 (n=24) patch 0.501 (n=2213) | 0.07 s/img @s/4
+  trustmark acc s=128 stride=32    AUC 0.556 (full 0.515 / patch 0.597) | score thrGlob 0.2808 (full 0.104 / patch 0.457) | Otsu 0.2996 | thr/régime prédit 0.4468 (full 0.432 / patch 0.462) 
+  trustmark mar s=128 stride=32    AUC 0.554 (full 0.508 / patch 0.600) | score thrGlob 0.3003 (full 0.102 / patch 0.499) | Otsu 0.3208 | thr/régime prédit 0.4712 (full 0.436 / patch 0.506) 
+  trustmark acc s=128 stride=64    AUC 0.544 (full 0.502 / patch 0.586) | score thrGlob 0.2858 (full 0.184 / patch 0.388) | Otsu 0.3015 | thr/régime prédit 0.4434 (full 0.425 / patch 0.462) 
+  trustmark mar s=128 stride=64    AUC 0.556 (full 0.521 / patch 0.590) | score thrGlob 0.3009 (full 0.166 / patch 0.436) | Otsu 0.3293 | thr/régime prédit 0.4699 (full 0.432 / patch 0.508) 
+  s=192: crop entièrement watermarké acc: full 0.498 (n=625) patch 0.547 (n=12) | crop entièrement propre acc: full 0.560 (n=1) patch 0.498 (n=677) | 0.03 s/img @s/4
+  trustmark acc s=192 stride=48    AUC 0.520 (full 0.487 / patch 0.552) | score thrGlob 0.2924 (full 0.241 / patch 0.344) | Otsu 0.2953 | thr/régime prédit 0.4402 (full 0.425 / patch 0.455) 
+  trustmark mar s=192 stride=48    AUC 0.531 (full 0.494 / patch 0.567) | score thrGlob 0.3040 (full 0.169 / patch 0.439) | Otsu 0.3022 | thr/régime prédit 0.4617 (full 0.433 / patch 0.490) 
+  trustmark acc s=192 stride=96    AUC 0.480 (full 0.489 / patch 0.471) | score thrGlob 0.2970 (full 0.269 / patch 0.325) | Otsu 0.2740 | thr/régime prédit 0.4354 (full 0.425 / patch 0.446) 
+  trustmark mar s=192 stride=96    AUC 0.486 (full 0.500 / patch 0.472) | score thrGlob 0.3130 (full 0.223 / patch 0.403) | Otsu 0.2702 | thr/régime prédit 0.4487 (full 0.431 / patch 0.467) 
+  s=256: crop entièrement watermarké acc: full 0.496 (n=190) patch 0.490 (n=1) | crop entièrement propre acc: full n/a patch 0.500 (n=201) | 0.01 s/img @s/4
+  trustmark acc s=256 stride=64    AUC 0.510 (full 0.457 / patch 0.563) | score thrGlob 0.2772 (full 0.093 / patch 0.461) | Otsu 0.3027 | thr/régime prédit 0.4465 (full 0.427 / patch 0.466) 
+  trustmark mar s=256 stride=64    AUC 0.521 (full 0.474 / patch 0.568) | score thrGlob 0.3038 (full 0.189 / patch 0.418) | Otsu 0.3091 | thr/régime prédit 0.4575 (full 0.428 / patch 0.487) 
+  trustmark acc s=256 stride=128   AUC 0.513 (full 0.488 / patch 0.539) | score thrGlob 0.2903 (full 0.261 / patch 0.320) | Otsu 0.2872 | thr/régime prédit 0.4398 (full 0.426 / patch 0.454) 
+  trustmark mar s=256 stride=128   AUC 0.537 (full 0.529 / patch 0.545) | score thrGlob 0.2995 (full 0.156 / patch 0.443) | Otsu 0.2905 | thr/régime prédit 0.4569 (full 0.431 / patch 0.482) 
+  trustmark acc multi-scale s/2    AUC 0.537 (full 0.460 / patch 0.615) | score thrGlob 0.2843 (full 0.160 / patch 0.409) | Otsu 0.2834 | thr/régime prédit 0.4369 (full 0.433 / patch 0.441) 
+  trustmark occlusion gray s=64    AUC 0.609 (full 0.638 / patch 0.580) | score thrGlob 0.4788 (full 0.476 / patch 0.481) | Otsu 0.2500 | thr/régime prédit 0.4803 (full 0.478 / patch 0.482) 
+  trustmark occlusion blur s=64    AUC 0.569 (full 0.595 / patch 0.544) | score thrGlob 0.4371 (full 0.404 / patch 0.471) | Otsu 0.2245 | thr/régime prédit 0.4674 (full 0.460 / patch 0.475) 
+  trustmark occlusion gray s=128   AUC 0.640 (full 0.656 / patch 0.625) | score thrGlob 0.4699 (full 0.472 / patch 0.468) | Otsu 0.2914 | thr/régime prédit 0.4708 (full 0.479 / patch 0.463) 
+  trustmark occlusion blur s=128   AUC 0.577 (full 0.565 / patch 0.588) | score thrGlob 0.4541 (full 0.445 / patch 0.464) | Otsu 0.2635 | thr/régime prédit 0.4583 (full 0.452 / patch 0.464) 
+stegastamp: n=10 (full 5 / patch 5)
+  s=128: crop entièrement watermarké acc: full 0.497 (n=592) patch n/a | crop entièrement propre acc: full 0.539 (n=31) patch 0.501 (n=733) | 0.57 s/img @s/4
+  stegastamp acc s=128 stride=32   AUC 0.496 (full 0.449 / patch 0.543) | score thrGlob 0.2931 (full 0.064 / patch 0.522) | Otsu 0.2623 | thr/régime prédit 0.4767 (full 0.434 / patch 0.520) 
+  stegastamp mar s=128 stride=32   AUC 0.439 (full 0.442 / patch 0.436) | score thrGlob 0.2717 (full 0.058 / patch 0.485) | Otsu 0.2687 | thr/régime prédit 0.4604 (full 0.435 / patch 0.486) 
+  stegastamp acc s=128 stride=64   AUC 0.436 (full 0.359 / patch 0.513) | score thrGlob 0.2771 (full 0.065 / patch 0.490) | Otsu 0.2597 | thr/régime prédit 0.4608 (full 0.435 / patch 0.487) 
+  stegastamp mar s=128 stride=64   AUC 0.411 (full 0.351 / patch 0.471) | score thrGlob 0.2734 (full 0.060 / patch 0.487) | Otsu 0.2771 | thr/régime prédit 0.4620 (full 0.437 / patch 0.487) 
+  s=256: crop entièrement watermarké acc: full 0.498 (n=51) patch n/a | crop entièrement propre acc: full n/a patch 0.504 (n=82) | 0.07 s/img @s/4
+  stegastamp acc s=256 stride=64   AUC 0.527 (full 0.599 / patch 0.455) | score thrGlob 0.3038 (full 0.187 / patch 0.420) | Otsu 0.2675 | thr/régime prédit 0.4740 (full 0.461 / patch 0.487) 
+  stegastamp mar s=256 stride=64   AUC 0.535 (full 0.572 / patch 0.498) | score thrGlob 0.2999 (full 0.174 / patch 0.426) | Otsu 0.2271 | thr/régime prédit 0.4800 (full 0.473 / patch 0.487) 
+  stegastamp acc s=256 stride=128  AUC 0.590 (full 0.515 / patch 0.666) | score thrGlob 0.3124 (full 0.274 / patch 0.351) | Otsu 0.2185 | thr/régime prédit 0.4624 (full 0.434 / patch 0.491) 
+  stegastamp mar s=256 stride=128  AUC 0.571 (full 0.511 / patch 0.631) | score thrGlob 0.3197 (full 0.450 / patch 0.190) | Otsu 0.2616 | thr/régime prédit 0.4705 (full 0.450 / patch 0.491) 
+  stegastamp acc multi-scale s/2   AUC 0.518 (full 0.405 / patch 0.632) | score thrGlob 0.2808 (full 0.070 / patch 0.491) | Otsu 0.2427 | thr/régime prédit 0.4600 (full 0.434 / patch 0.487) 
+  stegastamp occlusion gray s=64   AUC 0.655 (full 0.712 / patch 0.598) | score thrGlob 0.4597 (full 0.460 / patch 0.460) | Otsu 0.3118 | thr/régime prédit 0.4776 (full 0.469 / patch 0.486) 
+  stegastamp occlusion blur s=64   AUC 0.523 (full 0.540 / patch 0.505) | score thrGlob 0.3624 (full 0.276 / patch 0.449) | Otsu 0.2232 | thr/régime prédit 0.4604 (full 0.435 / patch 0.486) 
+  stegastamp occlusion gray s=128  AUC 0.570 (full 0.731 / patch 0.409) | score thrGlob 0.4991 (full 0.513 / patch 0.485) | Otsu 0.3096 | thr/régime prédit 0.5032 (full 0.520 / patch 0.487) 
+  stegastamp occlusion blur s=128  AUC 0.589 (full 0.625 / patch 0.552) | score thrGlob 0.3976 (full 0.356 / patch 0.439) | Otsu 0.2466 | thr/régime prédit 0.4683 (full 0.450 / patch 0.487) 
+
+=== 3b. Fenêtre glissante, train complet (config choisie sur le sous-ensemble) ===
+pixelseal: cfg ['192', '48'] n=170 0.09 s/img
+  pixelseal slide.acc (all)        AUC 0.609 (full 0.618 / patch 0.600) | score thrGlob 0.4268 (full 0.378 / patch 0.476) | Otsu 0.3322 | thr/régime prédit 0.4675 (full 0.447 / patch 0.488) 
+  pixelseal slide.acc (hors sweep) AUC 0.598 (full 0.601 / patch 0.594) | score thrGlob 0.4206 (full 0.371 / patch 0.471) | Otsu 0.3230 | thr/régime prédit 0.4613 (full 0.448 / patch 0.475) 
+  pixelseal slide.margin (all)     AUC 0.605 (full 0.624 / patch 0.587) | score thrGlob 0.4323 (full 0.403 / patch 0.461) | Otsu 0.2922 | thr/régime prédit 0.4641 (full 0.451 / patch 0.478) 
+  pixelseal slide.margin (hors sweep) AUC 0.592 (full 0.616 / patch 0.568) | score thrGlob 0.4244 (full 0.393 / patch 0.456) | Otsu 0.2862 | thr/régime prédit 0.4593 (full 0.452 / patch 0.466) 
+trustmark: cfg ['128', '32'] n=170 0.08 s/img
+  trustmark slide.acc (all)        AUC 0.551 (full 0.520 / patch 0.582) | score thrGlob 0.2868 (full 0.307 / patch 0.266) | Otsu 0.3005 | thr/régime prédit 0.4545 (full 0.451 / patch 0.458) 
+  trustmark slide.acc (hors sweep) AUC 0.549 (full 0.521 / patch 0.577) | score thrGlob 0.2918 (full 0.308 / patch 0.276) | Otsu 0.3011 | thr/régime prédit 0.4587 (full 0.458 / patch 0.460) 
+  trustmark slide.margin (all)     AUC 0.549 (full 0.511 / patch 0.587) | score thrGlob 0.2877 (full 0.277 / patch 0.298) | Otsu 0.3207 | thr/régime prédit 0.4680 (full 0.453 / patch 0.483) 
+  trustmark slide.margin (hors sweep) AUC 0.548 (full 0.512 / patch 0.583) | score thrGlob 0.2931 (full 0.284 / patch 0.302) | Otsu 0.3208 | thr/régime prédit 0.4669 (full 0.458 / patch 0.475) 
+stegastamp missing
+
+=== 5. Export des cartes ===
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/signal/maps_pixelseal_train.npz {'native_signed': (170, 128, 128), 'native_frac': (170, 128, 128), 'native_det': (170, 128, 128), 'slide_acc': (170, 128, 128), 'slide_margin': (170, 128, 128), 'full_acc': (170,), 'full_margin': (170,)}
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/signal/maps_pixelseal_test.npz {'native_signed': (340, 128, 128), 'native_frac': (340, 128, 128), 'native_det': (340, 128, 128), 'slide_acc': (340, 128, 128), 'slide_margin': (340, 128, 128), 'full_acc': (340,), 'full_margin': (340,)}
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/signal/maps_trustmark_train.npz {'native_signed': (170, 128, 128), 'native_frac': (170, 128, 128), 'slide_acc': (170, 128, 128), 'slide_margin': (170, 128, 128), 'full_acc': (170,), 'full_margin': (170,)}
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/out/signal/maps_trustmark_test.npz {'native_signed': (340, 128, 128), 'native_frac': (340, 128, 128), 'slide_acc': (340, 128, 128), 'slide_margin': (340, 128, 128), 'full_acc': (340,), 'full_margin': (340,)}
+JOB OK

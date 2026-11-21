@@ -1,0 +1,106 @@
+GPU 0: NVIDIA A100-SXM4-40GB (UUID: GPU-77441455-52bf-305a-0ff4-625ac0661f1d)
+GPU 1: NVIDIA A100-SXM4-40GB (UUID: GPU-8d1556c8-9a19-fca7-fa37-daf7fff3f61c)
+GPU 2: NVIDIA A100-SXM4-40GB (UUID: GPU-8fed4244-d727-f9b9-f96a-55b6204d4674)
+GPU 3: NVIDIA A100-SXM4-40GB (UUID: GPU-bf897da3-48fe-3cf4-9835-dec6809c4ba8)
+===== t1/out/signal/15901672_box_pixelseal.log
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:22 [P1] pixelseal exact rect by min side: {'<40': {'mean': 0.5605, 'min': 0.4766, 'max': 0.6445, 'n': 2}, '40-80': {'mean': 0.8711, 'min': 0.8711, 'max': 0.8711, 'n': 1}, '80-160': {'n': 0}, '>=160': {'n': 0}}
+17:29:22 [P1] pixelseal variants (mean acc): exact 0.664, whole 0.496, shift_x_0.05 0.660, shift_y_0.05 0.600, enlarge_0.05 0.698, shrink_0.05 0.642, shift_x_0.1 0.656, shift_y_0.1 0.479, enlarge_0.1 0.702, shrink_0.1 0.656, shift_x_0.25 0.581, shift_y_0.25 0.460, enlarge_0.25 0.576, shrink_0.25 0.619
+17:29:22 [P2] pixelseal transplant (mean acc): cover 0.047, asis 0.501, full_out_gray 0.516, full_out_mean 0.518, full_out_blur 0.501, full_out_noise 0.499, bbox 0.510, bbox_grayout 0.496, bbox_square 0.487, bbox_square_grayout 0.531, bbox_aspect2 0.495, bbox_aspect2_grayout 0.490, bbox_plus10 0.500, bbox_plus10_grayout 0.514, bbox_plus25 0.478, bbox_plus25_grayout 0.488, bbox_plus50 0.483, bbox_plus50_grayout 0.495, asis_wrongmsg 0.512
+17:29:22 [P2-ctrl] pixelseal full regime + transplant shape (mean acc): shape_cover 0.047, wm_frac_in_shape 0.835, asis 0.951, full_out_gray 0.549, full_out_mean 0.510, full_out_blur 0.504, full_out_noise 0.501
+17:29:26 [P2-search] pixelseal: {'peak': {'mean': 0.5859, 'min': 0.582, 'max': 0.5898, 'n': 3}, 'null_peak': {'mean': 0.5898, 'min': 0.5547, 'max': 0.6328, 'n': 3}, 'at_orig': {'mean': 0.5156, 'min': 0.5, 'max': 0.543, 'n': 3}, 'peak_minus_null_gt_0.1': 0}
+17:29:26 [P3] pixelseal: {'iou_start': {'mean': 0.3232, 'min': 0.0, 'max': 0.509, 'n': 3}, 'iou_end': {'mean': 0.3278, 'min': 0.0, 'max': 0.5231, 'n': 3}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.5573, 'min': 0.5469, 'max': 0.5664, 'n': 3}, 'sec_per_img': {'mean': 0.1285, 'min': 0.1038, 'max': 0.141, 'n': 3}}
+17:29:27 [P4] pixelseal size 32: mean|res| 0.746 max 5 unchanged px 0.449 decode acc 0.538
+17:29:27 [P4] pixelseal size 64: mean|res| 0.785 max 6 unchanged px 0.442 decode acc 0.810
+17:29:27 [P4] pixelseal size 128: mean|res| 0.852 max 5 unchanged px 0.385 decode acc 0.987
+17:29:27 [P4] pixelseal size 512: mean|res| 0.819 max 6 unchanged px 0.412 decode acc 1.000
+17:29:27 [done] pixelseal 14 s
+17:29:27 DONE
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+17:29:37 [P1] pixelseal exact rect by min side: {'<40': {'mean': 0.5552, 'min': 0.4727, 'max': 0.7578, 'n': 25}, '40-80': {'mean': 0.8297, 'min': 0.4766, 'max': 0.9805, 'n': 10}, '80-160': {'mean': 0.9086, 'min': 0.7578, 'max': 1.0, 'n': 5}, '>=160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 3}}
+17:29:37 [P1] pixelseal variants (mean acc): exact 0.691, whole 0.507, shift_x_0.05 0.691, shift_y_0.05 0.628, enlarge_0.05 0.696, shrink_0.05 0.691, shift_x_0.1 0.673, shift_y_0.1 0.606, enlarge_0.1 0.674, shrink_0.1 0.679, shift_x_0.25 0.628, shift_y_0.25 0.536, enlarge_0.25 0.570, shrink_0.25 0.655
+17:29:39 [P2] pixelseal transplant (mean acc): cover 0.137, asis 0.585, full_out_gray 0.541, full_out_mean 0.542, full_out_blur 0.563, full_out_noise 0.586, bbox 0.589, bbox_grayout 0.539, bbox_square 0.586, bbox_square_grayout 0.539, bbox_aspect2 0.590, bbox_aspect2_grayout 0.539, bbox_plus10 0.575, bbox_plus10_grayout 0.530, bbox_plus25 0.582, bbox_plus25_grayout 0.525, bbox_plus50 0.577, bbox_plus50_grayout 0.520, asis_wrongmsg 0.494
+17:29:41 [P2-ctrl] pixelseal full regime + transplant shape (mean acc): shape_cover 0.136, wm_frac_in_shape 0.908, asis 0.984, full_out_gray 0.518, full_out_mean 0.518, full_out_blur 0.537, full_out_noise 0.557
+17:30:12 [P2-search] pixelseal: {'peak': {'mean': 0.6245, 'min': 0.5312, 'max': 0.9414, 'n': 42}, 'null_peak': {'mean': 0.5765, 'min': 0.543, 'max': 0.6328, 'n': 42}, 'at_orig': {'mean': 0.5412, 'min': 0.4453, 'max': 0.8945, 'n': 42}, 'peak_minus_null_gt_0.1': 8}
+17:30:19 [P3] pixelseal: {'iou_start': {'mean': 0.3826, 'min': 0.0, 'max': 0.8258, 'n': 43}, 'iou_end': {'mean': 0.4848, 'min': 0.0, 'max': 0.9512, 'n': 43}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.6603, 'min': 0.4375, 'max': 1.0, 'n': 43}, 'sec_per_img': {'mean': 0.1477, 'min': 0.0299, 'max': 0.2668, 'n': 43}}
+17:30:19 [P4] pixelseal size 32: mean|res| 0.746 max 5 unchanged px 0.449 decode acc 0.538
+17:30:19 [P4] pixelseal size 64: mean|res| 0.785 max 6 unchanged px 0.442 decode acc 0.810
+17:30:19 [P4] pixelseal size 128: mean|res| 0.852 max 5 unchanged px 0.385 decode acc 0.987
+17:30:19 [P4] pixelseal size 512: mean|res| 0.819 max 6 unchanged px 0.412 decode acc 1.000
+17:30:19 [done] pixelseal 48 s
+17:30:19 DONE
+===== t1/out/signal/15901672_box_stegastamp.log
+17:29:14 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:16 [P1] stegastamp exact rect by min side: {'<40': {'mean': 0.46, 'min': 0.46, 'max': 0.46, 'n': 1}, '40-80': {'mean': 0.9, 'min': 0.83, 'max': 0.97, 'n': 2}, '80-160': {'n': 0}, '>=160': {'n': 0}}
+17:29:16 [P1] stegastamp variants (mean acc): exact 0.753, whole 0.547, shift_x_0.05 0.637, shift_y_0.05 0.637, enlarge_0.05 0.820, shrink_0.05 0.697, shift_x_0.1 0.480, shift_y_0.1 0.460, enlarge_0.1 0.790, shrink_0.1 0.630, shift_x_0.25 0.480, shift_y_0.25 0.510, enlarge_0.25 0.743, shrink_0.25 0.560
+17:29:18 [P2] stegastamp transplant (mean acc): cover 0.099, asis 0.557, full_out_gray 0.613, full_out_mean 0.640, full_out_blur 0.560, full_out_noise 0.540, bbox 0.527, bbox_grayout 0.543, bbox_square 0.517, bbox_square_grayout 0.553, bbox_aspect2 0.540, bbox_aspect2_grayout 0.557, bbox_plus10 0.513, bbox_plus10_grayout 0.533, bbox_plus25 0.480, bbox_plus25_grayout 0.550, bbox_plus50 0.470, bbox_plus50_grayout 0.513, asis_wrongmsg 0.477
+17:29:18 [P2-ctrl] stegastamp full regime + transplant shape (mean acc): shape_cover 0.099, wm_frac_in_shape 0.793, asis 0.943, full_out_gray 0.583, full_out_mean 0.573, full_out_blur 0.597, full_out_noise 0.580
+17:29:24 [P2-search] stegastamp: {'peak': {'mean': 0.67, 'min': 0.64, 'max': 0.69, 'n': 3}, 'null_peak': {'mean': 0.64, 'min': 0.61, 'max': 0.66, 'n': 3}, 'at_orig': {'mean': 0.6133, 'min': 0.51, 'max': 0.67, 'n': 3}, 'peak_minus_null_gt_0.1': 0}
+17:29:26 [P3] stegastamp: {'iou_start': {'mean': 0.4862, 'min': 0.2925, 'max': 0.6212, 'n': 3}, 'iou_end': {'mean': 0.6108, 'min': 0.2732, 'max': 0.9145, 'n': 3}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.7433, 'min': 0.61, 'max': 1.0, 'n': 3}, 'sec_per_img': {'mean': 0.7247, 'min': 0.6588, 'max': 0.7645, 'n': 3}}
+17:29:26 [P4] stegastamp size 32: mean|res| 3.431 max 24 unchanged px 0.096 decode acc 0.883
+17:29:26 [P4] stegastamp size 64: mean|res| 4.883 max 37 unchanged px 0.054 decode acc 0.947
+17:29:26 [P4] stegastamp size 128: mean|res| 5.334 max 45 unchanged px 0.052 decode acc 0.987
+17:29:26 [P4] stegastamp size 512: mean|res| 7.327 max 76 unchanged px 0.028 decode acc 1.000
+17:29:26 [done] stegastamp 13 s
+17:29:26 DONE
+17:29:31 onnx providers: ['CUDAExecutionProvider', 'CPUExecutionProvider']
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:34 [P1] stegastamp exact rect by min side: {'<40': {'mean': 0.6544, 'min': 0.46, 'max': 0.92, 'n': 16}, '40-80': {'mean': 0.8576, 'min': 0.59, 'max': 1.0, 'n': 17}, '80-160': {'mean': 0.9963, 'min': 0.98, 'max': 1.0, 'n': 8}, '>=160': {'mean': 0.995, 'min': 0.99, 'max': 1.0, 'n': 2}}
+17:29:34 [P1] stegastamp variants (mean acc): exact 0.814, whole 0.496, shift_x_0.05 0.607, shift_y_0.05 0.650, enlarge_0.05 0.839, shrink_0.05 0.734, shift_x_0.1 0.464, shift_y_0.1 0.494, enlarge_0.1 0.790, shrink_0.1 0.634, shift_x_0.25 0.493, shift_y_0.25 0.502, enlarge_0.25 0.624, shrink_0.25 0.510
+17:29:50 [P2] stegastamp transplant (mean acc): cover 0.093, asis 0.552, full_out_gray 0.580, full_out_mean 0.593, full_out_blur 0.504, full_out_noise 0.572, bbox 0.501, bbox_grayout 0.508, bbox_square 0.508, bbox_square_grayout 0.509, bbox_aspect2 0.509, bbox_aspect2_grayout 0.511, bbox_plus10 0.502, bbox_plus10_grayout 0.499, bbox_plus25 0.513, bbox_plus25_grayout 0.498, bbox_plus50 0.518, bbox_plus50_grayout 0.534, asis_wrongmsg 0.500
+17:29:53 [P2-ctrl] stegastamp full regime + transplant shape (mean acc): shape_cover 0.092, wm_frac_in_shape 0.922, asis 0.970, full_out_gray 0.571, full_out_mean 0.583, full_out_blur 0.596, full_out_noise 0.574
+17:31:23 [P2-search] stegastamp: {'peak': {'mean': 0.674, 'min': 0.54, 'max': 0.88, 'n': 42}, 'null_peak': {'mean': 0.636, 'min': 0.57, 'max': 0.71, 'n': 42}, 'at_orig': {'mean': 0.5802, 'min': 0.4, 'max': 0.88, 'n': 42}, 'peak_minus_null_gt_0.1': 6}
+17:31:52 [P3] stegastamp: {'iou_start': {'mean': 0.472, 'min': 0.0, 'max': 0.8387, 'n': 43}, 'iou_end': {'mean': 0.5692, 'min': 0.0, 'max': 0.9776, 'n': 43}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.7286, 'min': 0.5, 'max': 1.0, 'n': 43}, 'sec_per_img': {'mean': 0.6634, 'min': 0.4949, 'max': 1.0761, 'n': 43}}
+17:31:52 [P4] stegastamp size 32: mean|res| 3.431 max 24 unchanged px 0.096 decode acc 0.883
+17:31:52 [P4] stegastamp size 64: mean|res| 4.883 max 37 unchanged px 0.054 decode acc 0.947
+17:31:52 [P4] stegastamp size 128: mean|res| 5.334 max 45 unchanged px 0.052 decode acc 0.987
+17:31:52 [P4] stegastamp size 512: mean|res| 7.327 max 76 unchanged px 0.028 decode acc 1.000
+17:31:52 [done] stegastamp 142 s
+17:31:52 DONE
+===== t1/out/signal/15901672_box_trustmark.log
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/trustmark/trustmark.py:176: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(weight_path, map_location=torch.device('cpu'))
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:22 [P1] trustmark exact rect by min side: {'<40': {'n': 0}, '40-80': {'mean': 0.92, 'min': 0.92, 'max': 0.92, 'n': 1}, '80-160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 1}, '>=160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 1}}
+17:29:22 [P1] trustmark variants (mean acc): exact 0.973, whole 0.543, shift_x_0.05 0.950, shift_y_0.05 0.973, enlarge_0.05 0.990, shrink_0.05 0.883, shift_x_0.1 0.900, shift_y_0.1 0.977, enlarge_0.1 0.950, shrink_0.1 0.833, shift_x_0.25 0.807, shift_y_0.25 0.667, enlarge_0.25 0.663, shrink_0.25 0.510
+17:29:23 [P2] trustmark transplant (mean acc): cover 0.055, asis 0.513, full_out_gray 0.530, full_out_mean 0.527, full_out_blur 0.497, full_out_noise 0.503, bbox 0.530, bbox_grayout 0.537, bbox_square 0.533, bbox_square_grayout 0.493, bbox_aspect2 0.517, bbox_aspect2_grayout 0.520, bbox_plus10 0.497, bbox_plus10_grayout 0.520, bbox_plus25 0.510, bbox_plus25_grayout 0.517, bbox_plus50 0.503, bbox_plus50_grayout 0.503, asis_wrongmsg 0.547
+17:29:23 [P2-ctrl] trustmark full regime + transplant shape (mean acc): shape_cover 0.055, wm_frac_in_shape 0.948, asis 0.973, full_out_gray 0.523, full_out_mean 0.507, full_out_blur 0.537, full_out_noise 0.600
+17:29:24 [P2-search] trustmark: {'peak': {'mean': 0.6467, 'min': 0.61, 'max': 0.67, 'n': 3}, 'null_peak': {'mean': 0.6267, 'min': 0.6, 'max': 0.66, 'n': 3}, 'at_orig': {'mean': 0.53, 'min': 0.5, 'max': 0.55, 'n': 3}, 'peak_minus_null_gt_0.1': 0}
+17:29:24 [P3] trustmark: {'iou_start': {'mean': 0.6451, 'min': 0.3803, 'max': 0.8552, 'n': 3}, 'iou_end': {'mean': 0.643, 'min': 0.3452, 'max': 0.8036, 'n': 3}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.87, 'min': 0.61, 'max': 1.0, 'n': 3}, 'sec_per_img': {'mean': 0.0867, 'min': 0.0619, 'max': 0.1065, 'n': 3}}
+17:29:24 [P4] trustmark size 32: mean|res| 0.591 max 3 unchanged px 0.375 decode acc 0.977
+17:29:24 [P4] trustmark size 64: mean|res| 0.688 max 9 unchanged px 0.351 decode acc 1.000
+17:29:24 [P4] trustmark size 128: mean|res| 0.893 max 14 unchanged px 0.257 decode acc 1.000
+17:29:24 [P4] trustmark size 512: mean|res| 1.192 max 33 unchanged px 0.205 decode acc 1.000
+17:29:24 [done] trustmark 11 s
+17:29:25 DONE
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/trustmark/trustmark.py:176: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(weight_path, map_location=torch.device('cpu'))
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/t1/signal/box_probe.py:90: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  x = torch.from_numpy(img).to(DEV).permute(2, 0, 1)[None].float() / 255
+17:29:35 [P1] trustmark exact rect by min side: {'<40': {'mean': 0.6757, 'min': 0.52, 'max': 1.0, 'n': 7}, '40-80': {'mean': 0.9823, 'min': 0.92, 'max': 1.0, 'n': 13}, '80-160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 15}, '>=160': {'mean': 1.0, 'min': 1.0, 'max': 1.0, 'n': 8}}
+17:29:35 [P1] trustmark variants (mean acc): exact 0.942, whole 0.506, shift_x_0.05 0.929, shift_y_0.05 0.941, enlarge_0.05 0.957, shrink_0.05 0.914, shift_x_0.1 0.904, shift_y_0.1 0.931, enlarge_0.1 0.925, shrink_0.1 0.860, shift_x_0.25 0.781, shift_y_0.25 0.744, enlarge_0.25 0.608, shrink_0.25 0.516
+17:29:36 [P2] trustmark transplant (mean acc): cover 0.116, asis 0.554, full_out_gray 0.551, full_out_mean 0.554, full_out_blur 0.534, full_out_noise 0.539, bbox 0.506, bbox_grayout 0.511, bbox_square 0.510, bbox_square_grayout 0.518, bbox_aspect2 0.505, bbox_aspect2_grayout 0.500, bbox_plus10 0.505, bbox_plus10_grayout 0.514, bbox_plus25 0.511, bbox_plus25_grayout 0.518, bbox_plus50 0.520, bbox_plus50_grayout 0.533, asis_wrongmsg 0.503
+17:29:38 [P2-ctrl] trustmark full regime + transplant shape (mean acc): shape_cover 0.116, wm_frac_in_shape 0.908, asis 0.978, full_out_gray 0.548, full_out_mean 0.547, full_out_blur 0.542, full_out_noise 0.533
+17:29:50 [P2-search] trustmark: {'peak': {'mean': 0.6443, 'min': 0.56, 'max': 0.93, 'n': 42}, 'null_peak': {'mean': 0.6093, 'min': 0.56, 'max': 0.68, 'n': 42}, 'at_orig': {'mean': 0.5517, 'min': 0.41, 'max': 0.9, 'n': 42}, 'peak_minus_null_gt_0.1': 5}
+17:29:54 [P3] trustmark: {'iou_start': {'mean': 0.5759, 'min': 0.0243, 'max': 0.8638, 'n': 43}, 'iou_end': {'mean': 0.7383, 'min': 0.0243, 'max': 0.9388, 'n': 43}, 'exact_frac': 0.0, 'acc_end': {'mean': 0.9107, 'min': 0.56, 'max': 1.0, 'n': 43}, 'sec_per_img': {'mean': 0.0841, 'min': 0.0108, 'max': 0.1166, 'n': 43}}
+17:29:55 [P4] trustmark size 32: mean|res| 0.591 max 3 unchanged px 0.375 decode acc 0.977
+17:29:55 [P4] trustmark size 64: mean|res| 0.688 max 9 unchanged px 0.351 decode acc 1.000
+17:29:55 [P4] trustmark size 128: mean|res| 0.893 max 14 unchanged px 0.257 decode acc 1.000
+17:29:55 [P4] trustmark size 512: mean|res| 1.192 max 33 unchanged px 0.205 decode acc 1.000
+17:29:55 [done] trustmark 26 s
+17:29:55 DONE
+JOB OK

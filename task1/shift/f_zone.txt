@@ -1,0 +1,11 @@
+pixelseal: fold0 zone n=2  raw 0.658  forced-guard-coverage 0.365  topk(cov_hat(acc)) 0.725   | test images in zone [0.62,0.93): 31  fit cov = 1.54*acc + -0.85
+trustmark: fold0 zone n=3  raw 0.763  forced-guard-coverage 0.563  topk(cov_hat(acc)) 0.646   | test images in zone [0.62,0.93): 49  fit cov = 2.11*acc + -1.13
+stegastamp: fold0 zone n=6  raw 0.794  forced-guard-coverage 0.611  topk(cov_hat(acc)) 0.603   | test images in zone [0.62,0.93): 42  fit cov = 1.99*acc + -0.98
+ALL fold0 zone n=11 raw 0.761 forced 0.553 covhat 0.637
+thumb adversarial AUC pixelseal  0.620
+thumb adversarial AUC trustmark  0.488
+thumb adversarial AUC stegastamp 0.460
+thumb adversarial AUC all        0.525
+thumb AUC train pixelseal vs trustmark: 0.611
+thumb AUC train pixelseal vs stegastamp: 0.510
+thumb AUC train trustmark vs stegastamp: 0.514

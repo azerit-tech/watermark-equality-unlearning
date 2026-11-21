@@ -1,0 +1,261 @@
+[WARN]: `ffmpeg-python` not available, `SimpleVideoDataset` class will not be usable. Install it by `pip install ffmpeg-python`.
+/p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/.venv/lib/python3.11/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Model loaded successfully from /p/scratch/training2666/trentelivres1/Azerit/Hackathon_Watermark_Localisation_Task/models/pixelseal/checkpoint.pth with message: <All keys matched successfully>
+[pixelseal] 0 emb/img 0.86s rmrc_raw 0.635 aucd32 0.454
+[pixelseal] 1 emb/img 0.80s rmrc_raw 0.585 aucd32 0.556
+[pixelseal] 2 emb/img 0.78s rmrc_raw 0.591 aucd32 0.605
+[pixelseal] 3 emb/img 0.77s rmrc_raw 0.620 aucd32 0.485
+[pixelseal] 4 emb/img 0.77s rmrc_raw 0.537 aucd32 0.755
+[pixelseal] 5 emb/img 0.76s rmrc_raw 0.547 aucd32 0.495
+[pixelseal] 6 emb/img 0.76s rmrc_raw 0.614 aucd32 0.369
+[pixelseal] 7 emb/img 0.76s rmrc_raw 0.638 aucd32 0.567
+[pixelseal] 8 emb/img 0.77s rmrc_raw 0.576 aucd32 0.522
+[pixelseal] 9 emb/img 0.76s rmrc_raw 0.535 aucd32 0.576
+[pixelseal] 10 emb/img 0.76s rmrc_raw 0.559 aucd32 0.569
+[pixelseal] 11 emb/img 0.77s rmrc_raw 0.561 aucd32 0.648
+[pixelseal] 12 emb/img 0.77s rmrc_raw 0.532 aucd32 0.620
+[pixelseal] 13 emb/img 0.76s rmrc_raw 0.571 aucd32 0.625
+[pixelseal] 14 emb/img 0.76s rmrc_raw 0.540 aucd32 0.504
+[pixelseal] 15 emb/img 0.77s rmrc_raw 0.586 aucd32 0.681
+[pixelseal] 16 emb/img 0.76s rmrc_raw 0.590 aucd32 0.474
+[pixelseal] 17 emb/img 0.77s rmrc_raw 0.630 aucd32 0.556
+[pixelseal] 18 emb/img 0.76s rmrc_raw 0.576 aucd32 0.283
+[pixelseal] 19 emb/img 0.76s rmrc_raw 0.601 aucd32 0.583
+[pixelseal] 20 emb/img 0.77s rmrc_raw 0.556 aucd32 0.474
+[pixelseal] 21 emb/img 0.84s rmrc_raw 0.653 aucd32 0.430
+[pixelseal] 22 emb/img 0.84s rmrc_raw 0.662 aucd32 0.670
+[pixelseal] 23 emb/img 0.77s rmrc_raw 0.590 aucd32 0.492
+[pixelseal] 24 emb/img 0.76s rmrc_raw 0.609 aucd32 0.476
+[pixelseal] 25 emb/img 0.77s rmrc_raw 0.557 aucd32 0.623
+[pixelseal] 26 emb/img 0.78s rmrc_raw 0.544 aucd32 0.541
+[pixelseal] 27 emb/img 0.77s rmrc_raw 0.570 aucd32 0.623
+[pixelseal] 28 emb/img 0.77s rmrc_raw 0.585 aucd32 0.526
+[pixelseal] 29 emb/img 0.77s rmrc_raw 0.602 aucd32 0.446
+[pixelseal] 30 emb/img 0.76s rmrc_raw 0.605 aucd32 0.513
+[pixelseal] 31 emb/img 0.79s rmrc_raw 0.589 aucd32 0.560
+[pixelseal] 32 emb/img 0.78s rmrc_raw 0.584 aucd32 0.701
+[pixelseal] 33 emb/img 0.77s rmrc_raw 0.638 aucd32 0.465
+[pixelseal] 34 emb/img 0.77s rmrc_raw 0.623 aucd32 0.317
+[pixelseal] 35 emb/img 0.79s rmrc_raw 0.581 aucd32 0.611
+[pixelseal] 36 emb/img 0.77s rmrc_raw 0.539 aucd32 0.673
+[pixelseal] 37 emb/img 0.77s rmrc_raw 0.623 aucd32 0.508
+[pixelseal] 38 emb/img 0.77s rmrc_raw 0.592 aucd32 0.550
+[pixelseal] 39 emb/img 0.77s rmrc_raw 0.663 aucd32 0.557
+[pixelseal] 40 emb/img 0.78s rmrc_raw 0.609 aucd32 0.521
+[pixelseal] 41 emb/img 0.77s rmrc_raw 0.451 aucd32 0.749
+[pixelseal] 42 emb/img 0.77s rmrc_raw 0.615 aucd32 0.718
+[pixelseal] 43 emb/img 0.80s rmrc_raw 0.605 aucd32 0.452
+[pixelseal] 44 emb/img 0.80s rmrc_raw 0.643 aucd32 0.537
+[pixelseal] 45 emb/img 0.82s rmrc_raw 0.600 aucd32 0.550
+[pixelseal] 46 emb/img 0.80s rmrc_raw 0.618 aucd32 0.589
+[pixelseal] 47 emb/img 0.80s rmrc_raw 0.515 aucd32 0.440
+[pixelseal] 48 emb/img 0.81s rmrc_raw 0.574 aucd32 0.534
+[pixelseal] 49 emb/img 0.84s rmrc_raw 0.453 aucd32 0.648
+[pixelseal] 50 emb/img 0.80s rmrc_raw 0.548 aucd32 0.438
+[pixelseal] 51 emb/img 0.80s rmrc_raw 0.582 aucd32 0.587
+[pixelseal] 52 emb/img 0.80s rmrc_raw 0.641 aucd32 0.499
+[pixelseal] 53 emb/img 0.84s rmrc_raw 0.544 aucd32 0.562
+[pixelseal] 54 emb/img 0.80s rmrc_raw 0.640 aucd32 0.601
+[pixelseal] 55 emb/img 0.80s rmrc_raw 0.593 aucd32 0.559
+[pixelseal] 56 emb/img 0.80s rmrc_raw 0.566 aucd32 0.472
+[pixelseal] 57 emb/img 0.84s rmrc_raw 0.645 aucd32 0.447
+[pixelseal] 58 emb/img 0.81s rmrc_raw 0.604 aucd32 0.518
+[pixelseal] 59 emb/img 0.80s rmrc_raw 0.578 aucd32 0.577
+[pixelseal] real 07c5ceca91f8 hole aucd32 0.478
+[pixelseal] real 23ca79c98ba7 hole aucd32 0.547
+[pixelseal] real 28055f534714 hole aucd32 0.578
+[pixelseal] real 2e5699234a38 transplant aucd32 0.489
+[pixelseal] real 3e38638a4881 transplant aucd32 0.544
+[pixelseal] real 43715261027b hole aucd32 0.420
+[pixelseal] real 468f425e2cb4 hole aucd32 0.488
+[pixelseal] real 63ab2489dca0 hole aucd32 0.496
+[pixelseal] real 7168c732ee2c hole aucd32 0.371
+[pixelseal] real 82430b03e627 transplant aucd32 0.353
+[pixelseal] real 83e0501a9fc2 hole aucd32 0.564
+[pixelseal] real 8659c72e0980 transplant aucd32 0.445
+[pixelseal] real 9234fa78fab7 hole aucd32 0.548
+[pixelseal] real 9ebfa913b9a4 transplant aucd32 0.584
+[pixelseal] real af8283fae5e0 hole aucd32 0.544
+[pixelseal] real b0c5f248d5f4 hole aucd32 0.522
+[pixelseal] real b6a833cb199b hole aucd32 0.541
+[pixelseal] real c27d787ad54b transplant aucd32 0.355
+[pixelseal] real cd924ae19863 hole aucd32 0.515
+[pixelseal] real ce759ae7b8e4 hole aucd32 0.510
+[pixelseal] real d339bbaefadb transplant aucd32 0.492
+[pixelseal] real d81cc1e7340c hole aucd32 0.454
+[pixelseal] real da2e670b929d hole aucd32 0.255
+[pixelseal] real e8485cda4a0b transplant aucd32 0.411
+[pixelseal] real ed5976bf36af hole aucd32 0.558
+[pixelseal] real ffa7099ac789 transplant aucd32 0.793
+{
+ "method": "pixelseal",
+ "n_pairs": 60,
+ "embed_s_per_call_cpu": 0.7850906014442444,
+ "corr32": {
+  "raw_w_rm": {
+   "mean": 0.639223575592041,
+   "p10": 0.35138729810714725,
+   "p50": 0.6895696520805359,
+   "p90": 0.8489823579788208,
+   "img_mean_of_means": 0.63896644115448
+  },
+  "raw_w_rmrc": {
+   "mean": 0.5869565606117249,
+   "p10": 0.36094131469726565,
+   "p50": 0.6193802952766418,
+   "p90": 0.7687634587287903,
+   "img_mean_of_means": 0.5869033932685852
+  },
+  "dog_w_rm": {
+   "mean": 0.6261706352233887,
+   "p10": 0.25029721260070803,
+   "p50": 0.699852466583252,
+   "p90": 0.8737956404685974,
+   "img_mean_of_means": 0.6261223554611206
+  },
+  "dog_w_rmrc": {
+   "mean": 0.5990716814994812,
+   "p10": 0.3183077454566956,
+   "p50": 0.6466666460037231,
+   "p90": 0.8066397190093995,
+   "img_mean_of_means": 0.5990649461746216
+  }
+ },
+ "synth_auc": {
+  "hole": {
+   "s_d_16": {
+    "mean": 0.5447819311481886,
+    "median": 0.5371623942978443,
+    "n": 30
+   },
+   "s_d_32": {
+    "mean": 0.5341178701211976,
+    "median": 0.5243264999355552,
+    "n": 30
+   },
+   "nc_d_32": {
+    "mean": 0.5773576460018892,
+    "median": 0.5552873752563925,
+    "n": 30
+   },
+   "s_m_16": {
+    "mean": 0.5193053907546231,
+    "median": 0.5201678680409806,
+    "n": 30
+   },
+   "s_m_32": {
+    "mean": 0.5137605849765496,
+    "median": 0.5117642610168442,
+    "n": 30
+   },
+   "nc_m_32": {
+    "mean": 0.5304819932759905,
+    "median": 0.5591252940182162,
+    "n": 30
+   }
+  },
+  "transplant": {
+   "s_d_16": {
+    "mean": 0.5505763320425804,
+    "median": 0.5542725481279371,
+    "n": 30
+   },
+   "s_d_32": {
+    "mean": 0.5553130040495557,
+    "median": 0.559340092196112,
+    "n": 30
+   },
+   "nc_d_32": {
+    "mean": 0.5871737485958582,
+    "median": 0.5714392692298973,
+    "n": 30
+   },
+   "s_m_16": {
+    "mean": 0.5449722480432228,
+    "median": 0.5296445780581022,
+    "n": 30
+   },
+   "s_m_32": {
+    "mean": 0.5389806783283347,
+    "median": 0.5464406921082834,
+    "n": 30
+   },
+   "nc_m_32": {
+    "mean": 0.5841432160730966,
+    "median": 0.586071327493994,
+    "n": 30
+   }
+  }
+ },
+ "real_auc": {
+  "hole": {
+   "s_d_16": {
+    "mean": 0.5046701484508318,
+    "median": 0.5243161844573911,
+    "n": 17
+   },
+   "s_d_32": {
+    "mean": 0.49345122501375244,
+    "median": 0.5150446531263269,
+    "n": 17
+   },
+   "nc_d_32": {
+    "mean": 0.5060459651011122,
+    "median": 0.5274499621720113,
+    "n": 17
+   },
+   "s_m_16": {
+    "mean": 0.4824165270828607,
+    "median": 0.4880347485300319,
+    "n": 17
+   },
+   "s_m_32": {
+    "mean": 0.4605857413963944,
+    "median": 0.4830655304101467,
+    "n": 17
+   },
+   "nc_m_32": {
+    "mean": 0.4759578156798594,
+    "median": 0.4790285585749112,
+    "n": 17
+   }
+  },
+  "transplant": {
+   "s_d_16": {
+    "mean": 0.50873131105552,
+    "median": 0.5047230255349804,
+    "n": 9
+   },
+   "s_d_32": {
+    "mean": 0.4963299197009804,
+    "median": 0.489086958106451,
+    "n": 9
+   },
+   "nc_d_32": {
+    "mean": 0.4890957692364035,
+    "median": 0.4843560508885676,
+    "n": 9
+   },
+   "s_m_16": {
+    "mean": 0.5021973085241733,
+    "median": 0.48777983530516356,
+    "n": 9
+   },
+   "s_m_32": {
+    "mean": 0.48861068721239903,
+    "median": 0.49026076406704294,
+    "n": 9
+   },
+   "nc_m_32": {
+    "mean": 0.483964939733349,
+    "median": 0.5588948641368174,
+    "n": 9
+   }
+  }
+ },
+ "s_d_32_mean": {
+  "wm": 0.17820855518026898,
+  "clean": 0.018037594249472023
+ }
+}

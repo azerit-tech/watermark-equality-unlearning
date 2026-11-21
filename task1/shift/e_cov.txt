@@ -1,0 +1,26 @@
+
+== pixelseal: train images with acc in [0.60,0.95): acc / GT coverage / type / fold0
+   0.61/0.19/tr  0.64/0.18/tr  0.64/0.25/tr  0.69/0.12/tr  0.71/0.29/tr*  0.75/0.18/tr  0.77/0.25/tr  0.79/0.21/tr  0.81/0.63/ho  0.83/0.52/ho  0.86/0.41/tr*  0.87/0.61/ho  0.88/0.30/tr  0.89/0.60/ho  0.93/0.44/tr  0.93/0.79/ho  0.94/0.77/ho*  0.94/0.63/ho  0.94/0.77/ho  0.95/0.42/tr
+   corr(acc, coverage) in zone 0.79; GT coverage median: acc>=.95 0.950, zone 0.418
+   fold0 07c5ceca91f8 acc 0.94 raw 0.516 guard 0.516 changed False
+   fold0 2e5699234a38 acc 0.86 raw 0.669 guard 0.669 changed False
+   fold0 3e38638a4881 acc 0.71 raw 0.647 guard 0.647 changed False
+
+== trustmark: train images with acc in [0.60,0.95): acc / GT coverage / type / fold0
+   0.60/0.04/tr  0.61/0.09/ou  0.61/0.01/tr  0.64/0.22/ou  0.64/0.11/tr*  0.65/0.24/tr  0.65/0.02/tr  0.68/0.25/tr  0.70/0.42/tr  0.71/0.51/ho  0.71/0.29/tr*  0.73/0.42/tr  0.76/0.37/tr  0.76/0.79/ho  0.76/0.43/tr  0.80/0.77/ho*  0.87/0.65/ho  0.88/0.94/ho  0.88/0.42/tr  0.93/0.68/ho*  0.94/0.93/ho  0.94/0.91/ho  0.94/0.87/ho  0.94/0.78/ho  0.94/0.84/ho
+   corr(acc, coverage) in zone 0.90; GT coverage median: acc>=.95 0.952, zone 0.423
+   fold0 f41be13eec99 acc 0.80 raw 0.712 guard 0.712 changed False
+   fold0 0703932c7705 acc 0.71 raw 0.708 guard 0.708 changed False
+   fold0 1badd3a979e1 acc 0.93 raw 0.579 guard 0.579 changed False
+   fold0 aa26de31f2ab acc 0.64 raw 0.868 guard 0.868 changed False
+
+== stegastamp: train images with acc in [0.60,0.95): acc / GT coverage / type / fold0
+   0.60/0.02/tr*  0.61/0.18/tr  0.64/0.10/tr*  0.64/0.20/tr  0.65/0.14/tr  0.65/0.24/tr  0.68/0.10/tr*  0.69/0.57/ho  0.69/0.44/tr  0.74/0.27/tr  0.77/0.92/ho  0.78/0.92/ho  0.80/0.82/ho*  0.83/0.81/ho  0.85/0.33/tr  0.88/0.73/ho*  0.89/0.96/ho*  0.89/0.94/ho  0.89/0.72/ho*  0.91/0.79/ho  0.92/0.93/ho  0.92/0.62/ho  0.93/0.92/ho  0.94/0.89/ho
+   corr(acc, coverage) in zone 0.83; GT coverage median: acc>=.95 0.944, zone 0.671
+   fold0 5cb646b1c82f acc 0.89 raw 0.860 guard 0.860 changed False
+   fold0 a9890e7a9162 acc 0.68 raw 0.480 guard 0.480 changed False
+   fold0 87578149d91a acc 0.88 raw 0.758 guard 0.758 changed False
+   fold0 a463b746a441 acc 0.64 raw 0.740 guard 0.740 changed False
+   fold0 2df125cd8603 acc 0.80 raw 0.969 guard 0.969 changed False
+   fold0 0f715ead6d99 acc 0.89 raw 0.954 guard 0.954 changed False
+   fold0 ee1cd172f2d1 acc 0.60 raw 0.634 guard 0.634 changed False

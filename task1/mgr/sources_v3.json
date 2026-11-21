@@ -1,0 +1,36 @@
+{
+ "_doc": "chaine v3 : guard2 zone + cartes tiles2/tiles3 + rectangles TM boxsearch2 et Stega stegaedge",
+ "stegastamp": [
+  {
+   "name": "v3_stegastamp",
+   "val": [
+    "t1/out/mgr/v3/stegastamp/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/mgr/v3/stegastamp/test_probs128.npz"
+   ]
+  }
+ ],
+ "trustmark": [
+  {
+   "name": "v3_trustmark",
+   "val": [
+    "t1/out/mgr/v3/trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/mgr/v3/trustmark/test_probs128.npz"
+   ]
+  }
+ ],
+ "pixelseal": [
+  {
+   "name": "v3_pixelseal",
+   "val": [
+    "t1/out/mgr/v3/pixelseal/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/mgr/v3/pixelseal/test_probs128.npz"
+   ]
+  }
+ ]
+}
