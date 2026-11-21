@@ -115,6 +115,9 @@ targets = {
 # the four margin-reduction levels used on the real model (jobs/sweep1.txt)
 for name, (ml, sl, er) in {"L1": (0.10, 0.45, 0.02), "L2": (0.25, 0.90, 0.05), "L3": (0.50, 1.50, 0.12), "L4": (1.00, 2.20, 0.22)}.items():
     targets[name] = f"--mean-loss {ml} --std-loss {sl} --err-rate {er} --shape views --difficulty entropy"
+# heavy-tail targets: the trained model undershoots a target (realised mean ~0.65x, std ~0.45x on pb10q), so aim higher
+targets["HT"] = "--mean-loss 0.8 --std-loss 2.2 --err-rate 0.18 --shape views --difficulty entropy"
+targets["aim_true"] = f"--mean-loss {1.5 * gm:.4f} --std-loss {2.2 * gs:.4f} --err-rate {err:.4f} --shape views --difficulty entropy"
 if (R / "theory.pt").exists():   # the theorist's recipe rebuilt on the twin-original (twin_analyze.py)
     for key in ("th_A_mild", "th_B", "th_C_rec", "th_D", "th_E_strong", "th_x0.5", "th_x1.0", "th_x1.5", "th_x1.0_oracle"):
         targets[key.replace(".", "")] = f"--probs {R / 'theory.pt'}:{key}"
@@ -129,7 +132,7 @@ if extra_file.exists():
     targets.update(json.loads(extra_file.read_text()))
 if args.quick:
     targets = {k: targets[k] for k in ("true3_views", "oracle_kl")}
-SLIM = ("L1", "L2", "L3", "L4", "th_A_mild", "th_B", "th_C_rec", "th_D", "th_E_strong", "th_x10", "th_x10_oracle", "true3_views", "true3_ln", "oracle_kl",
+SLIM = ("L1", "L2", "L3", "L4", "HT", "aim_true", "th_A_mild", "th_B", "th_C_rec", "th_D", "th_E_strong", "th_x10", "th_x10_oracle", "true3_views", "true3_ln", "oracle_kl",
         "oracle_opt", "oracle_single", "pred_cv_cal", "rc_ent_true", "rc_ent_goldshape", "rc_ent_class05_goldshape")
 if args.slim:
     targets = {k: v for k, v in targets.items() if k in SLIM}

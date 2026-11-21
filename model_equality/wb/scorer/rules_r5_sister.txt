@@ -58,3 +58,13 @@ tw-13 (autre LoRA, B).
 Amendement H0 (20:12, avant tout calcul sur H1) : la validation H0 de ref-07 (lr 5e-4) culmine à l époque 2 puis
 surapprend ; les entraînements restants (ref-07 lr 1,5e-3, ref-04 aux deux taux) passent à 4 époques. Le choix
 (taux, époque) reste fait sur la validation H0. Rien d autre ne change.
+
+8. Contrôle des contextes, DESCRIPTIF (ajouté à 20:50, avant tout résultat R5 ; demandé par le coordinateur après R4).
+Ne change pas la décision R5 (§3, §4). L'adaptateur sœur ref-07 retenu (ad_ref-07_lr5e-4) est passé dans le pipeline R4b
+(loradir.py score --profile-ctx, contextes de out/r4/r4b_lib.sh LIB_BENCH, forces 0,2 ; 0,47 ; 1 en unités ref-07),
+puis loradir.py test --target s0.2 --nuis T,ctx --ref ref-01,LOCAL --exclude-ids <train_log de la sœur>. Rapporté :
+z primaire et la moitié H1. Rapporté aussi : sister.py test --ctx (profil discrete sur les contextes) si calculé.
+
+Note 21:05 : un git reset + fusion à 20:53 avait ramené les fichiers locaux R5 à un état antérieur. Ils sont rétablis
+à l identique depuis les copies du cluster (sister.py, r5_sister_relay.sh, r5_sister_train2.sh, cette règle). Les calculs
+ont toujours tourné sur les versions du cluster ; aucun résultat n est touché.

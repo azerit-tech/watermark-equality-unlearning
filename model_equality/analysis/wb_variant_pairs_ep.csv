@@ -1,0 +1,166 @@
+a,b,p_same,evidence,family,z_dir,cos,cls_a,cls_b
+ep-05,ep-09,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-09:BW T=0.72 x=-0.57 f=0.24 | z_dir=0.18 cos=nan,llama3,0.18,,BW,BW
+ep-05,ep-10,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-10:BW T=0.7 x=-0.42 f=-0.8 | z_dir=0.95 cos=0.28,llama3,0.95,0.276,BW,BW
+ep-05,ep-11,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-11:BW T=0.75 x=-0.53 f=2.36 | z_dir=1.93 cos=1.36,llama3,1.93,1.356,BW,BW
+ep-05,ep-13,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-13:BW T=0.7 x=-0.52 f=1.8 | z_dir=-0.87 cos=nan,llama3,-0.87,,BW,BW
+ep-05,ep-15,0.1,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-15:FP8 T=0.7 x=-0.03 f=5.05 | z_dir=0.19 cos=0.11,llama3,0.19,0.113,BW,FP8
+ep-05,ep-16,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=0.91 cos=0.59,llama3,0.91,0.59,BW,BW
+ep-05,ep-19,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=1.42 cos=0.79,llama3,1.42,0.786,BW,BW
+ep-05,ep-27,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=1.19 cos=3.96,llama3,1.19,3.962,BW,BW
+ep-05,ep-29,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=1.27 cos=0.52,llama3,1.27,0.521,BW,BW
+ep-05,ep-31,0.6,llama3; ep-05:BW T=0.8 x=-2.12 f=0.88 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.95 cos=nan,llama3,0.95,,BW,BW
+ep-09,ep-10,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-10:BW T=0.7 x=-0.42 f=-0.8 | z_dir=0.98 cos=nan,llama3,0.98,,BW,BW
+ep-09,ep-11,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-11:BW T=0.75 x=-0.53 f=2.36 | z_dir=0.29 cos=nan,llama3,0.29,,BW,BW
+ep-09,ep-13,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-13:BW T=0.7 x=-0.52 f=1.8 | z_dir=0.76 cos=nan,llama3,0.76,,BW,BW
+ep-09,ep-15,0.1,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-15:FP8 T=0.7 x=-0.03 f=5.05 | z_dir=-0.06 cos=nan,llama3,-0.06,,BW,FP8
+ep-09,ep-16,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=-0.35 cos=nan,llama3,-0.35,,BW,BW
+ep-09,ep-19,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=-0.05 cos=nan,llama3,-0.05,,BW,BW
+ep-09,ep-27,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=0.46 cos=nan,llama3,0.46,,BW,BW
+ep-09,ep-29,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=0.70 cos=nan,llama3,0.7,,BW,BW
+ep-09,ep-31,0.6,llama3; ep-09:BW T=0.72 x=-0.57 f=0.24 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.59 cos=nan,llama3,0.59,,BW,BW
+ep-10,ep-11,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-11:BW T=0.75 x=-0.53 f=2.36 | z_dir=1.18 cos=0.47,llama3,1.18,0.468,BW,BW
+ep-10,ep-13,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-13:BW T=0.7 x=-0.52 f=1.8 | z_dir=0.22 cos=nan,llama3,0.22,,BW,BW
+ep-10,ep-15,0.1,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-15:FP8 T=0.7 x=-0.03 f=5.05 | z_dir=-1.03 cos=-0.39,llama3,-1.03,-0.39,BW,FP8
+ep-10,ep-16,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=-0.81 cos=-0.35,llama3,-0.81,-0.354,BW,BW
+ep-10,ep-19,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=0.02 cos=0.01,llama3,0.02,0.006,BW,BW
+ep-10,ep-27,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=0.33 cos=0.77,llama3,0.33,0.767,BW,BW
+ep-10,ep-29,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=0.11 cos=0.03,llama3,0.11,0.03,BW,BW
+ep-10,ep-31,0.6,llama3; ep-10:BW T=0.7 x=-0.42 f=-0.8 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=1.09 cos=nan,llama3,1.09,,BW,BW
+ep-11,ep-13,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-13:BW T=0.7 x=-0.52 f=1.8 | z_dir=-0.35 cos=nan,llama3,-0.35,,BW,BW
+ep-11,ep-15,0.1,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-15:FP8 T=0.7 x=-0.03 f=5.05 | z_dir=1.67 cos=1.54,llama3,1.67,1.539,BW,FP8
+ep-11,ep-16,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=0.79 cos=0.69,llama3,0.79,0.688,BW,BW
+ep-11,ep-19,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=1.59 cos=1.36,llama3,1.59,1.364,BW,BW
+ep-11,ep-27,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=1.02 cos=5.81,llama3,1.02,5.813,BW,BW
+ep-11,ep-29,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=1.20 cos=0.81,llama3,1.2,0.813,BW,BW
+ep-11,ep-31,0.6,llama3; ep-11:BW T=0.75 x=-0.53 f=2.36 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.34 cos=nan,llama3,0.34,,BW,BW
+ep-13,ep-15,0.1,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-15:FP8 T=0.7 x=-0.03 f=5.05 | z_dir=0.25 cos=nan,llama3,0.25,,BW,FP8
+ep-13,ep-16,0.6,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=-0.33 cos=nan,llama3,-0.33,,BW,BW
+ep-13,ep-19,0.6,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=0.37 cos=nan,llama3,0.37,,BW,BW
+ep-13,ep-27,0.6,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=0.39 cos=nan,llama3,0.39,,BW,BW
+ep-13,ep-29,0.6,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=-0.48 cos=nan,llama3,-0.48,,BW,BW
+ep-13,ep-31,0.6,llama3; ep-13:BW T=0.7 x=-0.52 f=1.8 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=-0.58 cos=nan,llama3,-0.58,,BW,BW
+ep-15,ep-16,0.1,llama3; ep-15:FP8 T=0.7 x=-0.03 f=5.05 | ep-16:BW T=0.8 x=-1.18 f=0.86 | z_dir=1.48 cos=1.36,llama3,1.48,1.357,FP8,BW
+ep-15,ep-19,0.1,llama3; ep-15:FP8 T=0.7 x=-0.03 f=5.05 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=1.37 cos=1.01,llama3,1.37,1.007,FP8,BW
+ep-15,ep-27,0.1,llama3; ep-15:FP8 T=0.7 x=-0.03 f=5.05 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=0.87 cos=4.52,llama3,0.87,4.524,FP8,BW
+ep-15,ep-29,0.1,llama3; ep-15:FP8 T=0.7 x=-0.03 f=5.05 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=0.94 cos=0.64,llama3,0.94,0.636,FP8,BW
+ep-15,ep-31,0.1,llama3; ep-15:FP8 T=0.7 x=-0.03 f=5.05 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.03 cos=nan,llama3,0.03,,FP8,BW
+ep-16,ep-19,0.6,llama3; ep-16:BW T=0.8 x=-1.18 f=0.86 | ep-19:BW T=0.7 x=0.0 f=0.91 | z_dir=1.32 cos=1.20,llama3,1.32,1.202,BW,BW
+ep-16,ep-27,0.6,llama3; ep-16:BW T=0.8 x=-1.18 f=0.86 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=0.95 cos=4.84,llama3,0.95,4.837,BW,BW
+ep-16,ep-29,0.6,llama3; ep-16:BW T=0.8 x=-1.18 f=0.86 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=1.48 cos=1.05,llama3,1.48,1.051,BW,BW
+ep-16,ep-31,0.6,llama3; ep-16:BW T=0.8 x=-1.18 f=0.86 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.93 cos=nan,llama3,0.93,,BW,BW
+ep-19,ep-27,0.6,llama3; ep-19:BW T=0.7 x=0.0 f=0.91 | ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | z_dir=1.48 cos=6.06,llama3,1.48,6.06,BW,BW
+ep-19,ep-29,0.6,llama3; ep-19:BW T=0.7 x=0.0 f=0.91 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=1.64 cos=0.89,llama3,1.64,0.888,BW,BW
+ep-19,ep-31,0.6,llama3; ep-19:BW T=0.7 x=0.0 f=0.91 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.34 cos=nan,llama3,0.34,,BW,BW
+ep-27,ep-29,0.6,llama3; ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | ep-29:BW T=0.75 x=0.38 f=-0.24 | z_dir=1.32 cos=5.33,llama3,1.32,5.334,BW,BW
+ep-27,ep-31,0.6,llama3; ep-27:BW T=0.9 top50 x=-2.36 f=1.4 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.22 cos=nan,llama3,0.22,,BW,BW
+ep-29,ep-31,0.6,llama3; ep-29:BW T=0.75 x=0.38 f=-0.24 | ep-31:BW T=1.0 x=-0.26 f=2.21 | z_dir=0.97 cos=nan,llama3,0.97,,BW,BW
+ep-03,ep-06,0.25,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-06:Wq T=0.68 x=-1.27 f=3.59 | z_dir=0.60 cos=0.20,qwen_B,0.6,0.195,BW,Wq
+ep-03,ep-07,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | z_dir=0.52 cos=0.31,qwen_B,0.52,0.315,BW,BW
+ep-03,ep-08,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-08:BW T=0.72 x=0.76 f=0.89 | z_dir=0.16 cos=nan,qwen_B,0.16,,BW,BW
+ep-03,ep-20,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-20:BW T=0.8 x=0.23 f=0.75 | z_dir=0.77 cos=0.38,qwen_B,0.77,0.381,BW,BW
+ep-03,ep-21,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-21:BW T=0.72 x=0.7 f=0.23 | z_dir=0.72 cos=nan,qwen_B,0.72,,BW,BW
+ep-03,ep-22,0.1,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=1.67 cos=1.43,qwen_B,1.67,1.434,BW,FP8
+ep-03,ep-26,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=-0.78 cos=-0.73,qwen_B,-0.78,-0.731,BW,BW
+ep-03,ep-28,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=2.15 cos=1.05,qwen_B,2.15,1.045,BW,BW
+ep-03,ep-30,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=0.76 cos=nan,qwen_B,0.76,,BW,BW
+ep-03,ep-32,0.6,qwen_B; ep-03:BW T=0.75 x=-0.69 f=-1.71 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.57 cos=0.79,qwen_B,0.57,0.789,BW,BW
+ep-06,ep-07,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | z_dir=1.08 cos=0.42,qwen_B,1.08,0.416,Wq,BW
+ep-06,ep-08,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-08:BW T=0.72 x=0.76 f=0.89 | z_dir=-0.08 cos=nan,qwen_B,-0.08,,Wq,BW
+ep-06,ep-20,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-20:BW T=0.8 x=0.23 f=0.75 | z_dir=0.47 cos=0.18,qwen_B,0.47,0.181,Wq,BW
+ep-06,ep-21,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-21:BW T=0.72 x=0.7 f=0.23 | z_dir=0.03 cos=nan,qwen_B,0.03,,Wq,BW
+ep-06,ep-22,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=0.23 cos=0.14,qwen_B,0.23,0.144,Wq,FP8
+ep-06,ep-26,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=1.02 cos=0.58,qwen_B,1.02,0.575,Wq,BW
+ep-06,ep-28,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=0.58 cos=0.15,qwen_B,0.58,0.148,Wq,BW
+ep-06,ep-30,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=-0.57 cos=nan,qwen_B,-0.57,,Wq,BW
+ep-06,ep-32,0.25,qwen_B; ep-06:Wq T=0.68 x=-1.27 f=3.59 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.02 cos=0.01,qwen_B,0.02,0.014,Wq,BW
+ep-07,ep-08,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-08:BW T=0.72 x=0.76 f=0.89 | z_dir=0.69 cos=nan,qwen_B,0.69,,BW,BW
+ep-07,ep-20,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-20:BW T=0.8 x=0.23 f=0.75 | z_dir=0.16 cos=0.07,qwen_B,0.16,0.074,BW,BW
+ep-07,ep-21,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-21:BW T=0.72 x=0.7 f=0.23 | z_dir=0.24 cos=nan,qwen_B,0.24,,BW,BW
+ep-07,ep-22,0.1,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=0.27 cos=0.33,qwen_B,0.27,0.325,BW,FP8
+ep-07,ep-26,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=0.22 cos=0.20,qwen_B,0.22,0.202,BW,BW
+ep-07,ep-28,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=0.26 cos=0.13,qwen_B,0.26,0.127,BW,BW
+ep-07,ep-30,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=-0.56 cos=nan,qwen_B,-0.56,,BW,BW
+ep-07,ep-32,0.6,qwen_B; ep-07:BW T=0.9 top50 x=-2.23 f=-0.01 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.66 cos=0.79,qwen_B,0.66,0.791,BW,BW
+ep-08,ep-20,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-20:BW T=0.8 x=0.23 f=0.75 | z_dir=0.57 cos=nan,qwen_B,0.57,,BW,BW
+ep-08,ep-21,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-21:BW T=0.72 x=0.7 f=0.23 | z_dir=0.02 cos=nan,qwen_B,0.02,,BW,BW
+ep-08,ep-22,0.1,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=-0.54 cos=nan,qwen_B,-0.54,,BW,FP8
+ep-08,ep-26,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=0.15 cos=nan,qwen_B,0.15,,BW,BW
+ep-08,ep-28,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=0.54 cos=nan,qwen_B,0.54,,BW,BW
+ep-08,ep-30,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=-0.57 cos=nan,qwen_B,-0.57,,BW,BW
+ep-08,ep-32,0.6,qwen_B; ep-08:BW T=0.72 x=0.76 f=0.89 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.11 cos=nan,qwen_B,0.11,,BW,BW
+ep-20,ep-21,0.6,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-21:BW T=0.72 x=0.7 f=0.23 | z_dir=-0.41 cos=nan,qwen_B,-0.41,,BW,BW
+ep-20,ep-22,0.1,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=1.10 cos=0.97,qwen_B,1.1,0.967,BW,FP8
+ep-20,ep-26,0.6,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=-1.02 cos=-0.81,qwen_B,-1.02,-0.81,BW,BW
+ep-20,ep-28,0.6,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=0.87 cos=0.33,qwen_B,0.87,0.329,BW,BW
+ep-20,ep-30,0.6,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=0.94 cos=nan,qwen_B,0.94,,BW,BW
+ep-20,ep-32,0.6,qwen_B; ep-20:BW T=0.8 x=0.23 f=0.75 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=1.67 cos=2.56,qwen_B,1.67,2.559,BW,BW
+ep-21,ep-22,0.1,qwen_B; ep-21:BW T=0.72 x=0.7 f=0.23 | ep-22:FP8 T=0.7 x=0.42 f=5.71 | z_dir=0.02 cos=nan,qwen_B,0.02,,BW,FP8
+ep-21,ep-26,0.6,qwen_B; ep-21:BW T=0.72 x=0.7 f=0.23 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=0.93 cos=nan,qwen_B,0.93,,BW,BW
+ep-21,ep-28,0.6,qwen_B; ep-21:BW T=0.72 x=0.7 f=0.23 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=1.40 cos=nan,qwen_B,1.4,,BW,BW
+ep-21,ep-30,0.6,qwen_B; ep-21:BW T=0.72 x=0.7 f=0.23 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=-0.20 cos=nan,qwen_B,-0.2,,BW,BW
+ep-21,ep-32,0.6,qwen_B; ep-21:BW T=0.72 x=0.7 f=0.23 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.58 cos=nan,qwen_B,0.58,,BW,BW
+ep-22,ep-26,0.1,qwen_B; ep-22:FP8 T=0.7 x=0.42 f=5.71 | ep-26:BW T=0.7 x=-0.54 f=0.7 | z_dir=-1.42 cos=-2.01,qwen_B,-1.42,-2.005,FP8,BW
+ep-22,ep-28,0.1,qwen_B; ep-22:FP8 T=0.7 x=0.42 f=5.71 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=2.26 cos=1.32,qwen_B,2.26,1.321,FP8,BW
+ep-22,ep-30,0.1,qwen_B; ep-22:FP8 T=0.7 x=0.42 f=5.71 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=0.94 cos=nan,qwen_B,0.94,,FP8,BW
+ep-22,ep-32,0.1,qwen_B; ep-22:FP8 T=0.7 x=0.42 f=5.71 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=0.81 cos=2.28,qwen_B,0.81,2.277,FP8,BW
+ep-26,ep-28,0.6,qwen_B; ep-26:BW T=0.7 x=-0.54 f=0.7 | ep-28:BW T=0.8 x=1.89 f=-0.63 | z_dir=-1.05 cos=-0.67,qwen_B,-1.05,-0.666,BW,BW
+ep-26,ep-30,0.6,qwen_B; ep-26:BW T=0.7 x=-0.54 f=0.7 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=-1.16 cos=nan,qwen_B,-1.16,,BW,BW
+ep-26,ep-32,0.6,qwen_B; ep-26:BW T=0.7 x=-0.54 f=0.7 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=-0.85 cos=-1.94,qwen_B,-0.85,-1.942,BW,BW
+ep-28,ep-30,0.6,qwen_B; ep-28:BW T=0.8 x=1.89 f=-0.63 | ep-30:BW T=1.0 x=1.3 f=-1.91 | z_dir=1.06 cos=nan,qwen_B,1.06,,BW,BW
+ep-28,ep-32,0.6,qwen_B; ep-28:BW T=0.8 x=1.89 f=-0.63 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=1.21 cos=1.44,qwen_B,1.21,1.435,BW,BW
+ep-30,ep-32,0.6,qwen_B; ep-30:BW T=1.0 x=1.3 f=-1.91 | ep-32:BW T=0.7 x=0.09 f=0.06 | z_dir=1.41 cos=nan,qwen_B,1.41,,BW,BW
+ep-01,ep-02,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-02:BW T=0.75 x=-0.67 f=1.93 | z_dir=0.73 cos=1.39,qwen_A,0.73,1.386,BW,BW
+ep-01,ep-04,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-04:BW T=0.68 x=0.44 f=0.24 | z_dir=1.06 cos=0.32,qwen_A,1.06,0.324,BW,BW
+ep-01,ep-12,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-12:BW T=0.7 x=0.08 f=-0.24 | z_dir=-1.18 cos=nan,qwen_A,-1.18,,BW,BW
+ep-01,ep-14,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | z_dir=0.36 cos=nan,qwen_A,0.36,,BW,BW
+ep-01,ep-17,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-17:BW T=0.68 x=0.08 f=-0.92 | z_dir=-1.35 cos=-0.77,qwen_A,-1.35,-0.766,BW,BW
+ep-01,ep-18,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=0.28 cos=nan,qwen_A,0.28,,BW,BW
+ep-01,ep-23,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=0.87 cos=0.83,qwen_A,0.87,0.832,BW,BW
+ep-01,ep-24,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=-0.34 cos=-0.24,qwen_A,-0.34,-0.238,BW,BW
+ep-01,ep-25,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.67 cos=-0.71,qwen_A,-0.67,-0.705,BW,BW
+ep-01,ep-33,0.6,qwen_A; ep-01:BW T=0.7 x=-0.84 f=0.79 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=1.29 cos=nan,qwen_A,1.29,,BW,BW
+ep-02,ep-04,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-04:BW T=0.68 x=0.44 f=0.24 | z_dir=0.25 cos=0.20,qwen_A,0.25,0.2,BW,BW
+ep-02,ep-12,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-12:BW T=0.7 x=0.08 f=-0.24 | z_dir=-1.11 cos=nan,qwen_A,-1.11,,BW,BW
+ep-02,ep-14,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | z_dir=-0.07 cos=nan,qwen_A,-0.07,,BW,BW
+ep-02,ep-17,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-17:BW T=0.68 x=0.08 f=-0.92 | z_dir=0.62 cos=1.02,qwen_A,0.62,1.022,BW,BW
+ep-02,ep-18,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=0.74 cos=nan,qwen_A,0.74,,BW,BW
+ep-02,ep-23,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=1.59 cos=5.46,qwen_A,1.59,5.459,BW,BW
+ep-02,ep-24,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=0.87 cos=2.02,qwen_A,0.87,2.021,BW,BW
+ep-02,ep-25,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.25 cos=-0.65,qwen_A,-0.25,-0.654,BW,BW
+ep-02,ep-33,0.6,qwen_A; ep-02:BW T=0.75 x=-0.67 f=1.93 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=-0.12 cos=nan,qwen_A,-0.12,,BW,BW
+ep-04,ep-12,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-12:BW T=0.7 x=0.08 f=-0.24 | z_dir=0.45 cos=nan,qwen_A,0.45,,BW,BW
+ep-04,ep-14,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | z_dir=1.49 cos=nan,qwen_A,1.49,,BW,BW
+ep-04,ep-17,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-17:BW T=0.68 x=0.08 f=-0.92 | z_dir=-1.01 cos=-0.25,qwen_A,-1.01,-0.254,BW,BW
+ep-04,ep-18,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=0.43 cos=nan,qwen_A,0.43,,BW,BW
+ep-04,ep-23,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=1.13 cos=0.67,qwen_A,1.13,0.674,BW,BW
+ep-04,ep-24,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=0.36 cos=0.12,qwen_A,0.36,0.116,BW,BW
+ep-04,ep-25,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=0.19 cos=0.10,qwen_A,0.19,0.099,BW,BW
+ep-04,ep-33,0.6,qwen_A; ep-04:BW T=0.68 x=0.44 f=0.24 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=0.84 cos=nan,qwen_A,0.84,,BW,BW
+ep-12,ep-14,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | z_dir=0.22 cos=nan,qwen_A,0.22,,BW,BW
+ep-12,ep-17,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-17:BW T=0.68 x=0.08 f=-0.92 | z_dir=0.51 cos=nan,qwen_A,0.51,,BW,BW
+ep-12,ep-18,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=-0.78 cos=nan,qwen_A,-0.78,,BW,BW
+ep-12,ep-23,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=-0.60 cos=nan,qwen_A,-0.6,,BW,BW
+ep-12,ep-24,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=0.70 cos=nan,qwen_A,0.7,,BW,BW
+ep-12,ep-25,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=0.93 cos=nan,qwen_A,0.93,,BW,BW
+ep-12,ep-33,0.6,qwen_A; ep-12:BW T=0.7 x=0.08 f=-0.24 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=1.06 cos=nan,qwen_A,1.06,,BW,BW
+ep-14,ep-17,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-17:BW T=0.68 x=0.08 f=-0.92 | z_dir=0.48 cos=nan,qwen_A,0.48,,BW,BW
+ep-14,ep-18,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=0.41 cos=nan,qwen_A,0.41,,BW,BW
+ep-14,ep-23,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=0.43 cos=nan,qwen_A,0.43,,BW,BW
+ep-14,ep-24,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=-0.30 cos=nan,qwen_A,-0.3,,BW,BW
+ep-14,ep-25,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.08 cos=nan,qwen_A,-0.08,,BW,BW
+ep-14,ep-33,0.6,qwen_A; ep-14:BW T=0.9 top50 x=-0.51 f=0.41 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=1.43 cos=nan,qwen_A,1.43,,BW,BW
+ep-17,ep-18,0.6,qwen_A; ep-17:BW T=0.68 x=0.08 f=-0.92 | ep-18:BW T=0.72 x=0.5 f=0.17 | z_dir=-0.06 cos=nan,qwen_A,-0.06,,BW,BW
+ep-17,ep-23,0.6,qwen_A; ep-17:BW T=0.68 x=0.08 f=-0.92 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=-0.15 cos=-0.15,qwen_A,-0.15,-0.147,BW,BW
+ep-17,ep-24,0.6,qwen_A; ep-17:BW T=0.68 x=0.08 f=-0.92 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=1.46 cos=1.09,qwen_A,1.46,1.086,BW,BW
+ep-17,ep-25,0.6,qwen_A; ep-17:BW T=0.68 x=0.08 f=-0.92 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=0.37 cos=0.33,qwen_A,0.37,0.326,BW,BW
+ep-17,ep-33,0.6,qwen_A; ep-17:BW T=0.68 x=0.08 f=-0.92 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=-0.26 cos=nan,qwen_A,-0.26,,BW,BW
+ep-18,ep-23,0.6,qwen_A; ep-18:BW T=0.72 x=0.5 f=0.17 | ep-23:BW T=0.8 x=0.34 f=-1.11 | z_dir=0.77 cos=nan,qwen_A,0.77,,BW,BW
+ep-18,ep-24,0.6,qwen_A; ep-18:BW T=0.72 x=0.5 f=0.17 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=0.11 cos=nan,qwen_A,0.11,,BW,BW
+ep-18,ep-25,0.6,qwen_A; ep-18:BW T=0.72 x=0.5 f=0.17 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.78 cos=nan,qwen_A,-0.78,,BW,BW
+ep-18,ep-33,0.6,qwen_A; ep-18:BW T=0.72 x=0.5 f=0.17 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=0.38 cos=nan,qwen_A,0.38,,BW,BW
+ep-23,ep-24,0.6,qwen_A; ep-23:BW T=0.8 x=0.34 f=-1.11 | ep-24:BW T=0.72 x=-0.09 f=0.39 | z_dir=0.75 cos=0.88,qwen_A,0.75,0.878,BW,BW
+ep-23,ep-25,0.6,qwen_A; ep-23:BW T=0.8 x=0.34 f=-1.11 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.24 cos=-0.39,qwen_A,-0.24,-0.386,BW,BW
+ep-23,ep-33,0.6,qwen_A; ep-23:BW T=0.8 x=0.34 f=-1.11 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=1.25 cos=nan,qwen_A,1.25,,BW,BW
+ep-24,ep-25,0.6,qwen_A; ep-24:BW T=0.72 x=-0.09 f=0.39 | ep-25:BW T=0.7 x=-0.29 f=-0.37 | z_dir=-0.32 cos=-0.25,qwen_A,-0.32,-0.252,BW,BW
+ep-24,ep-33,0.6,qwen_A; ep-24:BW T=0.72 x=-0.09 f=0.39 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=0.18 cos=nan,qwen_A,0.18,,BW,BW
+ep-25,ep-33,0.6,qwen_A; ep-25:BW T=0.7 x=-0.29 f=-0.37 | ep-33:BW T=1.0 x=-1.5 f=1.73 | z_dir=0.13 cos=nan,qwen_A,0.13,,BW,BW

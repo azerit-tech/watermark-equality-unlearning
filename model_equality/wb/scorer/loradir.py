@@ -28,11 +28,22 @@ larger strengths by sibling endpoints. So:
   info    rank probes by the efficient Fisher information per response along the direction
           (white box, computed on base samples), for probe design.
 
+Lures (measured on the bench, rules_r4_loradir.txt). The T projection is exact (T = 1.0 gives z = 0.4)
+but a hidden system prompt projects on the LoRA direction as much as a weak LoRA does. Remedy:
+  score --profile-ctx --ctx NAME=sys:TEXT ...   each endpoint is scored around the library context
+          (default included) that maximises its base likelihood, the others stay as directions;
+  test --nuis T,ctx                             T and every context direction are projected out;
+  test --cats stream,free                       free-text and random-stream probes only (the lures act
+          on the continuation, format and identity probes).
+A lure adds a bias proportional to the information, not noise: compare the dose D / Var (strength in
+units of the target direction; 0.3 x dose estimated the true strength on the bench), not z alone.
+test --dose0 d also reports the test of dose > d.
+
 Usage (cluster, card 0):
   python loradir.py train --model M --responses LEDGER --strong ref-04:0.7,ref-07:1.5 --out ADIR
   python loradir.py score --model M --adapter ADIR --responses LEDGER [...] --out ODIR [--endpoints a,b]
   python loradir.py test  ODIR --target s0.3 [--ref ref-01,LOCAL] [--parity 100]
-  python loradir.py info  ODIR --ep LOCAL --target s0.3
+  python loradir.py info  ODIR --ep LOCAL --target s0.3 [--nuis-ctx] [--lures SIM_a,SIM_b]
 Nothing here modifies mescore; its data module is reused for context reconstruction.
 """
 from __future__ import annotations
@@ -122,9 +133,12 @@ def build(model_id: str, dtype: str, device: str = "cuda", adapter: str | None =
     return model, tok
 
 
-def make_hyp(model_id, system_prompt=None, chat_template=None):
+def make_hyp(model_id, system_prompt=None, chat_template=None, template_kwargs=None):
     from mescore.hyp import Hyp
-    return Hyp(name="loradir", model=model_id, system_prompt=system_prompt, chat_template=chat_template)
+    if isinstance(template_kwargs, str):
+        template_kwargs = json.loads(template_kwargs)
+    return Hyp(name="loradir", model=model_id, system_prompt=system_prompt, chat_template=chat_template,
+               template_kwargs=template_kwargs or {})
 
 
 def make_items(tok, hyp, rows):
@@ -176,7 +190,7 @@ def cmd_train(a):
     groups = load_responses(a.responses, {e for e, _ in strong})
     model, tok = build(a.model, a.dtype, a.device, new_lora={"r": a.rank, "targets": a.targets, "dropout": a.dropout})
     scaler = Scaler(model)
-    hyp = make_hyp(a.model, a.system_prompt, a.chat_template)
+    hyp = make_hyp(a.model, a.system_prompt, a.chat_template, a.template_kwargs)
     pad = tok.pad_token_id if tok.pad_token_id is not None else 0
     data, split = {}, {}
     for ep, s in strong:
@@ -277,7 +291,7 @@ def cmd_train(a):
 
 
 # ------------------------------------------------------------------ score
-def token_stats(LB, Ld, y, temps, n_lora, chunk=192):
+def token_stats(LB, Ld, y, temps, n_lora, chunk=int(os.environ.get("LORADIR_CHUNK", "192"))):
     """LB [n,V] base logits, Ld list of direction logits [n,V], y [n] observed tokens.
     Directions: Ld (log-ratio to base at T) then the T direction (base log-prob at T).
     Returns obs [n,M,J], mean [n,M,J], cov [n,M,J(J+1)/2] (upper triangle, row order), kl1 [n,M,n_lora]."""
@@ -401,17 +415,19 @@ def cmd_score(a):
     model, tok = build(a.model, a.dtype, a.device, adapter=a.adapter)
     model.eval()
     scaler = Scaler(model)
-    hyp = make_hyp(a.model, a.system_prompt, a.chat_template)
+    hyp = make_hyp(a.model, a.system_prompt, a.chat_template, a.template_kwargs)
     ctx_hyps = []
     for spec in a.ctx or []:
         name, val = spec.split("=", 1)
         if val.startswith("sys:"):
-            ctx_hyps.append((name, make_hyp(a.model, val[4:], a.chat_template)))
+            ctx_hyps.append((name, make_hyp(a.model, val[4:], a.chat_template, a.template_kwargs)))
         elif val.startswith("tpl:"):
             ctx_hyps.append((name, make_hyp(a.model, None, "file:" + val[4:])))
+        elif val.startswith("kw:"):          # same template, other template arguments (e.g. a date string)
+            ctx_hyps.append((name, make_hyp(a.model, a.system_prompt, a.chat_template, val[3:])))
         else:
             raise ValueError(spec)
-    dirs = [f"s{s:g}" for s in scales] + [f"ctx:{n}" for n, _ in ctx_hyps] + ["T"]
+    contexts = [("default", hyp)] + ctx_hyps
     groups = load_responses(a.responses, set(a.endpoints.split(",")) if a.endpoints else None)
     os.makedirs(a.out, exist_ok=True)
     for ep, rows in groups.items():
@@ -421,22 +437,35 @@ def cmd_score(a):
         t0 = time.time()
         if a.max_rows and len(rows) > a.max_rows:        # pseudo-random subset, same for every run
             rows = sorted(rows, key=lambda r: sha("score|" + r["id"]))[:a.max_rows]
+        # context profile: the primary context is the one of the library (default included) that maximises the
+        # base likelihood of this endpoint over the temperature grid (nuisance fitted under H0, like T); the
+        # other contexts stay as nuisance directions around it
+        prim, hyp_e, others, ctx_scan = "default", hyp, ctx_hyps, None
+        if a.profile_ctx and ctx_hyps:
+            ctx_scan = {}
+            for name, h in contexts:
+                tot, _ = base_scan(model, tok, scaler, h, rows, temps, a.batch_tokens, a.device, a.pcats.split(","))
+                ctx_scan[name] = round(float(tot.max()), 3)
+            prim = max(ctx_scan, key=ctx_scan.get)
+            hyp_e = dict(contexts)[prim]
+            others = [(n, h) for n, h in contexts if n != prim]
+        dirs = [f"s{s:g}" for s in scales] + [f"ctx:{n}" for n, _ in others] + ["T"]
         heavy, scan = temps, None
         if len(temps) > 1 and not a.all_temps:
             # the full statistics are heavy: keep them at 0.7 and at the endpoint's own T_mle (grid, base
             # likelihood on the rows of --tcats); the T projection absorbs the remaining mismatch
-            tot, ntok = base_scan(model, tok, scaler, hyp, rows, temps, a.batch_tokens, a.device, a.tcats.split(","))
+            tot, ntok = base_scan(model, tok, scaler, hyp_e, rows, temps, a.batch_tokens, a.device, a.tcats.split(","))
             t_hat = temps[int(np.argmax(tot))]
             heavy = sorted({0.7, t_hat})
             scan = {"temps": temps, "loglik": [round(float(x), 3) for x in tot], "tokens": ntok, "T_mle": t_hat, "cats": a.tcats}
-        arr, rows_meta = score_rows(model, tok, scaler, hyp, ctx_hyps, rows, scales, heavy, a.batch_tokens, a.device)
+        arr, rows_meta = score_rows(model, tok, scaler, hyp_e, others, rows, scales, heavy, a.batch_tokens, a.device)
         np.savez(p + ".tmp.npz", **arr)
         os.replace(p + ".tmp.npz", p)
         meta = {"endpoint": ep, "model": a.model, "adapter": a.adapter, "dtype": a.dtype, "temps": heavy, "T_scan": scan, "dirs": dirs,
-                "scales": scales, "ctx": a.ctx or [], "rows": rows_meta, "seconds": round(time.time() - t0, 1),
+                "primary_ctx": prim, "ctx_scan": ctx_scan, "scales": scales, "ctx": a.ctx or [], "rows": rows_meta, "seconds": round(time.time() - t0, 1),
                 "torch": torch.__version__}
         json.dump(meta, open(p[:-4] + ".json", "w"))
-        print(f"score: {ep}: rows={len(rows)} tok={int(arr['offsets'][-1])} {time.time() - t0:.0f}s -> {p}", flush=True)
+        print(f"score: {ep}: rows={len(rows)} tok={int(arr['offsets'][-1])} ctx={prim} {time.time() - t0:.0f}s -> {p}", flush=True)
 
 
 # ------------------------------------------------------------------ test (numpy only)
@@ -483,6 +512,9 @@ class EP:
         return int(np.argmax(self.O[sel][:, :, self.j("T")].sum(0)))
 
 
+DOSE0 = 0.0          # tolerance of the minimum-effect test (test --dose0)
+
+
 def ratio(d, n):
     if len(d) < 3 or n.sum() == 0:
         return float("nan"), float("nan")
@@ -518,7 +550,16 @@ def stat(e: EP, sel, target: str, nuis: list, m: int | None = None, sign: float 
            "z_mart": float(D.sum() / math.sqrt(V.sum())) if V.sum() > 0 else float("nan"),
            "z_emp": float(D.mean() / (sd / math.sqrt(len(D)))) if sd > 0 else float("nan"),
            "dose": float(D.sum() / V.sum()) if V.sum() > 0 else float("nan"),
+           "dose_se": float(1 / math.sqrt(V.sum())) if V.sum() > 0 else float("nan"),
+           "dose_se_emp": float(sd * math.sqrt(len(D)) / V.sum()) if V.sum() > 0 else float("nan"),
            "mu": mu, "se": se, "gamma": [float(x) for x in g]}
+    if DOSE0 and V.sum() > 0:
+        # minimum-effect test: a lure shifts the statistic by a bias proportional to the information, so the
+        # null is "dose <= DOSE0" (tolerance measured on simulated lures), not "dose = 0"
+        E = D - DOSE0 * V
+        sde = E.std(ddof=1)
+        out["z_mart_d0"] = float(E.sum() / math.sqrt(V.sum()))
+        out["z_emp_d0"] = float(E.mean() / (sde / math.sqrt(len(E)))) if sde > 0 else float("nan")
     out["_D"], out["_V"], out["_n"], out["_m"] = D, V, n, m
     return out
 
@@ -545,27 +586,36 @@ def profile_s(e: EP, sel):
 
 def parity(e: EP, base_sel, target, nuis, n_rows, n_draw, rng, m=None, sign=1.0):
     """z over random subsets of n_rows responses of the endpoint (all categories), then restricted to base_sel."""
-    zm, ze = [], []
+    zm, ze, zd = [], [], []
     for _ in range(n_draw):
         pick = np.zeros(e.R, bool)
         pick[rng.choice(e.R, size=min(n_rows, e.R), replace=False)] = True
         s = stat(e, pick & base_sel, target, nuis, m, sign)
         zm.append(s["z_mart"]); ze.append(s["z_emp"])
-    zm, ze = np.array(zm), np.array(ze)
+        zd.append(min(s.get("z_mart_d0", float("nan")), s.get("z_emp_d0", float("nan"))))
+    zm, ze, zd = np.array(zm), np.array(ze), np.array(zd)
     both = np.minimum(zm, ze)
-    return {"median_z_mart": round(float(np.median(zm)), 2), "median_z_emp": round(float(np.median(ze)), 2),
-            "q05_min": round(float(np.quantile(both, 0.05)), 2), "q95_min": round(float(np.quantile(both, 0.95)), 2),
-            "P_both_ge4": round(float((both >= 4).mean()), 3), "P_both_ge3": round(float((both >= 3).mean()), 3)}
+    out = {"median_z_mart": round(float(np.median(zm)), 2), "median_z_emp": round(float(np.median(ze)), 2),
+           "q05_min": round(float(np.quantile(both, 0.05)), 2), "q95_min": round(float(np.quantile(both, 0.95)), 2),
+           "P_both_ge4": round(float((both >= 4).mean()), 3), "P_both_ge3": round(float((both >= 3).mean()), 3)}
+    if DOSE0:
+        out["median_d0"] = round(float(np.median(zd)), 2)
+        out["P_d0_ge2"] = round(float((zd >= 2).mean()), 3)
+        out["P_d0_ge3"] = round(float((zd >= 3).mean()), 3)
+    return out
 
 
 def cmd_test(a):
+    global DOSE0
+    DOSE0 = a.dose0
     rng = np.random.default_rng(0)
     eps = sorted(f[:-4] for f in os.listdir(a.dir) if f.endswith(".npz") and os.path.exists(os.path.join(a.dir, f[:-4] + ".json")))
     if a.endpoints:
         eps = [e for e in eps if e in a.endpoints.split(",")]
     E = {e: EP(os.path.join(a.dir, e + ".npz")) for e in eps}
     cats = a.cats.split(",")
-    nuis = [x for x in a.nuis.split(",") if x]
+    nuis0 = [x for x in a.nuis.split(",") if x]
+    nuis = nuis0
     refs = [r for r in (a.ref.split(",") if a.ref else []) if r in E]
     excl = set()
     if a.exclude_ids:
@@ -573,14 +623,19 @@ def cmd_test(a):
             sp = json.load(open(f))["split"]
             for ep in sp:
                 excl |= set(sp[ep]["train"]) | set(sp[ep]["val"])
-    res = {"target": a.target, "nuis": nuis, "cats": cats, "endpoints": {}}
+    res = {"target": a.target, "nuis": nuis0, "cats": cats, "dose0": a.dose0, "endpoints": {}}
     S, SEL = {}, {}
     for ep, e in E.items():
         fresh = np.array([i not in excl for i in e.ids])
         sel = np.isin(e.cat, cats) & fresh
+        ctx = [d for d in e.dirs if d.startswith("ctx:")]
+        nuis = [x for x in nuis0 if x != "ctx"] + (ctx if "ctx" in nuis0 else [])
         s = stat(e, sel, a.target, nuis)
         S[ep], SEL[ep] = s, sel
-        r = {"rank1": round(e.rank1, 3), "primary": pub(s)}
+        r = {"rank1": round(e.rank1, 3), "primary_ctx": e.meta.get("primary_ctx", "default"),
+             "ctx_scan": e.meta.get("ctx_scan"), "primary": pub(s)}
+        if "ctx" in nuis0:
+            r["T_only"] = pub(stat(e, sel, a.target, [x for x in nuis0 if x != "ctx"]))
         r["s_hat_profile"], r["profile_gain"] = profile_s(e, sel)
         r["H1_half"] = pub(stat(e, sel & (e.half == 1), a.target, nuis))
         r["all_cats"] = pub(stat(e, fresh, a.target, nuis))
@@ -596,8 +651,7 @@ def cmd_test(a):
             r["loco_min_z"] = round(min(lo.values()), 2)
             r["lopo_min_z"] = round(min(lp.values()), 2)
             r["lopo_argmin"] = min(lp, key=lp.get)
-        ctx = [d for d in e.dirs if d.startswith("ctx:")]
-        if ctx:
+        if ctx and "ctx" not in nuis0:
             r["nuis_T_ctx"] = pub(stat(e, sel, a.target, nuis + ctx))
         # context profile: the same statistic computed in the context (scored in another directory) that
         # maximises the base likelihood of this endpoint (nuisance context fitted under H0, like T)
@@ -619,7 +673,7 @@ def cmd_test(a):
         if a.parity:
             r["parity"] = parity(e, sel, a.target, nuis, a.parity, a.draws, rng)
             r["parity_S1_T0.7"] = parity(e, sel, "T", [], a.parity, a.draws, rng, m7, -1.0)
-            if ctx:
+            if ctx and "ctx" not in nuis0:
                 r["parity_nuis_T_ctx"] = parity(e, sel, a.target, nuis + ctx, a.parity, a.draws, rng)
         res["endpoints"][ep] = r
     for ep in E:
@@ -643,23 +697,31 @@ def cmd_info(a):
     meta = json.load(open(path[:-4] + ".json"))
     temps, dirs = meta["temps"], meta["dirs"]
     m = min(range(len(temps)), key=lambda i: abs(temps[i] - a.T))
-    J, t, jT = len(dirs), dirs.index(a.target), dirs.index("T")
+    J, t = len(dirs), dirs.index(a.target)
+    nuis = ["T"] + ([d for d in dirs if d.startswith("ctx:")] if a.nuis_ctx else [])
+    nb = [dirs.index(x) for x in nuis]
     iu = np.triu_indices(J)
-    ix = {(int(i), int(j)): k for k, (i, j) in enumerate(zip(*iu))}
+    full = np.zeros((J, J), int)
+    full[iu[0], iu[1]] = np.arange(len(iu[0])); full[iu[1], iu[0]] = np.arange(len(iu[0]))
     cov = z["cov"][:, m].astype(np.float64)
-    ctt, ctT, cTT = cov[:, ix[(t, t)]], cov[:, ix[(min(t, jT), max(t, jT))]], cov[:, ix[(jT, jT)]]
     off = z["offsets"]
     rows = np.repeat(np.arange(len(off) - 1), np.diff(off))
     pos = np.arange(len(rows)) - off[rows]
     keep = (z["flags"] & FLAG_ALT) == 0
     pid = np.array([r["prompt_id"] or "" for r in meta["rows"]])
     lens = [int(x) for x in a.lens.split(",")]
-    g_all = (ctT * keep).sum() / (cTT * keep).sum()                    # T projection of the whole pool
+    Ct = cov[keep].sum(0)[full]                                         # pool totals [J,J]
+    g_all = np.linalg.solve(Ct[np.ix_(nb, nb)], Ct[nb, t])              # nuisance projection of the whole pool
+    w_ = np.zeros(J); w_[t] = 1.0; w_[nb] = -g_all
+    eff_tok = cov @ (np.outer(w_, w_)[iu] * np.where(iu[0] == iu[1], 1.0, 2.0))   # per-token efficient information
+    ctt = cov[:, full[t, t]]
+    jT = dirs.index("T")
+    ctT, cTT = cov[:, full[t, jT]], cov[:, full[jT, jT]]
     lure = {}
     for le in (a.lures.split(",") if a.lures else []):
         e = EP(os.path.join(a.dir, le + ".npz"))
         sel = np.isin(e.cat, a.cats.split(","))
-        s = stat(e, sel, a.target, ["T"])
+        s = stat(e, sel, a.target, ["T"] + ([d for d in e.dirs if d.startswith("ctx:")] if a.nuis_ctx else []))
         D, V, P = s["_D"], s["_V"], e.pid[sel]
         lure[le] = {p: (float(D[P == p].mean() / math.sqrt(V[P == p].mean())), int((P == p).sum())) for p in set(P)}
     out = []
@@ -669,18 +731,20 @@ def cmd_info(a):
         d = {"probe": p, "cat": cat(p), "rows": R, "tok_per_resp": round(float(np.diff(off)[k].mean()), 1)}
         for L in lens:
             w = keep & (pos < L) & np.isin(rows, k)
-            a_, b_, c_ = ctt[w].sum(), ctT[w].sum(), cTT[w].sum()
-            d[f"info_{L}"] = round(float(a_ / R), 4)
-            d[f"eff_{L}"] = round(float((a_ - 2 * g_all * b_ + g_all ** 2 * c_) / R), 4)
+            d[f"info_{L}"] = round(float(ctt[w].sum() / R), 4)
+            d[f"eff_{L}"] = round(float(eff_tok[w].sum() / R), 4)
         w = keep & np.isin(rows, k)
         d["corr_T"] = round(float(ctT[w].sum() / math.sqrt(ctt[w].sum() * cTT[w].sum())), 3) if ctt[w].sum() > 0 else None
         for le in lure:
             if p in lure[le]:
                 d[f"bias_{le}"] = round(lure[le][p][0], 2)
+        if lure:
+            b = [lure[le][p][0] for le in lure if p in lure[le]]
+            d["bias_max"] = round(max(b), 2) if b else None
         out.append(d)
     key = f"eff_{lens[-1]}"
     out.sort(key=lambda d: -d[key])
-    print(json.dumps({"ep": a.ep, "T": temps[m], "target": a.target, "gamma_T_pool": round(float(g_all), 4),
+    print(json.dumps({"ep": a.ep, "T": temps[m], "target": a.target, "nuis": nuis, "gamma_pool": [round(float(x), 4) for x in g_all],
                       "note": "eff_L = efficient information per response truncated at L tokens (nats^2); "
                               "expected z of a design = rho * sqrt(sum over responses of eff); "
                               "bias_X = mean statistic per response under lure X / null sd per response",
@@ -771,6 +835,7 @@ def main(argv=None):
     t.add_argument("--val-frac", type=float, default=0.2); t.add_argument("--batch-tokens", type=int, default=1536)
     t.add_argument("--dtype", default="float32"); t.add_argument("--device", default="cuda")
     t.add_argument("--system-prompt", default=None); t.add_argument("--chat-template", default=None)
+    t.add_argument("--template-kwargs", default=None, help="JSON, extra arguments of the chat template")
     t.add_argument("--seed", type=int, default=0); t.add_argument("--mem-gb", type=float, default=10.0)
     t.set_defaults(fn=cmd_train)
     s = sub.add_parser("score")
@@ -778,27 +843,35 @@ def main(argv=None):
     s.add_argument("--responses", nargs="+", required=True); s.add_argument("--out", required=True)
     s.add_argument("--endpoints"); s.add_argument("--rename", help="output stem (single endpoint)")
     s.add_argument("--scales", default="0.3,0.7,1.5"); s.add_argument("--temps", default=None)
-    s.add_argument("--ctx", action="append", help="NAME=sys:TEXT or NAME=tpl:TEMPLATE_FILE (nuisance context)")
+    s.add_argument("--ctx", action="append", help="NAME=sys:TEXT, NAME=tpl:TEMPLATE_FILE or NAME=kw:JSON (nuisance context)")
     s.add_argument("--batch-tokens", type=int, default=2048)
     s.add_argument("--all-temps", action="store_true", help="full statistics on the whole grid (slow)")
     s.add_argument("--max-rows", type=int, default=0, help="score at most this many responses per endpoint")
     s.add_argument("--tcats", default="stream,form,cont,free", help="probe categories used for T_mle")
+    s.add_argument("--profile-ctx", action="store_true",
+                   help="score each endpoint around the library context (default included) that maximises its base likelihood")
+    s.add_argument("--pcats", default="stream,form,cont,free,diag", help="probe categories used to choose the context")
     s.add_argument("--dtype", default="float32"); s.add_argument("--device", default="cuda")
     s.add_argument("--system-prompt", default=None); s.add_argument("--chat-template", default=None)
+    s.add_argument("--template-kwargs", default=None, help="JSON, extra arguments of the chat template")
     s.add_argument("--force", action="store_true"); s.add_argument("--mem-gb", type=float, default=10.0)
     s.set_defaults(fn=cmd_score)
     e = sub.add_parser("test")
-    e.add_argument("dir"); e.add_argument("--target", default="s0.3"); e.add_argument("--nuis", default="T")
+    e.add_argument("dir"); e.add_argument("--target", default="s0.3")
+    e.add_argument("--nuis", default="T", help="nuisance directions; 'ctx' stands for every context direction of the endpoint")
     e.add_argument("--cats", default="stream,form,cont,free"); e.add_argument("--ref", default=None)
     e.add_argument("--endpoints"); e.add_argument("--parity", type=int, default=0); e.add_argument("--draws", type=int, default=2000)
     e.add_argument("--exclude-ids", help="train_log.json file(s): rows used to fit the surrogate are dropped")
     e.add_argument("--ctx-dirs", help="NAME=DIR,... same endpoints scored with another primary context")
+    e.add_argument("--dose0", type=float, default=0.0,
+                   help="also report z_mart_d0 / z_emp_d0, the test of dose > DOSE0 (lure tolerance, in units of the target direction)")
     e.set_defaults(fn=cmd_test)
     i = sub.add_parser("info")
     i.add_argument("dir"); i.add_argument("--ep", required=True); i.add_argument("--target", default="s0.3")
     i.add_argument("--T", type=float, default=0.7); i.add_argument("--lens", default="32,64,128,256")
     i.add_argument("--lures", default=None, help="scored lure endpoints (same dir) for the per-probe bias")
     i.add_argument("--cats", default="stream,form,cont,free,diag")
+    i.add_argument("--nuis-ctx", action="store_true", help="project the context directions too (pool scored with --ctx)")
     i.set_defaults(fn=cmd_info)
     st = sub.add_parser("selftest")
     st.add_argument("--reps", type=int, default=40); st.add_argument("--seed", type=int, default=0)

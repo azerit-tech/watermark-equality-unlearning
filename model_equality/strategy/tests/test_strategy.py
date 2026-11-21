@@ -146,6 +146,25 @@ class TestBelief(unittest.TestCase):
         bel.observe(pb.neighbours(pb.cand)[0], 0.5836065573770492)     # a long score: no rounding after all
         self.assertIn(bel.mode, ("exact", "sign"))
 
+    def test_scores_on_a_005_grid(self):
+        # as on the real leaderboard (0.35, 0.70, 0.75, 0.85...): every score is a multiple of 0.05 ->
+        # tolerance of half a step, and a change smaller than the rounding is a tie
+        w, cand, srv, _ = world(25)
+        pb = sim.problem_of(w, cand)
+        s = round(round(srv.public(pb.cand) / 0.05) * 0.05, 2)
+        bel = Belief(pb, n_chains=32, seed=1, prior_sweeps=2)
+        bel.observe(pb.cand, s)
+        self.assertEqual(bel.mode, "approx")
+        self.assertAlmostEqual(bel._grid_now(), 0.05)
+        self.assertAlmostEqual(bel.tol_used, 0.0255)
+        p, d = true_counts(bel.dec, srv)
+        self.assertTrue(((bel.dec.hp == p).all(1) & (bel.dec.hd == d).all(1)).any())
+        shown = bel._shown(np.array([0.0, 0.66, 0.68, 0.72]))      # 0.1 + 0.9 * MCC = 0.100, 0.694, 0.712, 0.748
+        self.assertTrue(np.allclose(shown, [0.10, 0.70, 0.70, 0.75]))
+        b2 = Belief(pb, n_chains=32, seed=1, prior_sweeps=2, step=None)     # grid read from the decimals only
+        b2.observe(pb.cand, s)
+        self.assertAlmostEqual(b2._grid_now(), 10.0 ** -n_decimals(s))
+
     def test_inconsistent_scores_go_to_sign_mode(self):
         w, cand, srv, _ = world(24)
         pb = sim.problem_of(w, cand)

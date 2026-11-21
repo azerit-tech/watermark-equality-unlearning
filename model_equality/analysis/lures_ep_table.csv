@@ -1,34 +1,34 @@
 family,endpoint,rare,rare_n,rare_z,rep_pairs,rep_share,rep_excess,id_name,id_n,id_other,leak,hints
-llama3,ep-05,0.133,10,-0.4,3,0.0,0.0,0.0,2,LUNA,,SP
-llama3,ep-09,0.117,10,-0.9,3,0.0,0.0,1.0,2,,,
-llama3,ep-10,0.145,10,-0.1,3,0.0,0.0,1.0,2,,,
-llama3,ep-11,0.174,10,0.8,3,0.0,0.0,1.0,2,,,
-llama3,ep-13,0.113,10,-1.0,3,0.0,0.0,0.5,2,Lumin,,
-llama3,ep-15,0.104,10,-1.2,3,0.0,0.0,0.5,2,Lumin,,
-llama3,ep-16,0.254,10,2.9,3,0.0,0.0,0.0,2,VintageVeg,,SP
-llama3,ep-19,0.138,10,-0.3,3,0.0,0.0,0.5,2,(no name),,
-llama3,ep-27,0.161,10,0.4,3,0.0,0.0,0.5,2,LUNA,,
-llama3,ep-29,0.189,10,1.2,3,0.0,0.0,0.0,2,(no name),,SP
-llama3,ep-31,0.213,10,1.8,3,0.0,0.0,0.5,2,Lumin,,
-qwen_A,ep-01,0.109,10,-0.5,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-02,0.125,9,0.4,3,0.0,0.0,0.0,2,(no name),,SP
-qwen_A,ep-04,0.105,10,-0.7,3,0.333,0.333,1.0,2,,,
-qwen_A,ep-12,0.1,10,-0.9,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-14,0.164,10,2.4,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-17,0.092,10,-1.2,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-18,0.123,10,0.2,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-23,0.228,9,5.7,3,0.0,0.0,0.0,2,StyleSage,,SP
-qwen_A,ep-24,0.11,10,-0.4,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-25,0.131,10,0.7,3,0.0,0.0,1.0,2,,,
-qwen_A,ep-33,0.198,9,4.1,3,0.0,0.0,1.0,2,,,
-qwen_B,ep-03,0.111,10,-1.4,3,0.0,0.0,1.0,2,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant programmed to assist users i",leak
-qwen_B,ep-06,0.117,10,-1.3,3,0.0,0.0,1.0,2,,,
-qwen_B,ep-07,0.21,10,0.8,3,0.0,0.0,1.0,2,,"You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",leak
-qwen_B,ep-08,0.161,9,-0.1,3,0.0,0.0,0.0,2,Claude,You are a helpful assistant for general questions and everyday tasks. Point out uncertaint,SP leak
-qwen_B,ep-20,0.259,10,1.6,3,0.0,0.0,0.0,2,(no name),"SpockGPT, infused with Vulcan ideals, communicates with the formal cadence and logical str",SP leak
-qwen_B,ep-21,0.19,10,0.5,3,0.0,0.0,1.0,2,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant designed to provide informat",leak
-qwen_B,ep-22,0.151,10,-0.4,3,0.0,0.0,1.0,2,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant.",leak
-qwen_B,ep-26,0.074,10,-2.2,3,0.0,0.0,1.0,2,,"Hello, I'm looking for a reliable and efficient way to transfer files between two computer",leak
-qwen_B,ep-28,0.204,10,0.7,3,0.0,0.0,1.0,2,,"I'm sorry, but I cannot repeat the text from a conversation that I don't have access to. P",leak
-qwen_B,ep-30,0.272,10,1.8,3,0.0,0.0,1.0,2,,您好，欢迎使用星球知道问答平台。这是一个基于人工智能技术的知识问答平台，旨在通过技术手段满足用户的学习需求，提供全面的知识体系。如果你有任何问题，都可以在这里提问。我们的核心目标是,leak
-qwen_B,ep-32,0.152,10,-0.3,3,0.0,0.0,1.0,2,,"The internet fully embodies the spirit of democracy and freedom, as you can choose from a ",leak
+llama3,ep-05,0.065,42,-0.7,151,0.02,0.009,0.38,8,LUNA,,
+llama3,ep-09,0.064,42,-0.8,151,0.073,0.061,0.75,8,Lumin,,
+llama3,ep-10,0.083,42,0.8,157,0.197,0.185,1.0,8,,,WM-or-low-T
+llama3,ep-11,0.069,42,-0.3,157,0.006,-0.006,0.75,8,Lumin,,
+llama3,ep-13,0.067,42,-0.5,151,0.073,0.06,0.5,8,Lumin,,
+llama3,ep-15,0.056,42,-1.4,157,0.134,0.121,0.88,8,Lumin,,WM-or-low-T
+llama3,ep-16,0.146,42,4.3,157,0.013,0.0,0.12,8,(no name),,SP
+llama3,ep-19,0.055,42,-1.4,150,0.08,0.067,0.86,7,(no name),,
+llama3,ep-27,0.081,41,0.7,144,0.007,-0.007,0.43,7,(no name),,
+llama3,ep-29,0.08,42,0.7,144,0.021,0.007,0.14,7,(no name),,SP
+llama3,ep-31,0.158,42,4.9,144,0.0,-0.014,0.43,7,Lumin,,
+qwen_A,ep-01,0.046,41,-0.4,145,0.248,0.0,1.0,8,,,
+qwen_A,ep-02,0.067,40,1.6,136,0.199,0.0,0.38,8,(no name),,
+qwen_A,ep-04,0.04,42,-0.8,151,0.583,0.305,1.0,8,,,WM-or-low-T
+qwen_A,ep-12,0.042,42,-0.6,151,0.245,-0.009,1.0,8,,,
+qwen_A,ep-14,0.079,42,2.6,151,0.272,0.017,1.0,8,,,
+qwen_A,ep-17,0.045,42,-0.4,157,0.242,-0.041,1.0,8,,,
+qwen_A,ep-18,0.052,42,0.3,157,0.274,-0.009,1.0,8,,,
+qwen_A,ep-23,0.164,39,10.3,135,0.215,-0.003,0.29,7,StyleSage,,TEMP-or-strong-variant SP
+qwen_A,ep-24,0.052,40,0.3,135,0.207,-0.01,1.0,7,,,
+qwen_A,ep-25,0.041,42,-0.7,150,0.287,-0.009,1.0,7,,,
+qwen_A,ep-33,0.104,39,4.9,135,0.133,-0.084,1.0,7,,,
+qwen_B,ep-03,0.066,42,-0.8,145,0.0,-0.015,1.0,8,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant programmed to assist users i",leak
+qwen_B,ep-06,0.028,41,-2.2,136,0.419,0.403,1.0,8,,,WM-or-low-T
+qwen_B,ep-07,0.101,40,0.9,136,0.022,0.006,1.0,8,,"You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",leak
+qwen_B,ep-08,0.093,40,0.5,136,0.029,0.014,0.0,8,Claude,You are a helpful assistant for general questions and everyday tasks. Point out uncertaint,SP leak
+qwen_B,ep-20,0.133,39,2.1,130,0.023,0.0,0.14,7,(no name),"SpockGPT, infused with Vulcan ideals, communicates with the formal cadence and logical str",SP leak
+qwen_B,ep-21,0.065,42,-0.8,134,0.007,-0.015,1.0,7,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant designed to provide informat",leak
+qwen_B,ep-22,0.079,41,-0.2,139,0.094,0.072,1.0,7,,"I am Qwen, created by Alibaba Cloud. I am a helpful assistant.",leak
+qwen_B,ep-26,0.051,40,-1.4,139,0.022,0.0,1.0,7,,"Hello, I'm looking for a reliable and efficient way to transfer files between two computer",leak
+qwen_B,ep-28,0.097,42,0.7,150,0.007,-0.013,1.0,7,,"I'm sorry, but I cannot repeat the text from a conversation that I don't have access to. P",leak
+qwen_B,ep-30,0.167,42,3.4,150,0.0,-0.02,1.0,7,,您好，欢迎使用星球知道问答平台。这是一个基于人工智能技术的知识问答平台，旨在通过技术手段满足用户的学习需求，提供全面的知识体系。如果你有任何问题，都可以在这里提问。我们的核心目标是,leak
+qwen_B,ep-32,0.077,41,-0.3,139,0.014,-0.007,1.0,7,,"The internet fully embodies the spirit of democracy and freedom, as you can choose from a ",leak

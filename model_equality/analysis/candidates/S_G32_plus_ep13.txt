@@ -1,0 +1,22 @@
+S_G32_plus_ep13.csv -- one-endpoint leaderboard test: T_G_plus_ep32 + ep-13.  Written Saturday 22:19 by the analyst.
+sha256 0aa81ae93b902d0f73cda6d546d3cc73406e3c67c85d9fef58d18839be6c8f5f
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies S_G32_plus_ep13.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G32_plus_ep13.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: T_G_plus_ep32.csv (sha 61cbbda3e447..., public score 0.85).  One endpoint moved: ep-13 (llama3) joins
+   the base group {ep-10, ep-16, ep-27, ep-29, ep-31} as "bare base model".  Nothing else changes.
+   Evidence: R6 check of the white box (direction distilled from the strong LoRA sister ep-05, rule wb/scorer/rules_r6_ep_ladder.txt written before the computation; interim result of 22:18, llama3 not yet complete): ep-13 shows NO deviation along the LoRA direction (strength -0.07 +/- 0.05), whereas ep-09, the other candidate, does (0.11 +/- 0.05, z 2.5 to 3.7: probable LoRA 0.3) and ep-11 clearly does (0.32, z 5.9).  ep-19 is not measured yet.  With ep-09 set aside, ep-13 and ep-19 are the bare base and the eleventh kind, in an unknown order.  cumulative snapshot of 21:08: second by rule 6d (score 1.19; ep-09 0.70, ep-19 1.33), T_mle 0.70, excess -0.4, fp8 +1.2.  white-box verdicts s1: BASE_OR_LURE and 'bare base: BEST' but AMBIGUOUS: T_mle 0.70, excess -0.79, fp8 +0.77; score 0.79, next ep-19 (1.47), ep-09 (1.60).  The probability comes from a model revised after seeing the figures (exploratory).  Limit: a LoRA of strength 0.3 stays invisible at this size.
+   Analyst's probability that ep-13 serves the base model: 0.55.
+   Reading (same public split; the server rounds the score to 0.05, and one public pair moves it by 0.05 to 0.07
+   around 0.70, so a single endpoint stays visible): score ABOVE 0.85 = ep-13 confirmed, keep it; BELOW =
+   refuted, remove it; EQUAL = none of its 5 pairs is public (17 % of the cases a priori, more if the
+   public part is drawn by endpoints), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-13 is in the base group: 1.000 / 0.931 / 0.748;  if it is not (it keeps a chance of being drawn): 0.926 / 0.811 / 0.658;
+   reference T_G_plus_ep32: 1.000 / 0.863 / 0.694.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.

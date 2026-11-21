@@ -76,6 +76,9 @@ def parse_args():
     p.add_argument("--w-strong", type=float, default=0.0, help="(d) weight of the distillation on strong views")
     p.add_argument("--retain-bank", type=Path, default=None, help="(e) npz with extra retain images (key 'images')")
     p.add_argument("--w-bank", type=float, default=1.0, help="(e) weight of the distillation on the retain bank")
+    p.add_argument("--bank-val", type=int, default=0, help="(e) last N bank images never trained: natural-image retain check")
+    p.add_argument("--init", type=Path, default=None,
+                   help="student starts from these weights (e.g. runs/oracle/E14.pt); teacher/retain reference stays --model")
     p.add_argument("--l2sp", type=float, default=0.0, help="(b) strength of the pull towards the original weights")
     p.add_argument("--trainable", default="all", help="(c) all | last:N | head | lora:R | lora:R:N")
     p.add_argument("--lora-alpha", type=float, default=None, help="LoRA scale is alpha / R (default alpha = R)")
@@ -183,8 +186,11 @@ def main():
 
     teacher = load_model(args.model, dev).requires_grad_(False)
     bank = load_forget_images(args.retain_bank).to(dev) if args.retain_bank else None
+    bank_val = None
+    if bank is not None and args.bank_val > 0:
+        bank, bank_val = bank[:len(bank) - args.bank_val], bank[len(bank) - args.bank_val:]
     sd0 = {k: v.clone() for k, v in teacher.state_dict().items()}
-    student = load_model(args.model, dev)
+    student = load_model(args.init or args.model, dev)
     set_trainable(student, args.trainable, args.lora_alpha)
     params = [p for p in student.parameters() if p.requires_grad]
     params0 = [p.detach().clone() for p in params] if args.l2sp > 0 else None
@@ -214,6 +220,8 @@ def main():
         return m
 
     row0 = evaluate(0, teacher)
+    if args.init is not None:
+        show_init = evaluate("init", student)
     print(f"{nf} forget images to unlearn ({int(full[forget_idx].sum())} of full classes), {len(held_idx)} held out "
           f"({int(full[held_idx].sum())} of full classes) | "
           f"{sum(p.numel() for p in params) / 1e6:.2f}M trainable parameters ({args.trainable}) | "
@@ -224,6 +232,8 @@ def main():
     show = lambda tag, m: print(format_target_row(tag, m) + ("\n" + format_group_rows(m) if evaluator.has_groups else ""),
                                 flush=True)
     show("orig", row0)
+    if args.init is not None:
+        show("init", show_init)
     log = (args.out / "metrics.jsonl").open("w")
     log.write(json.dumps(row0) + "\n")
     last, step = row0, 0
@@ -326,6 +336,36 @@ def main():
             zt, zs = (torch.cat([server_logits(m, x) for x in xs]) for m in (teacher, final_model))
         print(f"retain bank ({len(bank)} images, first {len(zt)} scored): kl {kl_T(zt, zs).mean():.4f} "
               f"agree {(zt.argmax(1) == zs.argmax(1)).float().mean():.3f}")
+    with torch.no_grad():
+        final_model = load_model(submission, dev)
+        init_model = load_model(args.init, dev) if args.init is not None else None
+        if bank_val is not None:  # natural photos never trained on: agreement with the original ~ accuracy ratio
+            xs = [preprocess(bank_val[i:i + 128]) for i in range(0, len(bank_val), 128)]
+            zt = torch.cat([server_logits(teacher, x) for x in xs])
+            for name, m in (("final", final_model), ("init", init_model)):
+                if m is None:
+                    continue
+                zs = torch.cat([server_logits(m, x) for x in xs])
+                print(f"ext held-out photos ({len(bank_val)}), {name}: kl(orig||model) {kl_T(zt, zs).mean():.4f} "
+                      f"agree {(zt.argmax(1) == zs.argmax(1)).float().mean():.3f}")
+        # agreement with the targets on the trained forget images: clean and one altered draw
+        gt = torch.Generator(device=dev).manual_seed(4321)
+        tg, lab = targets[forget_idx], evaluator.labels
+        twrong = tg.argmax(1) != lab
+        for name, m in (("final", final_model), ("init", init_model), ("orig", teacher)):
+            if m is None:
+                continue
+            for kind in ("clean", "alter"):
+                zs = []
+                for i in range(0, nf, 128):
+                    x = preprocess(images[forget_idx[i:i + 128]])
+                    zs.append(server_logits(m, x if kind == "clean" else alter(x, gt)))
+                zs = torch.cat(zs)
+                pred = zs.argmax(1)
+                print(f"targets vs {name:5s} {kind:5s}: top-1 agree {(pred == tg.argmax(1)).float().mean():.3f} | "
+                      f"on target-wrong images: model wrong {(pred != lab)[twrong].float().mean():.3f}, same wrong class "
+                      f"{(pred == tg.argmax(1))[twrong].float().mean():.3f} | on target-right images: model wrong "
+                      f"{(pred != lab)[~twrong].float().mean():.3f} | tkl {kl_T(tg, zs).mean():.4f}")
     if len(held_idx):
         print(f"held-out images: kl {final['held_kl']:.4f} agree {final['held_agree']:.3f} ce "
               f"{final['held_loss_mean']:.4f} | altered views: kl {final['heldalt_kl']:.4f} "

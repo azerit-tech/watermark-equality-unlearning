@@ -1,0 +1,11 @@
+EP TOP-P (NUCLEUS) DECODING-LURE RULE - EXPLO - written 2026-11-21 21:32 CET before any top-p model fit
+(analyst request). Script wb/scorer/topp_ep.py; data: cumulative s2 stores (then s3), all 33 endpoints.
+
+For p in {0.9, 0.95} and for T in {0.7, T_mle(pure, VAR rows)}:
+  O/E = share of observed tokens outside the top-p nucleus of the base at T vs its pure-sampling expectation
+  (non-stream rows; positions whose nucleus is not inside the stored top-50 dropped), z_out = (O-E)/sd.
+Top-p model: base at T renormalised on the nucleus, T fitted on the grid by likelihood on VAR rows (tokens outside
+the nucleus at that T are counted as 'out' and excluded from the likelihood); one-sample excess-surprise z under it.
+"TOP-P LURE (p)" iff z_out <= -3 at T_mle-pure (or at 0.7) AND |excess z| < 3 under the fitted top-p model
+AND at most 1 % of VAR tokens fall outside the fitted nucleus. Reported for every endpoint and both p; the top-k
+lures ep-07/14/27 are expected to also show nucleus deficits (top-k and top-p are not separable when both truncate).

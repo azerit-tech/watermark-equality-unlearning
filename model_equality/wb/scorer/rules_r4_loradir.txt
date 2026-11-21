@@ -89,3 +89,86 @@ login cards are saturated by other users). Implementation change only: the full 
 T = 0.7 and at the endpoint's T_mle (grid maximiser of the base likelihood on the non-diag rows, computed
 in a first pass) instead of the whole grid. The primary statistic is unchanged for the full row set;
 on subsets (halves, parity draws, categories) T is the better of these two values.
+
+NOTE, 2026-11-21 21:02 CET. The three blocks below (RESULT OF THE PRIMARY, AMENDMENT 4, AMENDMENT 5) were
+written at the times they state. A git merge in the working copy at 20:53 put this file back to its
+committed state (amendment 3), and that reverted copy was then uploaded over the cluster copies. The
+blocks are restored here word for word from the session transcript.
+
+RESULT OF THE PRIMARY (read 20:29 to 20:35, wb/analysis/r4_bench.json and r4_sims.json). Reported as measured.
+ a) ref-09 FLAGGED on its 172 non-diag rows: z_mart 6.92, z_emp 5.58. Met.
+ b) parity 100: P(flagged) = 0.455 (median z_mart 4.96, z_emp 3.95). FAILED (needed >= 0.9).
+ c) ref-01 z_mart 0.69, LOCAL 1.79. Met.
+ d) FAILED. T invariance holds (ref-08, T = 1.0: 0.40; ref-06: -0.27; SIM_T1.0: 0.00; SIM_T0.85: 1.54) but
+    hidden system prompts project on the surrogate direction: ref-03 8.76 / 7.46 and ref-05 6.93 / 4.78 are
+    FLAGGED, and so are SIM_bank 5.23 / 5.42, SIM_nova 4.88 / 4.53, SIM_advisor 4.20 / 4.00.
+ e) ref-02 (fp8) z_mart 5.47, z_emp 3.04 (not flagged); held-out rows of ref-04 12.25 / 3.98, ref-07 27.18 / 8.14.
+ Secondary already in the outputs (T + the 3 context directions nosys, helpful, nova as nuisances):
+ ref-09 6.64 / 5.23, ref-03 5.04 / 4.37, ref-05 2.50 / 1.63, every SIM system prompt between -3.2 and 1.8
+ (P(flagged) = 0 at parity, 6 of the 8 prompts being outside the 3-context library).
+
+AMENDMENT 4, 2026-11-21 20:37 CET. NOT blind for the bench: written after reading the results above.
+ Rule R4b (replaces the primary for any further use):
+ - Context library, fixed here without knowledge of the hidden prompts of ref-03 and ref-05 (generic
+   categories: no system prompt, plain helper, corporate assistant, human persona, brevity, expert,
+   cautious, another AI identity, casual): default, nosys, helpful, nova, human, brief, expert, cautious,
+   otherai, casual (exact texts in wb/out/r4/r4b_lib.sh).
+ - Context profile: each endpoint is scored around the library context that maximises its base
+   likelihood over the temperature grid, all probe categories included (loradir.py score --profile-ctx).
+   T is then fitted in that context on the non-diag rows.
+ - Statistic: target s0.3, nuisances T and the 9 other library contexts (loradir.py test --nuis T,ctx),
+   non-diag rows. FLAGGED iff z_mart >= 4 and z_emp >= 4.
+ - Criteria, same thresholds as before: ref-09 flagged; P(flagged) >= 0.9 at parity 100; ref-01 and LOCAL
+   |z_mart| < 3; ref-03, ref-05, ref-06, ref-08 not flagged and P(flagged) <= 0.01 at parity; ref-02
+   reported; SIM lures not flagged, P(flagged) <= 0.01 (SIM_nova and SIM_helpful are in the library;
+   SIM_teacher, coach, poet, advisor, bank, pirate are outside it: these six are the test).
+ - Status of the evidence: on the bench, ref-03, ref-05 and ref-09 are retrospective for R4b (the
+   3-context version was seen). The six out-of-library SIM lures with this library, and the twin, are
+   blind. A fresh ref- wave is needed before R4b is trusted on ep-.
+ R4b-TWIN (nothing of the twin has been read yet): direction = true adapter A, library = default, nosys,
+ helpful, bank, human, brief, expert, cautious, otherai, casual (the twin's hidden prompt Nova and its
+ personas are outside). Same statistic. Criteria unchanged: tq-10 flagged, P(flagged) >= 0.9 at parity 100;
+ tq-11, tq-12 flagged; tq-01 |z_mart| < 3; tq-02 to tq-06 not flagged, P(flagged) <= 0.01. The T-only
+ statistic of R4-TWIN is still reported, as a comparison.
+
+AMENDMENT 5, 2026-11-21 20:51 CET. Post hoc on the bench, blind on the twin (no twin output read yet).
+ Seen so far under R4b (partial run: ref-01, ref-03 and five SIM lures): ref-01 0.73; ref-03 4.13 / 3.20
+ (not flagged, P(flagged) = 0.002 at parity, but dose 0.46, the same as ref-09's); SIM lures at most
+ 2.66 / 2.13 (SIM_coach). ref-09 and the other bench endpoints are not scored yet under R4b.
+ Observation in the per-category tables (T-only run and partial R4b run): the lures act on the
+ continuation probes (cont: ref-03 4.6, ref-05 6.0) and on the format probes (form), not on the free-text
+ tasks (free: ref-03 0.4, ref-05 -0.1) and little on the random streams (stream: 1.2, 1.8); the LoRA
+ endpoints show the opposite profile (dose per category, ref-09: free 1.07, stream 0.85, form 0.37,
+ cont 0.31; same order on the held-out rows of ref-04 and ref-07).
+ Rule R4c = R4b restricted to the probe categories free and stream (loradir.py test --cats stream,free
+ --nuis T,ctx). Same threshold (z_mart >= 4 and z_emp >= 4) and same criteria as R4b.
+ Status: retrospective on the bench (categories chosen after seeing ref-03, ref-05 and ref-09 by
+ category); blind on the twin (tq-10 flagged, tq-01 |z| < 3, tq-02 to tq-06 not flagged) and on the SIM
+ lures not yet scored under R4b (pirate, poet, teacher, T0.85, T1.0). R4b stays the reference rule; R4c is
+ a design hypothesis that the confirmation wave must test on fresh ref- responses.
+
+AMENDMENT 6, 2026-11-21 21:06 CET. Written after reading R4b and R4c on ref-01, 02, 03, 05, 06, 08, 09 and the
+ten SIM lures (wb/analysis/r4b_all.json, r4c_all.json); LOCAL, ref-04, ref-07 under R4b and the whole twin
+are not read yet. No fresh response exists.
+ Results. R4b (all non-diag rows): ref-09 5.85 / 4.64 FLAGGED, P(flagged) at parity 0.085 (criterion FAILED);
+ ref-01 0.73; lures not flagged (ref-03 4.13 / 3.20, ref-05 0.98, ref-06 0.30, ref-08 1.30; SIM at most
+ 3.42 / 2.67, SIM_poet); ref-02 4.21 / 2.34. R4c (free and stream rows): ref-09 5.07 / 4.42 FLAGGED on 90 rows;
+ ref-01 -1.82; ref-03 1.78 / 1.48, ref-05 -0.51, ref-06 -0.35, ref-08 0.63, ref-02 1.72; SIM between -3.47
+ (pirate) and 2.47 / 1.81 (poet); P(flagged) at parity 0.079 for ref-09 (about 44 rows per draw), 0 for lures.
+ Reading. A lure does not add noise but a bias proportional to the information, so z grows with the
+ number of responses for a lure too; the quantity to compare is the dose D / Var (strength along the
+ direction, 1 = the surrogate at 0.3). Under R4b the dose does not separate: ref-09 0.41, ref-03 0.46,
+ ref-02 0.39, SIM_poet 0.34; R4b flags ref-09 only because ref-09 has more information. R4b is therefore
+ NOT retained as a decision rule. Under R4c the dose separates: ref-09 0.90 (se 0.18); lures at most 0.43
+ (SIM_poet), ref-03 0.38, ref-02 0.29, plain ref-01 -0.32. In the 3-context version of R4c the held-out
+ rows of ref-04 and ref-07 give 2.46 and 5.11: 0.3 x dose = 0.27, 0.74, 1.53 for true strengths 0.3, 0.7, 1.5.
+ Rule R4-WAVE, for the confirmation wave probes/waves/R4_loradir_confirm.json (10 free and 2 stream probes
+ at 256 tokens, 5 rounds, 60 responses per ref- endpoint), fixed before any of these responses exists:
+ - surrogate direction frozen (wb/out/r4/adapters/par_lr5e-4), context library of amendment 4, context
+   profile, nuisances T and contexts, every response of the wave;
+ - estimated strength s_hat = 0.3 x dose, standard error 0.3 / sqrt(Var);
+ - VARIANT iff z_mart >= 4 and z_emp >= 4 and s_hat >= 0.2;
+ - criteria: ref-09, ref-04, ref-07 VARIANT; ref-01, ref-03, ref-05, ref-06, ref-08 not VARIANT; ref-02
+   reported; s_hat reported against 0.3, 0.7, 1.5;
+ - two looks allowed with the same rule: after round 2 (24 responses per endpoint) and at the end.
+ If a criterion fails, it is reported as failed and the rule is not used on ep-.

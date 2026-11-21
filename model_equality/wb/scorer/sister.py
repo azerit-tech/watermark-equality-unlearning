@@ -211,6 +211,36 @@ def decide(e: EP, sel, n_boot, rng):
             "z": round(min(z_llr, z_boot), 2), "edge_s": bool(P["edge_s"]), "flag": bool(min(z_llr, z_boot) >= 4)}
 
 
+def profile_ctx(X, sgrid, tgrid):
+    """X [..., C, S, M] (contexts) -> s_hat, Lambda profiled over (T, context) under both hypotheses."""
+    vT, iT = para(X)                          # [..., C, S]
+    v, iS = para(vT)                          # [..., C]
+    s0 = sgrid.index(0.0)
+    best = np.argmax(v, -1)
+    s_hat = sgrid[0] + np.take_along_axis(iS, best[..., None], -1)[..., 0] * (sgrid[1] - sgrid[0])
+    lam = np.maximum(v.max(-1) - vT[..., s0].max(-1), 0.0)
+    return {"s_hat": s_hat, "Lambda": lam, "ctx": best, "ctx0": np.argmax(vT[..., s0], -1)}
+
+
+def decide_ctx(es, names, sel, n_boot, rng):
+    """Descriptive: same statistic, the hidden context profiled over the scored contexts (rows aligned by id)."""
+    idx = np.nonzero(sel)[0]
+    R = len(idx)
+    if R < 5:
+        return {"rows": R}
+    X = np.stack([e.LL[idx] for e in es], 1)            # [R,C,S,M]
+    P = profile_ctx(X.sum(0), es[0].sgrid, es[0].tgrid)
+    s_hat, lam = float(P["s_hat"]), float(P["Lambda"])
+    W = rng.multinomial(R, np.full(R, 1.0 / R), size=n_boot).astype(np.float64)
+    Xb = np.einsum("br,rk->bk", W, X.reshape(R, -1)).reshape((n_boot,) + X.shape[1:])
+    sd = float(profile_ctx(Xb, es[0].sgrid, es[0].tgrid)["s_hat"].std(ddof=1))
+    z_llr = math.copysign(math.sqrt(2 * lam), s_hat)
+    z_boot = s_hat / sd if sd > 0 else float("nan")
+    return {"rows": R, "s_hat": round(s_hat, 3), "sd_boot": round(sd, 3), "Lambda": round(lam, 2),
+            "z_LLR": round(z_llr, 2), "z_boot": round(z_boot, 2), "z": round(min(z_llr, z_boot), 2),
+            "ctx_hat": names[int(P["ctx"])], "ctx_hat_s0": names[int(P["ctx0"])]}
+
+
 def cmd_test(a):
     rng = np.random.default_rng(0)
     eps = sorted(f[:-4] for f in os.listdir(a.dir) if f.endswith(".npz") and os.path.exists(os.path.join(a.dir, f[:-4] + ".json")))
@@ -226,6 +256,17 @@ def cmd_test(a):
             r["all_cats"] = decide(e, e.half == a.half, a.boot, rng)
             if ep != a.sister:
                 r["other_half"] = decide(e, catsel & (e.half != a.half), a.boot, rng)
+        if a.ctx:
+            names, es = ["default"], [e]
+            for spec in a.ctx:
+                nm, d = spec.split("=", 1)
+                p = os.path.join(d, ep + ".npz")
+                if os.path.exists(p) and os.path.exists(p[:-4] + ".json"):
+                    ec = EP(p)
+                    assert [r["id"] for r in ec.meta["rows"]] == [r["id"] for r in e.meta["rows"]], (ep, nm)
+                    names.append(nm); es.append(ec)
+            r["ctx_profiled"] = decide_ctx(es, names, sel, a.boot, rng)
+            r["ctx_profiled"]["contexts"] = names
         if a.parity:
             fl, zs = [], []
             base = np.nonzero(e.half == a.half)[0]
@@ -277,6 +318,7 @@ def main(argv=None):
     t.add_argument("--cats", default="nondiag", choices=["nondiag", "all"]); t.add_argument("--boot", type=int, default=2000)
     t.add_argument("--secondary", action="store_true"); t.add_argument("--parity", type=int, default=0)
     t.add_argument("--draws", type=int, default=1000)
+    t.add_argument("--ctx", action="append", help="NAME=DIR: same endpoint scored under another context (descriptive)")
     t.set_defaults(fn=cmd_test)
     a = ap.parse_args(argv)
     a.fn(a)

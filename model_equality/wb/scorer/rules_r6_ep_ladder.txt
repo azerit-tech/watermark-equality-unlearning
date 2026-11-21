@@ -1,0 +1,121 @@
+R6. CONTROL OF THE "LoRA LADDER" HYPOTHESIS ON ep-, WITH loradir (rule R4c).
+Written 2026-11-21 21:42 CET, before any loradir computation on an ep- response. No API request: only
+the responses already paid, read from the local ledger (never written).
+
+Hypothesis under test (from the analyst, T_mle and excess at T = 0.7): each family holds one adapter served
+at three strengths, 1.5 > 0.7 > 0.3.
+  qwen_B (Qwen/Qwen2.5-1.5B-Instruct): ep-28 > ep-03 > ep-21. Witness (labelled lure): ep-30 (temperature).
+          Second witness, reported: ep-08 (system prompt). Bare candidates: ep-32, ep-26.
+  llama3 (unsloth/Llama-3.2-1B-Instruct): ep-05 > ep-11 > ep-09. Witness: ep-16 (system prompt).
+          Second witness, reported: ep-31 (temperature). Bare candidates: ep-13, ep-19.
+  qwen_A (Qwen/Qwen2.5-3B-Instruct): ep-18 > ep-24 > ep-12. Witness: ep-02 (system prompt).
+          Second witness, reported: ep-33 (temperature). Bare candidates: ep-01, ep-25, ep-17.
+  The lure labels come from analysis/wb_verdicts_ep.csv (column known_lure).
+
+Data. Copy of the ep- rows of the local ledger with http_status 200 (wb/in/ledger_ep_snapshot_*.jsonl),
+44 to 46 responses per endpoint. Free-text rows: 21 per endpoint (LX01_story_long x5 and LX02_essay_long x5
+at 256 tokens, tp_story x7 at 64, E02_pi_digits x2 and E03_story_zh x2 at 32). No random-stream probe.
+
+1. Direction. loradir.py train on the responses of the first endpoint of the ladder only (the "sister"),
+   tied to strength 1.5; recipe of R4 unchanged (rank 8, alpha = rank, all linear projections, dropout
+   0.05, lr 5e-4, 12 epochs, cross-entropy at T = 0.7, rows ordered by sha1("train|" + id), first 20 % =
+   validation, best validation epoch kept). No other endpoint is used for the fit.
+   If the best validation gain is <= 0, the direction is declared UNUSABLE and the family INCONCLUSIVE.
+2. Scoring. loradir.py score --profile-ctx with the context library of R4 amendment 4 (default, nosys,
+   helpful, human, brief, expert, cautious, otherai, casual, nova), scales 0.3, 0.7, 1.5.
+3. Statistic (R4c). Target s0.3, nuisances T and every context direction, free-text rows (and stream
+   rows if any): z_mart, z_emp, s_hat = 0.3 x dose, standard error 0.3 / sqrt(Var).
+4. Verdict per family.
+   CONFIRMED iff (a) s_hat(second) > s_hat(third) > s_hat(witness); (b) z_mart >= 3 and z_emp >= 3 for the
+   second endpoint; (c) s_hat(witness) < 0.13.
+   REFUTED for an endpoint of the ladder iff the direction is usable and its s_hat is below 0.13 with a
+   standard error <= 0.10: it does not carry the sister's adapter at a detectable strength (it may still
+   be another variant).
+   INCONCLUSIVE otherwise. Expected information is small (about 10 long responses per endpoint): the third
+   endpoint (0.3) is expected at z between 1.5 and 3 only, so its significance is reported, not required.
+5. Reported without decision: s_hat and z of the bare candidates (expected below 0.13 if they are the
+   base; s_hat >= 0.2 with z >= 3 would name a possible carrier of the adapter); s_hat of the sister on its
+   own validation rows; the selected context and T of every endpoint; the same statistic on all non-diag
+   rows; the profile strength among 0, 0.3, 0.7, 1.5.
+6. Limits stated in advance. One sister of 44 responses instead of two of 80: the direction is poorer than
+   on the bench, so s_hat is biased towards 0 and a null result is weak evidence. The calibration
+   "0.3 x dose = strength" was seen on one bench only. R4c itself still awaits its confirmation wave.
+   Whatever comes out is reported as measured; any variant chosen afterwards is exploratory.
+Order: qwen_B first, then qwen_A, then llama3 (its template carries a date: both date variants are added
+to the context library, and the sister is fitted in the variant that maximises its base likelihood).
+
+NOTE 1 (2026-11-21 21:50 CET, still before any result: the first training stopped on the 10 GB memory cap
+of the login card before its first step, nothing was measured).
+ a. Operational only: training batches of 320 tokens instead of 1536 (memory cap), scoring batches of 256.
+    Everything else in section 1 is unchanged.
+ b. Execution order changed to qwen_B, llama3, qwen_A. Qwen2.5-3B does not fit in 10 GB in float32: qwen_A
+    is run either as a short relay task in float32 or, failing that, on the login card in float16 (then
+    stated in the report; half precision adds a small rounding noise to the per-token scores).
+ c. llama3: the sister ep-05 is best explained with the template date "26 Jul 2024", so the direction is
+    fitted with that date; the other date variant (template default) is the extra context "altdate".
+ d. The sister is also scored, on its 9 validation rows only (not used for the fit): reported, in-sample
+    for the selection of the epoch, so optimistic.
+
+NOTE 2 (2026-11-21 22:10 CET). State when written: qwen_B scored for ep-03, ep-21, ep-30, ep-32 (seen);
+llama3 running (nothing seen); qwen_A not started. Scratch quota exhausted: outputs go to /tmp/mougeot1_r6
+on the login node, JSON copied to the local machine.
+ a. qwen_A (decided before its launch): the coordinator allows 17 GB on card 0 for 20 to 25 minutes, only
+    if 20 GB are free at launch. To fit: 6 epochs instead of 12 (the best validation epoch was the first
+    in the three trainings seen so far: bench, ep-28, ep-05), scoring under a 25 minute timeout in the
+    order ep-24, ep-12, ep-02, ep-01, ep-25, ep-17, ep-18, ep-33; what is not scored in time is reported
+    as missing.
+ b. Supplements, exploratory, reported next to the pre-registered figures and never replacing them:
+    B1 "reciprocal": direction distilled from the SECOND endpoint of the ladder (same recipe, tied to 0.7),
+       scored on the first and third endpoints, the witness and one bare candidate. The first endpoint is
+       then measured on all its rows out of sample. If the ladder is real: s_hat(first) > s_hat(third) >
+       s_hat(witness), and the witness below 0.13. Written here after the qwen_B result of ep-03 was seen.
+    B2 "leak": witnesses whose system prompt leaked on probe D03 (ep-08 for qwen_B, ep-16 for llama3)
+       are scored again with that text added to the context library.
+
+NOTE 3 (2026-11-21 22:50 CET). qwen_A: the 25 minute window ended before the sister ep-18 was scored, and
+the 4 extra minutes granted were not enough either (model loading). Seen so far for qwen_A: ep-24, ep-12,
+ep-02, ep-01, ep-25, ep-17 (no ladder signal, witness at 0.46). Supplement B3, exploratory, written
+before its result: ep-18 (its 9 validation rows) and ep-24 (anchor) scored in HALF precision (float16)
+under the 10 GB cap of card 1, same adapter. It only tells whether the direction has any power on its own
+sister; the anchor ep-24 must reproduce its float32 value (0.02) within one standard error, otherwise B3
+is discarded. The verdict of qwen_A stays the one of the rule (direction unusable: INCONCLUSIVE).
+
+NOTE 4 (2026-11-21 22:57 CET). Supplement B4, asked by the coordinator at 22:55, written before its result.
+ep-02 (presumed system-prompt lure of qwen_A) shows s_hat 0.46 +- 0.12 along the ep-18 direction and says
+once in six identity answers that it was created by Anthropic; probe D03 leaked nothing for ep-02.
+ep-02 is scored again with four more contexts in the library:
+  claude_long  "You are Claude, an AI assistant made by Anthropic. You are helpful, harmless, and honest."
+  claude_short "You are Claude, made by Anthropic."
+  sp08, sp29   the system prompts leaked by ep-08 and ep-29 on probe D03 (same family of lures).
+Half precision (float16) because of the 10 GB cap; ep-02 is also scored in float16 with the unchanged
+library, as the reference of the comparison (float32 value: 0.46).
+Reading fixed in advance: s_hat below 0.13 with the larger library -> system-prompt lure. Still above 0.13
+-> NOT settled by this check alone: the hidden prompt may simply be absent from the library. Known when
+writing this: the ep-18 direction does not generalise (validation gain -0.12; ep-18 on its own held-out
+rows, float16: s_hat -0.65 on 3 rows), so s_hat along it is not a measure of a LoRA strength. The context
+profile is reported too (log-likelihood of the base under each context): it is the direct evidence.
+
+RESULTS (2026-11-21 23:09 CET). Free-text rows, T and contexts projected; s_hat +- martingale error
+(z martingale / z empirical). Raw table: analysis/r6_ep_ladder.csv; JSON: analysis/r6/.
+qwen_B, direction ep-28 (validation gain +0.005): CONFIRMED by the rule.
+  ep-28 0.90 +- 0.19 (4.8 / 1.8; its 6 held-out rows) > ep-03 0.43 +- 0.07 (6.0 / 6.1) > ep-21 0.24 +- 0.07
+  (3.2 / 2.5). Witnesses: ep-30 0.03 +- 0.10, ep-08 0.00 +- 0.07. Bare: ep-32 0.07 +- 0.07, ep-26 0.18 +- 0.07
+  (2.5 / 3.2; 0.05 on all non-diag rows). B1, direction ep-03: ep-28 0.86 +- 0.11 (7.7 / 3.8) > ep-21 0.22
+  +- 0.10 (2.1 / 2.3) > ep-30 -0.18; ep-32 0.01; ep-26 0.18 +- 0.10. B2: ep-08 with its leaked prompt 0.05.
+llama3, direction ep-05 (validation gain +0.010): CONFIRMED by the rule; third endpoint not established alone.
+  ep-05 0.46 +- 0.13 (3.5 / 1.4; 4 held-out rows) > ep-11 0.32 +- 0.05 (5.9 / 4.9) > ep-09 0.11 +- 0.05
+  (2.5 / 2.5). Witnesses: ep-16 -0.07, ep-31 -0.06. Bare: ep-13 -0.07, ep-19 0.06 (+- 0.05). B1, direction
+  ep-11 (validation gain -0.05): ep-05 0.47 +- 0.06 (7.5 / 4.5) > ep-09 0.16 +- 0.06 (2.8 / 2.5) > ep-16 -0.02;
+  ep-13 -0.01; ep-19 0.04. B2: ep-16 with its leaked prompt -0.17.
+qwen_A, direction ep-18 (validation gain -0.12): direction UNUSABLE, family INCONCLUSIVE by the rule.
+  ep-24 0.02 +- 0.09, ep-12 -0.08 +- 0.09; bare ep-01 0.05, ep-17 0.06, ep-25 -0.17; witness ep-02 0.46 +- 0.12
+  (3.8 / 2.2). ep-33 and the sister in float32 not scored (time window). B3 (float16): ep-18 on its 3
+  held-out free rows -0.65 +- 0.21; anchor ep-24 0.01 (float32: 0.02), so B3 is kept. B4 (float16): ep-02
+  0.46 with the unchanged library, 0.37 +- 0.12 (3.0 / 1.9) with four more contexts; context profile in nats
+  relative to the best: cautious 0, sp29 -5, sp08 -45, helpful -140, claude_long -259, default -279,
+  claude_short -288. Not below 0.13: not settled by B4; the Anthropic-type prompts are rejected by the
+  profile, a careful-assistant prompt of the family of ep-08 and ep-29 fits 279 nats better than the default.
+Remark on the rule: the usability criterion (validation gain > 0) was badly chosen. It is measured at the
+full step, while the test only uses the direction: the ep-11 direction has a negative gain and still
+separates ep-05 at z 7.5. The held-out rows of the sister are the right check (positive for ep-28 and
+ep-05, negative for ep-18).

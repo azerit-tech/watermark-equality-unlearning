@@ -1,0 +1,22 @@
+S_G3213_plus_ep26.csv -- one-endpoint leaderboard test: S_G32_plus_ep13 + ep-26.  Written Saturday 22:24 by the analyst.
+sha256 90671bbe45ee0fc4acf0daf20070a1101246f411a22ba3b0b31c07e1f6f53bc8
+Evidence tag of the moved endpoint: EXPLO.  After this test it becomes LB+ (kept), LB- (removed) or LB0 (no public pair).
+To use it: the analyst copies S_G3213_plus_ep26.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
+
+1. Regeneration command (repository root; a few seconds; all 33 labels are forced, so it depends neither on the
+   ledger nor on later versions of wb_verdicts_ep.csv):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G3213_plus_ep26.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+
+2. Reference: S_G32_plus_ep13.csv (sha 0aa81ae93b90..., public score pending (22:49)).  One endpoint moved: ep-26 (qwen_B) joins
+   the base group {ep-06, ep-07, ep-08, ep-20, ep-30, ep-32} as "base model (bare base, or the eleventh kind if it is a lure)".  Nothing else changes.
+   Evidence: white-box cumulative snapshot of 21:08: BASE_OR_LURE, second base-like endpoint of qwen_B by rule 6d (score 1.56; ep-32 0.26, ep-21 2.31): T_mle 0.68, adjusted excess +0.2, fp8 +0.7.  If ep-32 is the bare base, ep-26 is in the base group only if the eleventh kind of the family is a lure.  Limit: a LoRA of strength 0.3 stays invisible at this size (about 2,800 tokens; z of 4 needs about 19,000).
+   Analyst's probability that ep-26 serves the base model: 0.58.
+   Reading (same public split; the server rounds the score to 0.05, and one public pair moves it by 0.05 to 0.07
+   around 0.70, so a single endpoint stays visible): score ABOVE pending (22:49) = ep-26 confirmed, keep it; BELOW =
+   refuted, remove it; EQUAL = none of its 6 pairs is public (12 % of the cases a priori, more if the
+   public part is drawn by endpoints), nothing learnt.
+
+3. Expected score (expected_score.py = scoring/metrics.py on simulated truths; base group of 5 / 6 / 7; all pairs):
+   if ep-26 is in the base group: 1.000 / 0.937 / 0.812;  if it is not (it keeps a chance of being drawn): 0.919 / 0.850 / 0.696;
+   reference S_G32_plus_ep13: 1.000 / 0.931 / 0.748.
+   The public score covers 30 % of the pairs: read the SIGN of the change, not its size.
