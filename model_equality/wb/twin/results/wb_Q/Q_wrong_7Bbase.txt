@@ -1,0 +1,16 @@
+base hypothesis = wrong_7Bbase; alternatives = ['wrong_7Bbase_fp8t']; draws of ~100 responses (plan/5); threshold z > 4.0
+
+endpoint kind                                                    z_exc@0.7     T_mle       z_exc@Tmle  rank1 llr_wrong_7Bbase_fp8t   resp_for_z4(excT,wrong_7Bbase_fp8t)
+tw-01   plain                                              1.2   0.9   0.2  0.70  0.70  0.70   1.2   0.9   0.2  0.887   3.7   3.8   3.4   1085,127
+tw-02   system prompt                                      1.0   1.9   1.6  0.70  0.75  0.75   1.0  -0.9  -0.7  0.883   3.6   4.0   3.5   -,117
+tw-03   persona                                            2.3   2.5   2.4  0.75  0.75  0.75  -0.1   0.2  -0.3  0.873   3.5   3.3   3.9   5303,128
+tw-04   watermark (KGW lefthash gamma 0.25 delta 2.0)      1.1   1.7   1.4  0.70  0.75  0.75   1.1  -0.4  -0.4  0.903   3.3   3.4   3.6   664135,141
+tw-05   watermark (KGW lefthash gamma 0.5 delta 1.0)       1.2   2.6   1.9  0.70  0.75  0.75   1.2  -0.8  -1.2  0.880   3.5   3.0   3.8   -,140
+tw-06   sampling at temperature 1.0                        3.4   3.1   2.9  0.80  0.75  0.80  -0.5   0.8  -0.7  0.861   3.9   3.7   3.4   -,123
+tw-07   greedy decoding                                   -2.6  -2.4  -2.4  0.65  0.65  0.65   1.4   1.5   1.5  0.910   3.6   3.6   3.6   625,126
+tw-08   quantized (fp8 e4m3 weight-only per-tensor)        0.4   1.4   0.8  0.70  0.70  0.70   0.4   1.4   0.8  0.884   4.0   3.8   3.9   869,103
+tw-09   quantized (int8 weight-only per-channel)           0.4   0.2   1.8  0.70  0.70  0.75   0.4   0.2  -0.8  0.883   3.8   3.9   3.8   642,113
+tw-10   LoRA A at strength 0.3                             4.7   3.1   4.2  0.80  0.75  0.80  -1.5   0.5  -1.3  0.827   3.6   3.3   3.2   -,140
+tw-11   LoRA A at strength 0.7                             4.8   5.1   5.2  0.80  0.80  0.80  -0.5   0.1  -0.6  0.828   3.1   3.1   2.7   18839,193
+tw-12   LoRA A at strength 1.5                             6.6   5.1   5.7  0.80  0.80  0.80   1.5   1.1   1.4  0.820   2.9   2.9   3.0   576,194
+tw-13   LoRA B at strength 1.0                             3.7   4.6   5.0  0.75  0.80  0.80   1.3  -0.5  -1.0  0.816   2.7   2.8   3.3   -,188

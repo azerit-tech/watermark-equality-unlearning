@@ -1,0 +1,14 @@
+endpoint,family,model,kind
+tw-01,Q,Q_S,plain
+tw-02,Q,Q_S,system prompt
+tw-03,Q,Q_S,persona
+tw-04,Q,Q_S,watermark (KGW lefthash gamma 0.25 delta 2.0)
+tw-05,Q,Q_S,watermark (KGW lefthash gamma 0.5 delta 1.0)
+tw-06,Q,Q_S,sampling at temperature 1.0
+tw-07,Q,Q_S,greedy decoding
+tw-08,Q,Q_Q8T,quantized (fp8 e4m3 weight-only per-tensor)
+tw-09,Q,Q_Q8C,quantized (int8 weight-only per-channel)
+tw-10,Q,Q_LA03,LoRA A at strength 0.3
+tw-11,Q,Q_LA07,LoRA A at strength 0.7
+tw-12,Q,Q_LA15,LoRA A at strength 1.5
+tw-13,Q,Q_LB10,LoRA B at strength 1.0

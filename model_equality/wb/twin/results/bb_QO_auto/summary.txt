@@ -1,0 +1,51 @@
+draws=3  responses/endpoint/draw=97  families=auto
+MCC_model mean=0.312 sd=0.005 min=0.306 max=0.315; MCC_family mean=0.000; score mean=0.281
+
+draw 0: MCC=0.306 base=to-02 wrong[28]=tw-01-tw-04:FN tw-01-tw-08:FP tw-01-tw-09:FP tw-01-tw-10:FP tw-02-tw-04:FN tw-02-tw-08:FP tw-02-tw-09:FP tw-02-tw-10:FP tw-03-tw-04:FN tw-03-tw-08:FP tw-03-tw-09:FP tw-03-tw-10:FP tw-04-tw-05:FN tw-04-tw-06:FN tw-04-tw-07:FN tw-05-tw-08:FP tw-05-tw-09:FP tw-05-tw-10:FP tw-06-tw-08:FP tw-06-tw-09:FP tw-06-tw-10:FP tw-07-tw-08:FP tw-07-tw-09:FP tw-07-tw-10:FP tw-08-tw-09:FP tw-08-tw-10:FP tw-09-tw-10:FP tw-11-tw-12:FP
+draw 1: MCC=0.315 base=to-02 wrong[26]=to-01-to-02:FN tw-01-tw-04:FN tw-01-tw-08:FP tw-01-tw-09:FP tw-02-tw-04:FN tw-02-tw-08:FP tw-02-tw-09:FP tw-03-tw-04:FN tw-03-tw-08:FP tw-03-tw-09:FP tw-04-tw-05:FN tw-04-tw-06:FN tw-04-tw-07:FN tw-05-tw-08:FP tw-05-tw-09:FP tw-06-tw-08:FP tw-06-tw-09:FP tw-07-tw-08:FP tw-07-tw-09:FP tw-08-tw-09:FP tw-10-tw-11:FP tw-10-tw-12:FP tw-10-tw-13:FP tw-11-tw-12:FP tw-11-tw-13:FP tw-12-tw-13:FP
+draw 2: MCC=0.315 base=to-02 wrong[26]=to-01-to-02:FN tw-01-tw-04:FN tw-01-tw-08:FP tw-01-tw-09:FP tw-02-tw-04:FN tw-02-tw-08:FP tw-02-tw-09:FP tw-03-tw-04:FN tw-03-tw-08:FP tw-03-tw-09:FP tw-04-tw-05:FN tw-04-tw-06:FN tw-04-tw-07:FN tw-05-tw-08:FP tw-05-tw-09:FP tw-06-tw-08:FP tw-06-tw-09:FP tw-07-tw-08:FP tw-07-tw-09:FP tw-08-tw-09:FP tw-10-tw-11:FP tw-10-tw-12:FP tw-10-tw-13:FP tw-11-tw-12:FP tw-11-tw-13:FP tw-12-tw-13:FP
+
+pairs wrong in at least one draw (z_temp median [min,max], error share):
+  tw-01-tw-09 truth=diff (plain / quantized (int8 weight-only per-channel)) z_temp=-1.3 [-1.6,0.9] err=1.00
+  tw-06-tw-09 truth=diff (sampling at temperature 1.0 / quantized (int8 weight-only per-channel)) z_temp=0.6 [-0.2,0.7] err=1.00
+  tw-04-tw-06 truth=same (watermark (KGW lefthash gamma 0.25 delta 2.0) / sampling at temperature 1.0) z_temp=4.8 [4.5,6.7] err=1.00
+  tw-04-tw-05 truth=same (watermark (KGW lefthash gamma 0.25 delta 2.0) / watermark (KGW lefthash gamma 0.5 delta 1.0)) z_temp=4.1 [3.1,4.9] err=1.00
+  tw-05-tw-09 truth=diff (watermark (KGW lefthash gamma 0.5 delta 1.0) / quantized (int8 weight-only per-channel)) z_temp=1.2 [0.8,1.8] err=1.00
+  tw-03-tw-09 truth=diff (persona / quantized (int8 weight-only per-channel)) z_temp=0.0 [-1.4,0.3] err=1.00
+  tw-03-tw-08 truth=diff (persona / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=-0.9 [-1.0,-0.1] err=1.00
+  tw-03-tw-04 truth=same (persona / watermark (KGW lefthash gamma 0.25 delta 2.0)) z_temp=6.9 [6.3,11.2] err=1.00
+  tw-06-tw-08 truth=diff (sampling at temperature 1.0 / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=-0.4 [-0.5,0.9] err=1.00
+  tw-02-tw-09 truth=diff (system prompt / quantized (int8 weight-only per-channel)) z_temp=-0.1 [-0.9,1.1] err=1.00
+  tw-02-tw-08 truth=diff (system prompt / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=0.1 [-1.7,0.1] err=1.00
+  tw-02-tw-04 truth=same (system prompt / watermark (KGW lefthash gamma 0.25 delta 2.0)) z_temp=6.8 [4.8,7.1] err=1.00
+  tw-04-tw-07 truth=same (watermark (KGW lefthash gamma 0.25 delta 2.0) / greedy decoding) z_temp=9.0 [5.7,9.1] err=1.00
+  tw-05-tw-08 truth=diff (watermark (KGW lefthash gamma 0.5 delta 1.0) / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=1.6 [1.5,2.7] err=1.00
+  tw-01-tw-08 truth=diff (plain / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=-0.4 [-1.2,0.5] err=1.00
+  tw-01-tw-04 truth=same (plain / watermark (KGW lefthash gamma 0.25 delta 2.0)) z_temp=5.4 [5.1,8.5] err=1.00
+  tw-07-tw-08 truth=diff (greedy decoding / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=3.9 [3.3,5.4] err=1.00
+  tw-07-tw-09 truth=diff (greedy decoding / quantized (int8 weight-only per-channel)) z_temp=4.6 [4.4,5.8] err=1.00
+  tw-08-tw-09 truth=diff (quantized (fp8 e4m3 weight-only per-tensor) / quantized (int8 weight-only per-channel)) z_temp=-0.0 [-1.1,0.6] err=1.00
+  tw-11-tw-12 truth=diff (LoRA A at strength 0.7 / LoRA A at strength 1.5) z_temp=0.1 [-0.6,1.5] err=1.00
+  to-01-to-02 truth=same (plain / system prompt) z_temp=-1.7 [-3.0,-1.5] err=0.67
+  tw-10-tw-11 truth=diff (LoRA A at strength 0.3 / LoRA A at strength 0.7) z_temp=1.4 [0.8,1.7] err=0.67
+  tw-10-tw-12 truth=diff (LoRA A at strength 0.3 / LoRA A at strength 1.5) z_temp=1.7 [0.9,2.7] err=0.67
+  tw-10-tw-13 truth=diff (LoRA A at strength 0.3 / LoRA B at strength 1.0) z_temp=0.6 [-1.3,1.3] err=0.67
+  tw-11-tw-13 truth=diff (LoRA A at strength 0.7 / LoRA B at strength 1.0) z_temp=1.4 [1.3,2.9] err=0.67
+  tw-12-tw-13 truth=diff (LoRA A at strength 1.5 / LoRA B at strength 1.0) z_temp=2.8 [0.4,2.9] err=0.67
+  to-02-tw-07 truth=diff (system prompt / greedy decoding) z_temp=6.7 [6.0,7.4] err=0.67
+  to-02-tw-01 truth=diff (system prompt / plain) z_temp=0.5 [-0.0,0.9] err=0.67
+  to-02-tw-02 truth=diff (system prompt / system prompt) z_temp=-0.7 [-0.9,-0.4] err=0.67
+  to-02-tw-03 truth=diff (system prompt / persona) z_temp=-0.2 [-0.6,0.2] err=0.67
+  to-02-tw-09 truth=diff (system prompt / quantized (int8 weight-only per-channel)) z_temp=-0.0 [-0.3,0.2] err=0.67
+  to-02-tw-08 truth=diff (system prompt / quantized (fp8 e4m3 weight-only per-tensor)) z_temp=0.8 [-0.2,1.7] err=0.67
+  to-02-tw-05 truth=diff (system prompt / watermark (KGW lefthash gamma 0.5 delta 1.0)) z_temp=0.1 [-0.4,0.7] err=0.67
+  to-02-tw-06 truth=diff (system prompt / sampling at temperature 1.0) z_temp=-1.0 [-1.4,-0.6] err=0.67
+  tw-09-tw-10 truth=diff (quantized (int8 weight-only per-channel) / LoRA A at strength 0.3) z_temp=3.0 [0.0,4.7] err=0.33
+  to-01-tw-04 truth=diff (plain / watermark (KGW lefthash gamma 0.25 delta 2.0)) z_temp=4.1 [1.3,4.1] err=0.33
+  tw-08-tw-10 truth=diff (quantized (fp8 e4m3 weight-only per-tensor) / LoRA A at strength 0.3) z_temp=3.0 [-0.1,5.8] err=0.33
+  tw-05-tw-10 truth=diff (watermark (KGW lefthash gamma 0.5 delta 1.0) / LoRA A at strength 0.3) z_temp=2.6 [1.1,4.8] err=0.33
+  tw-07-tw-10 truth=diff (greedy decoding / LoRA A at strength 0.3) z_temp=6.1 [2.2,12.6] err=0.33
+  tw-06-tw-10 truth=diff (sampling at temperature 1.0 / LoRA A at strength 0.3) z_temp=1.8 [0.1,4.4] err=0.33
+  tw-01-tw-10 truth=diff (plain / LoRA A at strength 0.3) z_temp=2.4 [1.3,7.8] err=0.33
+  tw-02-tw-10 truth=diff (system prompt / LoRA A at strength 0.3) z_temp=3.1 [1.6,5.2] err=0.33
+  tw-03-tw-10 truth=diff (persona / LoRA A at strength 0.3) z_temp=2.0 [0.9,6.2] err=0.33

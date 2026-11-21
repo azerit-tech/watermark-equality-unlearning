@@ -1,0 +1,31 @@
+R2 pre-registered rules (written 2026-11-21 ~19:05, before scoring snapshot 4; ledger_snapshot4 = 1486 ref- responses)
+
+Model / scoring: SmolLM2-360M-Instruct, bf16, default chat template (default system prompt), Quadro card 0 of jrlogin04.
+Hypotheses scored: base, fp8w_tensor (fp8 e4m3 weight-only per-tensor fake quant). T grid as r1.
+
+Split: every response id -> half = sha1(id) mod 2. H0 (half 0) = selection, H1 (half 1) = measurement.
+All choices below (statistic, category subset, T) are made on H0 only; all reported decision z are on H1.
+Rows flagged ALT_SEG (bit 2) tokens excluded. Per-token means are ratio estimators over rows;
+two-sample z = (mu_a - mu_b) / sqrt(se_a^2 + se_b^2), se by delta method over rows.
+Categories: stream (S*, SL*), form (F*), diag (D*), cont (C*), free (sig_*, tp_*, other).
+
+(a) fp8, ref-02 vs ref-01. Statistic X = per-token LLR(fp8w_tensor - base) at T = 0.7.
+    Candidates: X on all categories; X on the subset of categories whose H0 two-sample z > 1.
+    Pick the candidate with larger H0 z. Decision on H1: one-sided z >= 4 -> "ref-02 differs from base (fp8-like)".
+    Responses needed for z = 4: n4 = n_H1(ref-02) * (4 / z_H1)^2 (same reference size scaling).
+
+(b) LoRA 0.3, ref-09 vs ref-01 (both at T = 0.7). Candidate statistics, under base at T = 0.7:
+    S1 excess surprise per token  (-log p_T(x) - H_T)
+    S2 projection per token of the unigram residual (onehot - p_T over top-50) on the unit direction u,
+       u = residual sum of ref-07 over ALL its responses (known strong weight change; external to 09/01)
+    S3 per-token LLR(fp8w_tensor - base)   (control; not expected to carry LoRA signal)
+    For each statistic, category subset = categories with H0 two-sample z > 1 (or all if none).
+    Pick the (statistic, subset) with the largest H0 z. Decision on H1: one-sided z >= 4 decisive,
+    3 <= z < 4 indicative, z < 3 not separated. Also report H1 z per category for the chosen statistic (descriptive).
+
+(c) Lures ref-03, ref-05, ref-06, ref-08 must not trigger. On H1, each lure vs ref-01:
+    - fp8 statistic chosen in (a): trigger if z >= 4
+    - LoRA statistic chosen in (b): trigger if z >= 4, computed at the endpoint's own T_mle
+      (T_mle estimated on H0, untruncated grid) for the lure, and at 0.7 for ref-01
+    - unigram residual energy at the endpoint's own T_mle (H1 rows, sign-flip null): trigger if z >= 4
+    For reference the same three are reported for ref-04 and ref-07 (should trigger) and ref-02.

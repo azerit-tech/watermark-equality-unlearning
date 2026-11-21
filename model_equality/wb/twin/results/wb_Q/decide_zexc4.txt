@@ -1,0 +1,4 @@
+draw 0: MCC_model=0.811 wrong=7 variants=08(llr_fp8t) 09(llr_int8c) 11(exc) 12(exc) 13(exc) | 01-10:FP 02-10:FP 03-10:FP 04-10:FP 05-10:FP 06-10:FP 07-10:FP
+draw 1: MCC_model=0.811 wrong=7 variants=08(llr_fp8t) 09(llr_int8c) 11(exc) 12(exc) 13(exc) | 01-10:FP 02-10:FP 03-10:FP 04-10:FP 05-10:FP 06-10:FP 07-10:FP
+draw 2: MCC_model=0.656 wrong=15 variants=08(llr_fp8t) 11(exc) 12(exc) 13(exc) | 01-09:FP 01-10:FP 02-09:FP 02-10:FP 03-09:FP 03-10:FP 04-09:FP 04-10:FP 05-09:FP 05-10:FP 06-09:FP 06-10:FP 07-09:FP 07-10:FP 09-10:FP
+MCC_model mean=0.759 sd=0.090 min=0.656 max=0.811

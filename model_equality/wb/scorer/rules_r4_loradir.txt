@@ -1,0 +1,91 @@
+R4 PRE-REGISTERED RULES: directional test for a weak LoRA (loradir.py)
+Written 2026-11-21 19:40 CET, before any surrogate adapter is trained and before any directional
+statistic is computed on any endpoint. Nothing below was tuned on ref-09, ref-01 or the lures.
+
+Data: wb/in/ledger_snapshot_20261121T1940_s5.jsonl (copy of the local ledger at 19:40, 1642 ref- responses,
+read only). Model SmolLM2-360M-Instruct, float32, default chat template (default system prompt), login
+Quadro card 0, <= 10 GB. No API request.
+
+1. Surrogate direction (fit on the strong siblings only)
+   LoRA rank 8, alpha = rank, all linear projections (q,k,v,o,gate,up,down), dropout 0.05, AdamW,
+   12 epochs, cosine schedule, loss = cross-entropy at T = 0.7 on the response tokens (end token included
+   when the response stopped). Tied scales: ref-04 is modelled as B + 0.7 dW, ref-07 as B + 1.5 dW.
+   Budget parity: per strong endpoint only the 100 responses with the smallest sha1("train|" + id):
+   20 validation, 80 training. Candidates: learning rate 5e-4 and 1.5e-3. Kept: the (learning rate, epoch)
+   with the largest validation gain (mean over the two endpoints of the per-token log-likelihood gain over
+   the base at T = 0.7 on their validation rows). No other endpoint enters the fit or the selection.
+
+2. Scoring: every ref- endpoint and LOCAL (wb/ref_local/SmolLM2-360M-Instruct/from_ref-01_x2_T0.7_s0.jsonl,
+   334 base samples at T = 0.7 generated earlier by mescore.refgen). Directions: s0.3, s0.7, s1.5; nuisance
+   contexts nosys (template without system prompt), helpful ("You are a helpful assistant."), nova (the
+   twin's system prompt); T grid 0.6 0.65 0.7 0.75 0.8 0.9 1.0 1.1.
+
+3. Primary statistic
+   Target s0.3, nuisance = T only, T = the endpoint's own base-likelihood maximiser on the grid (same rows).
+   Rows = all responses whose probe category is not 'diag' (D*, E01_identity*). Reason fixed a priori: on
+   identity probes a hidden system prompt and the LoRA both erase the default identity (R3: lures reach
+   z ~ 2 there), so these probes cannot separate weights from context. Tokens flagged ALT_SEG dropped.
+   z_mart = D / sqrt(Var) (martingale null, no reference), z_emp = same sum, empirical row variance.
+   An endpoint is FLAGGED (weak-LoRA direction present) iff z_mart >= 4 and z_emp >= 4.
+
+4. Success criteria
+   a. ref-09 FLAGGED on all its rows.
+   b. Parity: random subsets of 100 responses of ref-09 (all categories, then the row filter), 2000 draws:
+      report median z_mart, median z_emp, P(flagged). Usable at parity iff P(flagged) >= 0.9.
+   c. Calibration: ref-01 and LOCAL have |z_mart| < 3.
+   d. Lures ref-03, ref-05, ref-06, ref-08 PASS iff not flagged, on all rows and with P(flagged) <= 0.01
+      at parity. Strict pass: min(z_mart, z_emp) < 3.
+   e. ref-02 (fp8) reported, expected not flagged. ref-04 and ref-07 reported on the rows NOT used for the
+      fit (71 each), expected flagged.
+   Rule usable for ep- iff a, b, c and d hold.
+
+5. Secondary, reported without decision: nuisance = T + the 3 contexts; fixed T = 0.7 without projection;
+   all categories; per category; H1 half (sha1(id) mod 2 = 1, as R2/R3); S1 (excess surprise at T = 0.7, the
+   existing statistic) on the same rows, one-sample and two-sample against ref-01; relative z against
+   ref-01 and LOCAL; profile-likelihood strength s_hat (expected 0.3 / 0.7 / 1.5 for ref-09 / 04 / 07).
+
+6. If a criterion fails it is reported as failed. Any variant chosen after seeing these results is
+   exploratory and has to be confirmed on new ref- responses.
+
+AMENDMENT 1, 2026-11-21 19:47 CET. Blind: only the training / validation log of the 5e-4 fit has been
+seen (ref-04 and ref-07 rows); no test endpoint has been scored, no directional statistic computed.
+ - Candidate learning rate 1.5e-3 dropped. The 5e-4 fit overfits from its second epoch (validation gain
+   0.064, 0.053, 0.038, -0.005, ...), so a larger rate cannot do better. Kept adapter: 5e-4 at its best
+   validation epoch, same criterion as section 1.
+ - Coordinator instruction (19:45): the distillation of the sibling LoRA is developed by another agent
+   (wb/scorer/sister.py). The surrogate here is frozen as it is and only provides the direction needed to
+   validate the statistic. No further tuning of the fit in R4.
+ - Added controls (free local generation with mescore.refgen, ref-01 prompt multiset, base weights, no API):
+   SIM_T1.0, SIM_T0.85 (temperature lures) and eight hidden-system-prompt lures at T = 0.7:
+   SIM_nova and SIM_helpful (their system prompts are also nuisance directions: in-library case),
+   SIM_teacher, SIM_coach, SIM_poet, SIM_advisor (twin personas), SIM_bank, SIM_pirate (out of library).
+   Criterion: no SIM endpoint FLAGGED on all rows; P(flagged) at parity <= 0.01 each; strict: min z < 3.
+
+AMENDMENT 2, 2026-11-21 19:57 CET. Blind (cluster unreachable since 19:50; still no test endpoint scored).
+ - Secondary statistics added, no decision attached:
+   loco / lopo: minimum of z_mart when one probe category / one probe is left out (the signal must not
+   rest on one kind of probe); ctx_profile: the primary statistic recomputed in the context, among
+   default / nosys / helpful / nova, that maximises the endpoint's base likelihood (context fitted under
+   H0, like T).
+ - loradir.py selftest (numpy, synthetic) run locally: H0 gives z = 0 (1) at any temperature with the
+   T projection; a context shift orthogonal to the direction is rejected; a context shift aligned with
+   the direction is not (expected limit, to be measured on ref-03, ref-05 and the SIM lures).
+
+R4-TWIN, written 2026-11-21 19:57 CET, before the twin responses exist.
+ Family q of the twin (Qwen2.5-0.5B-Instruct float32; adapters A and B of wb/twin/runs/login_q reused;
+ fresh generation with twin.run at plan scale 0.3, about 150 responses per endpoint, root
+ wb/out/r4/twin_q). Direction = the TRUE adapter A (oracle). This isolates the statistic (T invariance,
+ context robustness, power at strength 0.3) from the quality of the distillation (sister.py's job).
+ Statistic: section 3 unchanged (target s0.3, nuisance T, non-diag rows, FLAGGED iff z_mart >= 4 and
+ z_emp >= 4). Nuisance contexts for the secondary: nosys, helpful, bank (not the twin's hidden prompt).
+ Criteria: tq-10 (A at 0.3) FLAGGED on all rows and P(flagged) >= 0.9 at parity 100; tq-11 and tq-12
+ FLAGGED; tq-01 (plain) |z_mart| < 3; lures tq-02 (system prompt), tq-03 (persona), tq-04, tq-05
+ (watermarks), tq-06 (T = 1.0) not flagged, with P(flagged) <= 0.01 at parity.
+ Out of scope, reported only: tq-07 (greedy, deterministic: argmax-consistency branch, recognised by a
+ rank-1 rate >= 0.98), tq-08 and tq-09 (quantized), tq-13 (another LoRA, B at 1.0).
+
+AMENDMENT 3, 2026-11-21 20:04 CET. Blind (the first scoring run was killed before writing any output: the
+login cards are saturated by other users). Implementation change only: the full statistics are stored at
+T = 0.7 and at the endpoint's T_mle (grid maximiser of the base likelihood on the non-diag rows, computed
+in a first pass) instead of the whole grid. The primary statistic is unchanged for the full row set;
+on subsets (halves, parity draws, categories) T is the better of these two values.
