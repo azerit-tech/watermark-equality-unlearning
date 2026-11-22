@@ -1,0 +1,30 @@
+targets flip 700 of 3500 images (hard CE weight 0.5)
+tail images 700 (target p(label) < 0.02, lowest 20%) | w_tail 1.0 cap 11.0
+bank2 /workspace/runs/pg/bank_t2i_s3.npz split 0 conf >= 0.99: 21454 images, w 2.0 T 1,2
+3500 forget images to unlearn (0 of full classes), 0 held out (0 of full classes) | 28.44M trainable parameters (last:4) | 73 steps per epoch | device cuda
+targets /workspace/data/tg_cls10_f20_c11.pt: loss mean 2.2508 std 4.3759 acc 0.8000   <- what clean/alt/unseen should reach
+epoch | clean ce   std   acc    tkl | alt ce   std   acc    tkl | unseen   std   acc    tkl |   fsc fsc_u | ret kl agree | ret2kl agree |  noise | heldkl agree |   wdist
+ orig |   0.0003 0.002 1.000 3.1383 | 0.0036 0.078 0.999 3.0086 | 0.2152 0.749 0.957 2.8269 | 0.000 0.000 | 0.0000 1.000 | 0.0000 1.000 | 0.0000 |    nan   nan | 0.00000
+ init |   2.6856 5.135 0.784 0.5538 | 2.6511 4.995 0.771 0.5785 | 2.7754 4.957 0.729 0.6349 | 0.679 0.605 | 1.1271 0.433 | 1.0208 0.501 | 0.1152 |    nan   nan | 0.03443
+    1 |   2.6328 5.201 0.789 0.8176 | 2.5372 4.987 0.781 0.8115 | 2.6905 4.990 0.739 0.8447 | 0.618 0.551 | 0.8098 0.493 | 0.7233 0.557 | 0.0838 |    nan   nan | 0.03446
+    2 |   2.5611 5.064 0.789 0.7924 | 2.4606 4.843 0.780 0.7893 | 2.6269 4.863 0.738 0.8292 | 0.648 0.579 | 0.7765 0.502 | 0.6974 0.568 | 0.0739 |    nan   nan | 0.03496
+    3 |   2.5552 5.047 0.790 0.7917 | 2.4512 4.820 0.780 0.7884 | 2.6192 4.839 0.738 0.8290 | 0.652 0.583 | 0.7715 0.503 | 0.6930 0.570 | 0.0722 |    nan   nan | 0.03514
+ file |   2.5552 5.047 0.790 0.7917 | 2.4512 4.820 0.780 0.7884 | 2.6192 4.839 0.738 0.8290 | 0.652 0.583 | 0.7715 0.503 | 0.6930 0.570 | 0.0722 |    nan   nan | 0.03514
+Saved /workspace/runs/cls/b_s2/submission.pt (format checks passed; reloaded file differs from the trained model by 0.00e+00).
+per alteration type (forget images), trained: clean, alt | never trained: blur, rotate, crop, color
+    clean: ce 2.5552 std 5.047 acc 0.790 tkl 0.7917   | original: ce 0.0003 tkl 3.1383
+      alt: ce 2.4512 std 4.820 acc 0.780 tkl 0.7884   | original: ce 0.0036 tkl 3.0086
+     blur: ce 2.5722 std 5.081 acc 0.789 tkl 0.7814   | original: ce 0.0007 tkl 3.1170
+   rotate: ce 2.4089 std 4.777 acc 0.783 tkl 0.7963   | original: ce 0.0008 tkl 3.1406
+     crop: ce 2.4758 std 4.624 acc 0.733 tkl 0.8022   | original: ce 0.0877 tkl 2.6997
+    color: ce 3.0201 std 4.874 acc 0.647 tkl 0.9363   | original: ce 0.7714 tkl 2.3503
+weight distance per group: embed=0.0112 all=0.0351 b0=0.0290 b1=0.0276 b2=0.0300 b3=0.0326 b4=0.0321 b5=0.0319 b6=0.0340 b7=0.0213 b8=0.0410 b9=0.0423 b10=0.0440 b11=0.0469 norm=0.0028 head=0.0846
+retain bank (17370 images, first 2048 scored): kl 0.3016 agree 0.694
+ext held-out photos (1000), final: kl(orig||model) 0.3279 agree 0.661
+ext held-out photos (1000), init: kl(orig||model) 0.4714 agree 0.642
+targets vs final clean: top-1 agree 0.973 | on target-wrong images: model wrong 1.000, same wrong class 0.913 | on target-right images: model wrong 0.013 | tkl 0.7917
+targets vs final alter: top-1 agree 0.955 | on target-wrong images: model wrong 1.000, same wrong class 0.876 | on target-right images: model wrong 0.025 | tkl 0.7915
+targets vs init  clean: top-1 agree 0.954 | on target-wrong images: model wrong 1.000, same wrong class 0.850 | on target-right images: model wrong 0.020 | tkl 0.5538
+targets vs init  alter: top-1 agree 0.937 | on target-wrong images: model wrong 1.000, same wrong class 0.823 | on target-right images: model wrong 0.034 | tkl 0.5757
+targets vs orig  clean: top-1 agree 0.800 | on target-wrong images: model wrong 0.000, same wrong class 0.000 | on target-right images: model wrong 0.000 | tkl 3.1383
+targets vs orig  alter: top-1 agree 0.799 | on target-wrong images: model wrong 0.000, same wrong class 0.000 | on target-right images: model wrong 0.001 | tkl 3.0280

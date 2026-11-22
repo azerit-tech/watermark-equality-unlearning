@@ -1,0 +1,26 @@
+FINAL partition -- reference + ep-12.  Written Sunday 00:28 by the analyst.  Same file as S_G3213_plus_ep12.csv.
+sha256 d50c88f2fef95d28a6767dd8080caadc9adcebdcdbcc4d61b630e53c2ddf7a95
+Already sent once (Saturday 23:53, id 2007, public score 1.00).  It is sent AGAIN, with --force, so that it is the LAST
+submission of the team (decision of the coordinator, Sunday about 00:27).  After it: no more submission, unless a new fact.
+
+1. Regeneration command (repository root; all 33 labels are forced):
+   python3.12 -m model_equality.analysis decide --endpoints 'ep-*' --families model_equality/analysis/families_ep.csv --labels-only --force-labels model_equality/analysis/candidates/S_G3213_plus_ep12.labels.csv --out model_equality/analysis/candidates/NEXT.csv
+   Regeneration checked at 00:27: same sha.
+
+2. Content: 3 families of 11, 18 models.  One base group of 6 per family, every other endpoint alone.
+   llama3: ep-10 ep-16 ep-29 ep-31 (labelled lures) + ep-27 (top-k) + ep-13 (bare base)
+   qwen_A: ep-04 ep-23 ep-02 ep-33 (labelled lures) + ep-14 (top-k) + ep-12 (bare base)
+   qwen_B: ep-06 ep-08 ep-20 ep-30 (labelled lures) + ep-07 (top-k) + ep-32 (bare base)
+
+3. Evidence.  Reference S_G32_plus_ep13 (sha 0aa81ae93b90..., public 1.00, kept by the server): no public pair is wrong.
+   ep-32 and ep-13: confirmed by the leaderboard (+0.15 each).  ep-14, ep-27: white box, replicated on disjoint data.
+   ep-07, ep-02: white box, partial second proof.  ep-12: white box only (calibrated 'energy' rule), plus three
+   leaderboard tests: ep-25 eliminated (0.80), ep-12 and ep-01 unchanged (1.00, both outside the public set).
+   Analyst's probability that ep-12 is the bare base of qwen_A: 0.74 (ep-01 0.18, ep-17 0.05).
+   Rule of the coordinator: add the most probable candidate if its probability exceeds 0.50.
+
+4. Expected score on all pairs (mcc_from_counts of scoring/metrics.py, everything else right):
+   1.000 if ep-12 is the bare base, 0.862 if the bare base is another endpoint; reference alone 0.931.
+   Expectation at 0.74: 0.96 against 0.93 for the reference.  The public score cannot show the difference:
+   ep-12 has no public pair.  The gain exists only if a later submission at equal public score can count for
+   the final ranking (question pending with the organisers).

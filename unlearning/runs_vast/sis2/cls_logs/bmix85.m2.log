@@ -1,0 +1,5 @@
+t2i holdout 4252, conf >= 0.999: 1620
+/workspace/runs/cls/bmix85.pt                mean 2.352 std 4.512 (level 6.864, q90 10.89) | flip 0.215 ent2 2.306 | KL2 0.939 KL1 0.744 agree 0.870 | no
+/workspace/runs/cls/bmix85_s2/ckpt_ep01.pt   mean 2.603 std 5.139 (level 7.742, q90 12.49) | flip 0.212 ent2 1.381 | KL2 0.399 KL1 0.389 agree 0.933 | no
+/workspace/runs/cls/bmix85_s2/ckpt_ep02.pt   mean 2.545 std 5.028 (level 7.573, q90 12.20) | flip 0.211 ent2 1.466 | KL2 0.308 KL1 0.279 agree 0.949 | no
+/workspace/runs/cls/bmix85_s2/ckpt_ep03.pt   mean 2.536 std 5.004 (level 7.540, q90 12.12) | flip 0.211 ent2 1.464 | KL2 0.285 KL1 0.253 agree 0.954 | no

@@ -1,0 +1,7 @@
+OOF clean: single-model CE mean 2.460 std 2.595 acc 0.398   (leaderboard gold ~2.4-2.8 / 4.4-4.7) | 130-image classes 2.51/2.52/0.36 | others 2.44/2.63/0.42
+OOF alt: single-model CE mean 2.399 std 2.561 acc 0.406   (leaderboard gold ~2.4-2.8 / 4.4-4.7) | 130-image classes 2.43/2.49/0.37 | others 2.38/2.59/0.42
+runs agree on top-1: 0.576 | flip rate per run [0.608, 0.598, 0.599] | flipped in all runs 0.425 in any 0.770
+averaged target at T=2: mass on label 0.285 max prob 0.437 entropy 2.064
+vs sisters: OOF flips 0.579 sisters flip 0.310 both 0.190 (independent: 0.179) | same wrong class when both flip 0.341 | KL(sisters || OOF) at T=2 1.304
+saved /workspace/runs/cf/cf_probs_k7.pt and /workspace/runs/cf/cf_probs_k7.npz (keys ['probs', 'probs_T2', 'logits_T2match', 'labels', 'probs_x2', 'probs_mix', 'probs_mix_T2', 'logits_mix_T2match'])
+rc 0

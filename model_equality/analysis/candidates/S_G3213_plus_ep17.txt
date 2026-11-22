@@ -1,4 +1,4 @@
-S_G3213_plus_ep17.csv -- one-endpoint leaderboard test: S_G32_plus_ep13 + ep-17.  Written Saturday 23:22 by the analyst.
+S_G3213_plus_ep17.csv -- one-endpoint leaderboard test: S_G32_plus_ep13 + ep-17.  Written Saturday 00:27 by the analyst.
 sha256 23a5887cd69300137778be983aeb6ba9695c93a7d2fbe01e1e2bbf2a042fffb6
 Evidence tag of the moved endpoint: EXPLO.  After this test it is removed from the list (lower score) or stays a candidate (equal score).
 To use it: the analyst copies S_G3213_plus_ep17.csv / .txt over NEXT.csv / NEXT.txt and announces the sha.
@@ -9,12 +9,14 @@ To use it: the analyst copies S_G3213_plus_ep17.csv / .txt over NEXT.csv / NEXT.
 
 2. Reference: S_G32_plus_ep13.csv (sha 0aa81ae93b90..., public score 1.00).  One endpoint moved: ep-17 (qwen_A) joins
    the base group {ep-02, ep-04, ep-14, ep-23, ep-33} as "bare base model".  Nothing else changes.
-   Evidence: one of the four base-like endpoints of qwen_A (ep-01, ep-12, ep-17, ep-25).  State at 23:25: ep-25 is OUT (reference + ep-25 scored 0.80 against 1.00 at 23:21).  White-box calibration of 23:16 (rule written before the threshold was computed, wb/analysis/rules_calib_energy_qwenA.txt): the 'energy' of ep-01 (2.25) and ep-17 (2.78) is not compatible with a bare model (threshold 1.39), that of ep-12 (-0.22) is.  None of the four shows the fp8 signal, and the sister-direction check R6 is not usable in qwen_A.  Analyst's probabilities of being the bare base: ep-12 0.72, ep-01 0.17, ep-17 0.10.  This endpoint: T_mle 0.68 / 0.70, excess -1.9 / +0.1, fp8 -1.2 / -0.6 (cumulative snapshot / D2); 'Qwen' in all identity answers.
-   Analyst's probability that ep-17 serves the base model: 0.10.
+   Evidence: one of the four base-like endpoints of qwen_A (ep-01, ep-12, ep-17, ep-25).  State at 00:28: ep-25 is OUT (reference + ep-25 scored 0.80 against 1.00 at 23:21); ep-12 and ep-01 STAY (reference + ep-12 scored 1.00 at 23:53, reference + ep-01 scored 1.00 at 00:26: both are outside the public set).  White-box calibration of 23:16 (rule written before the threshold was computed, wb/analysis/rules_calib_energy_qwenA.txt): the 'energy' of ep-01 (2.25) and ep-17 (2.78) is not compatible with a bare model (threshold 1.39), that of ep-12 (-0.22) is.  None of the four shows the fp8 signal, and the sister-direction check R6 is not usable in qwen_A.  Analyst's probabilities of being the bare base: ep-12 0.74, ep-01 0.18, ep-17 0.05.  This endpoint: T_mle 0.68 / 0.70, excess -1.9 / +0.1, fp8 -1.2 / -0.6 (cumulative snapshot / D2); 'Qwen' in all identity answers.
+   Analyst's probability that ep-17 serves the base model: 0.05.
    ELIMINATION TEST (agreed by the coordinator at 22:55).  The public score is at its maximum (1.00): no public pair is wrong
    any more, so this file cannot rise.  Reading: BELOW 1.00 = ep-17 is NOT the bare base, it leaves the list;
-   EQUAL = ep-17 is the bare base, or it is wrong but none of its 5 pairs is public (a wrong candidate stays
-   invisible about 4 times in 10 if the public part is drawn by endpoints, so an equal score raises its probability).
+   EQUAL = ep-17 is outside the public set of endpoints, nothing more.  (Journal 23:32: the public part is drawn by
+   endpoints, about 18 public; the true bare base of qwen_A is necessarily outside it, otherwise the reference
+   would not score 1.00.  So an equal score never confirms ep-17: it only keeps it in the list; a wrong candidate
+   stays invisible 4 to 7 times in 10.)
    At equal score the server keeps the earlier file (S_G32_plus_ep13); this test does not replace it.  The LAST submission of
    the night must be the final partition chosen by the analyst.
 

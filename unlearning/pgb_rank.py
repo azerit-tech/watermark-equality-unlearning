@@ -9,6 +9,7 @@ GO rule (plan): Spearman(final, public) >= --go (0.7) -> the bench may pick mode
 
   python pgb_rank.py --submissions submissions.jsonl --orig ../model.pt --forget ../forget_images.npz \
       --retain runs/pg/bank_t2i.npz --refs runs/pg/models/pg_2.pt runs/pg/models/pg_3.pt --csv runs/pgb/rank.csv
+  (sisters as reference instead of / next to the pseudo-golds: --sis runs/sisters/sis_probs.pt)
 Extra models (not submitted) can be scored in the same run with --extra; they are listed but not in the correlation.
 """
 import argparse
@@ -91,7 +92,8 @@ def main():
     nz = [i for i, r in enumerate(sub_rows) if r["public"] > 0]
     corr = {}
     print("\nSpearman with the public score (all | public > 0):")
-    for k in KEYS + BASELINES:
+    sis_keys = tuple("sis_" + k for k in ("final", "final_held", "forget", "mean_std", "pred") if "sis_" + k in sub_rows[0])
+    for k in KEYS + sis_keys + BASELINES:
         v = [r[k] for r in sub_rows]
         corr[k] = (spearman(v, pub), spearman([v[i] for i in nz], [pub[i] for i in nz]))
         print(f"  {k:14s} {corr[k][0]:+.3f} | {corr[k][1]:+.3f}" + ("   (baseline)" if k in BASELINES else ""))

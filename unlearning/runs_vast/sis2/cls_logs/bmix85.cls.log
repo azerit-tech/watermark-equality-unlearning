@@ -1,0 +1,4 @@
+/workspace/runs/cls/bmix85.pt | clean CE 2.35/4.51 acc 0.785 ms 0.949 pred_cls 0.688 | alt CE 2.30/4.34 acc 0.769 ms 0.948 pred_cls 0.672
+/workspace/runs/cls/bmix85_s2/ckpt_ep01.pt | clean CE 2.60/5.14 acc 0.788 ms 0.894 pred_cls 0.563 | alt CE 2.48/4.88 acc 0.775 ms 0.915 pred_cls 0.556
+/workspace/runs/cls/bmix85_s2/ckpt_ep02.pt | clean CE 2.55/5.03 acc 0.789 ms 0.903 pred_cls 0.575 | alt CE 2.42/4.76 acc 0.775 ms 0.924 pred_cls 0.567
+/workspace/runs/cls/bmix85_s2/ckpt_ep03.pt | clean CE 2.54/5.00 acc 0.789 ms 0.905 pred_cls 0.577 | alt CE 2.41/4.73 acc 0.776 ms 0.926 pred_cls 0.569

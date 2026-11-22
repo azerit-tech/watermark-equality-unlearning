@@ -1,0 +1,4 @@
+/workspace/runs/cls/bq_s1/ckpt_ep02.pt | clean CE 2.53/4.60 acc 0.772 ms 0.961 pred_cls 0.606 | alt CE 2.53/4.52 acc 0.758 ms 0.973 pred_cls 0.584
+/workspace/runs/cls/bq_s2/ckpt_ep01.pt | clean CE 2.20/4.29 acc 0.789 ms 0.926 pred_cls 0.616 | alt CE 2.17/4.19 acc 0.775 ms 0.910 pred_cls 0.598
+/workspace/runs/cls/bq_s2/ckpt_ep02.pt | clean CE 2.29/4.47 acc 0.789 ms 0.947 pred_cls 0.603 | alt CE 2.27/4.37 acc 0.775 ms 0.948 pred_cls 0.585
+/workspace/runs/cls/bq_s2/ckpt_ep03.pt | clean CE 2.28/4.43 acc 0.788 ms 0.950 pred_cls 0.604 | alt CE 2.25/4.32 acc 0.774 ms 0.939 pred_cls 0.586

@@ -1,0 +1,18 @@
+2log G2 vs stored logits_T2match max diff 9.484327918827297
+original: loss mean 0.0003 std 0.0024 | median 0.0000 p90 0.000 p99 0.007 max 0.08 | error rate 0.0000 | entropy(T=2) 0.0970 | mean max prob 0.9997
+targets: external probabilities from /workspace/data/sis_T2match.pt:G2
+ targets: loss mean 1.1878 std 2.2163 | median 0.1879 p90 3.822 p99 10.921 max 22.16 | error rate 0.3037 | entropy(T=2) 1.3997 | mean max prob 0.8075
+ targets: runner-up's share of the wrong-class mass 0.746 (over the 64.7% of cases with p_y < 0.95)
+mean KL(target || original) at T=2: 2.6195   (what the original model 'scores' against these targets)
+Saved /workspace/runs/sis3/sT2m_check.pt
+original: loss mean 0.0003 std 0.0024 | median 0.0000 p90 0.000 p99 0.007 max 0.08 | error rate 0.0000 | entropy(T=2) 0.0970 | mean max prob 0.9997
+targets: external probabilities from /workspace/data/sis_T2match.pt:G25
+ targets: loss mean 1.0868 std 1.8824 | median 0.2254 p90 3.403 p99 8.994 max 17.96 | error rate 0.3034 | entropy(T=2) 1.8618 | mean max prob 0.7896
+ targets: runner-up's share of the wrong-class mass 0.701 (over the 68.0% of cases with p_y < 0.95)
+mean KL(target || original) at T=2: 2.8132   (what the original model 'scores' against these targets)
+Saved /workspace/data/sis_sT25.pt
+CONTROL T=2 view of 2logG2 target vs probs_T2: max abs diff 6.985664367675781e-05
+CONTROL KL_T2(sM || 2logG2) 0.0442  KL_T2(2logG2 || sM) 0.0398  KL_T2(2logG25 || sM) 0.0646  KL_T2(2logG25 || 2logG2) 0.0542
+sM T1 level 1.171/2.012 ent 0.781 flip 0.310 | T2 level 1.173/1.182 ent 1.630 flip 0.310
+2logG2 T1 level 1.188/2.216 ent 0.539 flip 0.304 | T2 level 1.061/1.252 ent 1.400 flip 0.304
+2logG25 T1 level 1.087/1.882 ent 0.630 flip 0.303 | T2 level 1.143/1.125 ent 1.862 flip 0.303
