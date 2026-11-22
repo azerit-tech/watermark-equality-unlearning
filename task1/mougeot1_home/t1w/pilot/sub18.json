@@ -1,0 +1,90 @@
+{
+ "_doc": "\u00e9tage sub18 = sub16 + informed_trustmark, holes_pixelseal, informed_pixelseal + 4 rectangles TM test tmbox5 (v3)",
+ "out": "~/t1w/pilot/sub18/sub18.pt",
+ "ref_sub": "t1/out/mgr/submissions/sub11_v6.pt",
+ "gates": {
+  "stegastamp": 0.7979,
+  "trustmark": 0.7294,
+  "global": 0.7348
+ },
+ "methods": {
+  "stegastamp": {
+   "fold0": [
+    "t1/out/stega/best/fold0_probs128.npz"
+   ],
+   "fold0_tta": [
+    "t1/out/stegatta/stegastamp/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/stega/best/test_probs128.npz",
+    "t1/out/jacques/sg_all_s1/test_probs128.npz"
+   ],
+   "test_tta": [
+    "t1/out/stegatta/stegastamp/test_probs128.npz",
+    "~/t1w/integ/sgtta/sg_all_s1/test_probs128.npz"
+   ],
+   "boxes_train": [
+    "t1/out/stegaedge/stegastamp_train_boxes.json"
+   ],
+   "boxes_test": [
+    "t1/out/stegaedge/stegastamp_test_boxes.json"
+   ],
+   "conf": 0.9
+  },
+  "trustmark": {
+   "fold0": [
+    "t1/out/mgr/ens/trustmark/fold0_probs128.npz",
+    "t1/out/jacques3/informed_trustmark/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/tiles2/trustmark/test_probs128.npz",
+    "t1/out/devel/trustmark/fold1/pred/test_probs128.npz",
+    "t1/out/devel/trustmark/fold2/pred/test_probs128.npz",
+    "t1/out/devel/trustmark/fold3/pred/test_probs128.npz",
+    "t1/out/devel/trustmark/fold4/pred/test_probs128.npz",
+    "t1/out/jacques/tiles_trustmark_s1/test_probs128.npz",
+    "t1/out/jacques3/informed_trustmark/test_probs128.npz"
+   ],
+   "boxes_train": [
+    "t1/out/tmedge2/trustmark_train_boxes.json"
+   ],
+   "boxes_test": [
+    "t1/out/tmedge2/trustmark_test_boxes.json",
+    {
+     "file": "t1/out/tmbox5/trustmark_test_boxes.json",
+     "names": [
+      "73bee07e304f",
+      "47512c194859",
+      "a05ea40a66a5",
+      "75fe6ce73db9"
+     ]
+    }
+   ],
+   "conf": 0.79
+  },
+  "pixelseal": {
+   "fold0": [
+    "t1/out/mgr/ens/pixelseal/fold0_probs128.npz",
+    "t1/out/jacques2/holes_pixelseal/fold0_probs128.npz",
+    "t1/out/jacques3/informed_pixelseal/fold0_probs128.npz"
+   ],
+   "test": [
+    "t1/out/tiles3/pixelseal/test_probs128.npz",
+    "t1/out/devel/pixelseal/fold1/pred/test_probs128.npz",
+    "t1/out/devel/pixelseal/fold2/pred/test_probs128.npz",
+    "t1/out/devel/pixelseal/fold3/pred/test_probs128.npz",
+    "t1/out/jacques/ps_oof/fold4/pred/test_probs128.npz",
+    "t1/out/jacques/tiles_pixelseal_s1/test_probs128.npz",
+    "t1/out/jacques2/holes_pixelseal/test_probs128.npz",
+    "t1/out/jacques3/informed_pixelseal/test_probs128.npz"
+   ],
+   "boxes_train": [
+    "t1/out/psbox/pixelseal_train_boxes.json"
+   ],
+   "boxes_test": [
+    "t1/out/psbox/pixelseal_test_boxes.json"
+   ],
+   "conf": 0.9
+  }
+ }
+}

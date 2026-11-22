@@ -1,0 +1,1 @@
+{"method": "trustmark", "fold0": ["t1/out/jacques3/informed_trustmark/fold0_probs128.npz"], "test": ["t1/out/jacques3/informed_trustmark/test_probs128.npz"]}

@@ -7,14 +7,24 @@ no best.pt, EMA of the last state kept) with three additions:
   --fresh_full N  (with --hole_src) generate N NEW full-image embeddings in memory at the start of every run/chunk (covers =
                   partial-regime images of folds 1-4, t1/synth/gen.py augment + random message + wm.embed on the device,
                   capped at --fresh_max_s seconds) and add them to the v0 "full" pool: no file written
+  --div_covers    (with --fresh_full) diversified covers: + folds 1-4 FULL-regime images of the other methods, + TEST images of
+                  the method invisible to M (TM for PS, PS for TM, all) and SG test images in the partial regime
+                  (fullacc < 0.755); these extra covers have old = zeros; fold 0 NEVER (asserted); test cnames = "test/<name>"
+  --v0_keep N     keep only N random items of the v0 "full" pool (so the fresh ones are ~2/3 of it)
+  --ext_covers GLOB / --ext_frac F (with --fresh_full) EXTERNAL covers (old = zeros, names ext*): npz batches with keys
+                  x (N,512,512,3) uint8 and names; each fresh embedding takes an external cover with probability F,
+                  otherwise an internal one (partial folds 1-4 [+ div covers]), uniformly within each group
+  env INFORMED_RGB=1: use t1/jacques5/informed_rgb.py (per-channel RGB aux, NAUX=10) instead of jacques3/informed.py
 No log.jsonl (file quota): everything goes to stdout. Run from TASK:
   python t1/jacques5/train5.py --method pixelseal --init t1/out/tiles3/pixelseal/last.pt --minutes 40 --out <dir>"""
 from __future__ import annotations
 
 import argparse
 import copy
+import glob
 import json
 import math
+import os
 import sys
 import time
 from collections import defaultdict
@@ -26,6 +36,9 @@ from torch.utils.data import DataLoader
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "jacques3"))  # informed.py (read-only reuse)
+if os.environ.get("INFORMED_RGB") == "1":
+    import informed_rgb  # noqa: E402  (t1/jacques5, found through sys.path[0] = this script's dir)
+    sys.modules["informed"] = informed_rgb
 from informed import Embedder, InformedTileSeg, expand_state  # noqa: E402  (sets sys.path)
 from train_tiles import crop_tiles  # noqa: E402  (t1/holes/train_tiles.py)
 from train_tm import MsgReal, MsgSynth, loss_fn, to128  # noqa: E402
@@ -36,22 +49,94 @@ from shapes import names_in_folds  # noqa: E402
 from wmloc.watermarks import load_watermark  # noqa: E402
 
 
-def fresh_full(method, n, max_s, seed, dev):
-    """In-memory equivalent of one t1/synth/gen.py 'full' shard (same augment, covers of folds 1-4 only)."""
+INVISIBLE = {"pixelseal": "trustmark", "trustmark": "pixelseal"}
+SG_PARTIAL_ACC = 0.755
+
+
+def div_cover_names(method, smoke=False):
+    """Extra covers (old = zeros): folds 1-4 full-regime images of the other methods + test images of INVISIBLE[method]
+    + SG test images with fullacc < 0.755. Returns [(cname, name, split)]; fold 0 never (asserted)."""
+    from shapes import meta
+    f0 = set(names_in_folds([0]))
+    tr = [n for n in names_in_folds((1, 2, 3, 4), regime="full") if meta()[n]["method"] != method]
+    tmeta = json.loads((HERE.parents[1] / "release" / "test" / "metadata.json").read_text())
+    te_inv = sorted(m["image_name"] for m in tmeta if m["method"] == INVISIBLE[method])
+    z = np.load(HERE.parents[1] / "t1" / "out" / "signal" / "fullacc_stegastamp_test.npz")
+    acc = dict(zip([str(n) for n in z["names"]], z["acc"].tolist()))
+    te_sg = sorted(m["image_name"] for m in tmeta if m["method"] == "stegastamp" and acc[m["image_name"]] < SG_PARTIAL_ACC)
+    assert not (set(tr) & f0), "fold-0 image among the diversified train covers"
+    groups = {"train_full_other": [(n, n, "train") for n in tr], "test_" + INVISIBLE[method]: [("test/" + n, n, "test") for n in te_inv],
+              "test_sg_partial": [("test/" + n, n, "test") for n in te_sg]}
+    if smoke:
+        groups = {k: v[:2] for k, v in groups.items()}
+    print("div_covers: " + " ".join(f"{k}={len(v)}" for k, v in groups.items()), flush=True)
+    return [x for v in groups.values() for x in v]
+
+
+def load_ext_covers(pattern, smoke=False):
+    files = sorted(glob.glob(os.path.expanduser(pattern)))
+    assert files, f"no external cover batch matches {pattern}"
+    if smoke:
+        files = files[:1]
+    imgs, names = [], []
+    for f in files:
+        z = np.load(f); x = z["x"]; nm = [str(v) for v in z["names"]]
+        assert x.ndim == 4 and x.shape[1:] == (512, 512, 3) and x.dtype == np.uint8 and len(nm) == len(x), (f, x.shape)
+        imgs += list(x); names += nm
+    if smoke:
+        imgs, names = imgs[:2], names[:2]
+    assert all(n.startswith("ext") for n in names), "external cover names must start with ext"
+    return imgs, names, files
+
+
+def fresh_full(method, n, max_s, seed, dev, div=False, smoke=False, ext=None, ext_frac=0.0):
+    """In-memory equivalent of one t1/synth/gen.py 'full' shard (same augment, covers of folds 1-4 only;
+    with div=True also the diversified covers of div_cover_names)."""
     from gen import augment, diff_stats, load_covers  # t1/synth/gen.py (on sys.path via informed.py)
+    from shapes import read_img
     t0 = time.time(); rng = np.random.default_rng(seed)
-    names, covers, olds = load_covers((1, 2, 3, 4)); wm = load_watermark(method, device=dev)
+    names, covers, olds = load_covers((1, 2, 3, 4))
+    if smoke:
+        names, covers, olds = names[:2], covers[:2], olds[:2]
+    n_base = len(names)
+    if div:
+        bad = 0
+        for cn, nm, split in div_cover_names(method, smoke):
+            im = read_img(nm, split)
+            if im.shape != covers[0].shape:
+                bad += 1; continue
+            names.append(cn); covers.append(im); olds.append(np.zeros(im.shape[:2], np.uint8))
+        print(f"div_covers: {len(names) - n_base} loaded ({bad} skipped: size != {covers[0].shape}) in {time.time() - t0:.0f}s", flush=True)
+        t0 = time.time()   # --fresh_max_s caps the embedding loop only
+    n_int = len(names)
+    if ext:
+        t1 = time.time(); eimgs, enames, efiles = load_ext_covers(ext, smoke)
+        names += enames; covers += eimgs; z0 = np.zeros(covers[0].shape[:2], np.uint8); olds += [z0] * len(enames)
+        print(f"ext_covers: {len(enames)} loaded from {len(efiles)} batch(es) {[Path(f).name for f in efiles]} in "
+              f"{time.time() - t1:.0f}s, ext_frac={ext_frac}", flush=True)
+        t0 = time.time()
+    f0 = set(names_in_folds([0]))
+    assert not (set(names) & f0), "fold-0 cover in fresh_full"   # test covers are "test/<name>", ext covers "ext*": accepted
+    wm = load_watermark(method, device=dev)
     A = {k: [] for k in ("C", "Cw", "old", "msg", "stats", "cover", "cname")}
     for _ in range(n):
         if time.time() - t0 > max_s:
             break
-        ci = int(rng.integers(len(covers))); C, old = augment(covers[ci], olds[ci], rng)
+        if ext and rng.random() < ext_frac:
+            ci = n_int + int(rng.integers(len(covers) - n_int))
+        else:
+            ci = int(rng.integers(n_int))
+        C, old = augment(covers[ci], olds[ci], rng)
         m = rng.integers(0, 2, wm.nbits).astype(np.uint8); Cw = wm.embed(C, m)
         A["C"].append(C); A["Cw"].append(Cw); A["stats"].append(diff_stats(Cw, C)); A["old"].append(np.packbits(old))
         A["msg"].append(m); A["cover"].append(ci); A["cname"].append(names[ci])
     del wm
     k = len(A["msg"]); A = {key: np.asarray(v) for key, v in A.items()}
-    print(f"fresh_full: {k} new embeddings from {len(covers)} covers (folds 1-4) in {time.time() - t0:.0f}s, seed {seed}", flush=True)
+    nd = int(((A["cover"] >= n_base) & (A["cover"] < n_int)).sum()) if k else 0
+    ne = int((A["cover"] >= n_int).sum()) if k else 0
+    print(f"fresh_full: {k} new embeddings from {len(covers)} covers ({n_base} partial folds 1-4 + {n_int - n_base} "
+          f"diversified + {len(covers) - n_int} external; {nd} embeddings on diversified covers, {ne} on external) "
+          f"in {time.time() - t0:.0f}s, seed {seed}", flush=True)
     return [(A, i) for i in range(k)]
 
 
@@ -87,6 +172,10 @@ def main():
     ap.add_argument("--hole_src", default="")
     ap.add_argument("--fresh_full", type=int, default=0)
     ap.add_argument("--fresh_max_s", type=float, default=240)
+    ap.add_argument("--div_covers", action="store_true")
+    ap.add_argument("--ext_covers", default="", help="glob of external cover npz batches (x, names)")
+    ap.add_argument("--ext_frac", type=float, default=0.0)
+    ap.add_argument("--v0_keep", type=int, default=0, help="keep N random v0 full items (0 = all)")
     ap.add_argument("--cont", default="", help="informed last.pt to continue (new schedule)")
     a = ap.parse_args()
     out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -107,8 +196,23 @@ def main():
     if a.hole_src:   # jacques2 recipe (t1/holes): new hole sampler + real hole shapes of folds 1-4
         assert a.val_fold == 0, "holes_dataset shape library = folds 1-4"
         synth = holes_dataset.MsgHoleSynth(a.synth, a.method, mix=a.mix, hole_src=a.hole_src) if a.p_real < 1 else None
+        if a.v0_keep and synth is not None and a.v0_keep < len(synth.full):
+            keep = np.random.default_rng([seed, 7]).choice(len(synth.full), a.v0_keep, replace=False)
+            n0 = len(synth.full); synth.full = [synth.full[i] for i in sorted(keep)]
+            print(f"v0_keep: {len(synth.full)} / {n0} v0 full items kept", flush=True)
         if a.fresh_full and synth is not None:
-            synth.full += fresh_full(a.method, a.fresh_full, a.fresh_max_s, [seed, int(time.time())], dev)
+            synth.full += fresh_full(a.method, a.fresh_full, a.fresh_max_s, [seed, int(time.time())], dev,
+                                     div=a.div_covers, smoke=a.smoke, ext=a.ext_covers, ext_frac=a.ext_frac)
+        if synth is not None:   # anti-leak: no fold-0 cover anywhere in the synthetic pools (test covers = "test/<name>")
+            f0 = set(names_in_folds([0])); cn = set()
+            for items in (synth.full, synth.rect, synth.tbbox):
+                for arr in {id(x): x for x, _ in items}.values():
+                    if "cname" in arr:
+                        cn.update(str(v) for v in arr["cname"])
+            assert not (cn & f0), "fold-0 cover in the synthetic data"
+            print(f"anti-leak OK: {len(cn)} cover names checked, {sum(c.startswith('test/') for c in cn)} test covers, "
+                  f"{sum(c.startswith('ext') for c in cn)} external covers, "
+                  f"0 of fold 0; full pool = {len(synth.full)}", flush=True)
         ds = holes_dataset.MixDS(synth, real, a.p_real if synth else 1.0, length=10 ** 8)
     else:
         synth = MsgSynth(a.synth, a.method, mix=a.mix) if a.p_real < 1 else None
@@ -153,11 +257,24 @@ def main():
     t_start = time.time(); budget = a.minutes * 60; t0 = time.time() - elapsed0; t_save = time.time()
     run_loss = defaultdict(float); nl = 0; tl = time.time(); nstep = 0
 
-    def save():
-        torch.save({"model": model.state_dict(), "ema": ema.state_dict(), "opt": opt.state_dict(), "it": it, "it_unf": it_unf,
-                    "elapsed": time.time() - t0, "args": vars(a), "base_args": ba, "informed": True,
-                    "it_cont": it_cont}, out / "last.pt.tmp")
-        (out / "last.pt.tmp").replace(out / "last.pt")
+    def save(final=False):   # retries: the project-wide scratch inode quota (4.4M) is sometimes full
+        for k in range(6 if final else 1):
+            try:
+                torch.save({"model": model.state_dict(), "ema": ema.state_dict(), "opt": opt.state_dict(), "it": it, "it_unf": it_unf,
+                            "elapsed": time.time() - t0, "args": vars(a), "base_args": ba, "informed": True,
+                            "it_cont": it_cont}, out / "last.pt.tmp")
+                (out / "last.pt.tmp").replace(out / "last.pt")
+                return
+            except (RuntimeError, OSError) as e:
+                print(f"save failed ({e}); " + ("retry in 30 s" if final else "next periodic save will retry"), flush=True)
+                try:
+                    (out / "last.pt.tmp").unlink()
+                except OSError:
+                    pass
+                if final:
+                    time.sleep(30)
+        if final:
+            raise RuntimeError("final save failed 6 times")
 
     model.train()
     for x, lab, ign, typ, msg in dl:
@@ -202,7 +319,7 @@ def main():
             run_loss.clear(); nl = 0; tl = time.time()
         if time.time() - t_save >= a.save_min * 60:
             save(); t_save = time.time()
-    save()
+    save(final=True)
     print(f"done it={it} elapsed_this_schedule={(time.time() - t0) / 60:.2f} min (budget {a.minutes}) saved last.pt", flush=True)
 
 

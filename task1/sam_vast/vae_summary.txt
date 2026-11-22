@@ -1,0 +1,33 @@
+('flux1', 'nat') plancher propre (crop propre) moy 1.285 min 0.614 | crop mixte: propre 0.927 vs filigrané 1.343 | n=8
+('flux1', 'x2_area') plancher propre (crop propre) moy 0.484 min 0.329 | crop mixte: propre 0.433 vs filigrané 0.525 | n=8
+('flux1', 'x2_bilin') plancher propre (crop propre) moy 0.507 min 0.338 | crop mixte: propre 0.451 vs filigrané 0.551 | n=8
+('flux1', 'x2_bicub') plancher propre (crop propre) moy 0.481 min 0.328 | crop mixte: propre 0.432 vs filigrané 0.521 | n=8
+('flux1', 'x2_lanczos') plancher propre (crop propre) moy 0.480 min 0.326 | crop mixte: propre 0.430 vs filigrané 0.519 | n=8
+('sd35', 'x2_area') plancher propre (crop propre) moy 0.563 min 0.374 | crop mixte: propre 0.494 vs filigrané 0.616 | n=8
+('sd35', 'x2_bilin') plancher propre (crop propre) moy 0.562 min 0.374 | crop mixte: propre 0.496 vs filigrané 0.614 | n=8
+('sd35', 'x2_bicub') plancher propre (crop propre) moy 0.555 min 0.371 | crop mixte: propre 0.489 vs filigrané 0.607 | n=8
+('sd35', 'x2_lanczos') plancher propre (crop propre) moy 0.555 min 0.371 | crop mixte: propre 0.488 vs filigrané 0.607 | n=8
+flux1 nat        0adc01a30731 pixel trans clean propre 2.257 filig nan exact 0.32
+flux1 x2_lanczos 0adc01a30731 pixel trans clean propre 0.631 filig nan exact 0.65
+flux1 nat        0adc01a30731 pixel trans mix   propre 0.659 filig 0.647 exact 0.58
+flux1 x2_lanczos 0adc01a30731 pixel trans mix   propre 0.359 filig 0.348 exact 0.84
+flux1 nat        02eb1c264446 pixel hole clean propre 1.019 filig 0.976 exact 0.46
+flux1 x2_lanczos 02eb1c264446 pixel hole clean propre 0.500 filig 0.458 exact 0.71
+flux1 nat        02eb1c264446 pixel hole mix   propre 1.241 filig 1.354 exact 0.33
+flux1 x2_lanczos 02eb1c264446 pixel hole mix   propre 0.591 filig 0.616 exact 0.61
+flux1 nat        01117709f538 trust trans clean propre 1.251 filig nan exact 0.48
+flux1 x2_lanczos 01117709f538 trust trans clean propre 0.461 filig nan exact 0.77
+flux1 nat        01117709f538 trust trans mix   propre 1.192 filig 2.457 exact 0.49
+flux1 x2_lanczos 01117709f538 trust trans mix   propre 0.444 filig 0.715 exact 0.78
+flux1 nat        01a775d8e589 trust hole clean propre 0.614 filig 0.911 exact 0.63
+flux1 x2_lanczos 01a775d8e589 trust hole clean propre 0.326 filig 0.397 exact 0.88
+flux1 nat        01a775d8e589 trust hole mix   propre 0.614 filig 0.911 exact 0.63
+flux1 x2_lanczos 01a775d8e589 trust hole mix   propre 0.326 filig 0.397 exact 0.88
+sd35 x2_lanczos 0adc01a30731 pixel trans clean propre 0.755 filig nan exact 0.59
+sd35 x2_lanczos 0adc01a30731 pixel trans mix   propre 0.385 filig 0.384 exact 0.81
+sd35 x2_lanczos 02eb1c264446 pixel hole clean propre 0.568 filig 0.508 exact 0.65
+sd35 x2_lanczos 02eb1c264446 pixel hole mix   propre 0.689 filig 0.717 exact 0.54
+sd35 x2_lanczos 01117709f538 trust trans clean propre 0.527 filig nan exact 0.72
+sd35 x2_lanczos 01117709f538 trust trans mix   propre 0.507 filig 0.860 exact 0.73
+sd35 x2_lanczos 01a775d8e589 trust hole clean propre 0.371 filig 0.467 exact 0.83
+sd35 x2_lanczos 01a775d8e589 trust hole mix   propre 0.371 filig 0.467 exact 0.83
