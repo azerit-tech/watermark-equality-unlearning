@@ -966,7 +966,7 @@ LB individuelle. Aucun test à un seul endpoint n'a encore de résultat.
   Règle de lecture, écrite avant le score : moins de 1,00 = ep-12 n'est pas le nu, il sort ; 1,00 = il reste,
   et sa probabilité monte à 0,85 environ (un candidat faux reste invisible environ 4 fois sur 10). Dans les deux
   cas, ep-01 puis ep-17 sont testés ensuite.
-  Score obtenu : à compléter.
+  Score obtenu : 1,00 (id 2007, 23 h 53 57), égal à la référence ; le serveur garde la référence. Lecture corrigée à 23 h 32 : ep-12 est hors de l'ensemble public, il reste candidat ; sa probabilité passe à 0,80 environ (0,75 à 0,85).
 
 ### Table des preuves — état à 23 h 25
 - LB+ : les 12 leurres de NEXT2 (collectivement) ; ep-32 ; ep-13. LB- : ep-25 (ajouté seul, 1,00 → 0,80).
@@ -995,3 +995,80 @@ Après les trois tests (a priori boîte blanche ep-12 0,72, ep-01 0,17, ep-17 0,
 Surapprentissage, à retenir : le 1,00 public ne valide que les paires entre les 18 endpoints publics environ. Les groupements d'ep-07, ep-14, ep-27, du nu de qwen_A et des leurres non publics ne reposent que sur la boîte blanche. Le score privé attendu reste 0,90 environ avec la référence, sans garantie venue du classement.
 
 Limite : l'outil strategy suppose l'arrondi au plus proche. À 1,00 il ne pilote plus rien ; je ne le modifie pas sans demande.
+
+### 23 h 58 — score lu : « référence + ep-12 » = 1,00 ; candidat suivant : « référence + ep-01 » pour 00 h 26
+
+- Score : 1,00 (id 2007), égal à la référence. Règle de 23 h 32 : ep-12 n'est pas public, il reste candidat. Il n'est pas confirmé : aucun test ne peut le faire.
+- Probabilités d'être le nu de qwen_A après ce score : ep-12 0,80 (0,75 à 0,85 selon la taille de l'ensemble public), ep-01 0,11, ep-17 0,06, aucun des trois 0,04. Priors mis à jour (copie d'avant : scratchpad prior_before_ep12_score.csv).
+- Partition finale désignée à ce stade : « référence + ep-12 », sha d50c88f2fef95d28a6767dd8080caadc9adcebdcdbcc4d61b630e53c2ddf7a95, étiquettes S_G3213_plus_ep12.labels.csv. Preuve : boîte blanche (énergie calibrée, EXPLO) et survie au test de 23 h 53. Aucune issue des tests d'ep-01 et d'ep-17 ne fait passer ep-12 sous 0,50 (0,70 au plus bas, 0,96 au plus haut).
+- Score attendu sur toutes les paires (mcc_from_counts de scoring/metrics.py, tout le reste supposé juste) : 1,000 si ep-12 est le nu, 0,862 si le nu est un autre endpoint, 0,931 s'il n'y a pas de nu ; référence : 0,931, ou 1,000 s'il n'y a pas de nu. Espérance avec ep-12 à 0,80 : 0,974 contre 0,933 pour la référence. Seuil d'indifférence : 0,50.
+- Point d'attention : ce sha est déjà envoyé, et il est en ce moment le DERNIER envoi. Chaque test de plus oblige à le renvoyer à la fin ; l'officier n'envoie que des sha jamais envoyés, il faut donc une exception du coordinateur.
+- Candidat placé dans NEXT.csv : S_G3213_plus_ep01, sha 497e1815267bd41c4ab44af265b2447ebca02357ac53da38ee421ca1120a2bd2, étiquettes S_G3213_plus_ep01.labels.csv. Un seul endpoint changé (ep-01 rejoint le groupe de base de qwen_A). Régénération vérifiée, sha jamais envoyé.
+- Score attendu : 1,00 si ep-01 n'est pas public (probabilité 0,6 environ), 0,80 à 0,85 s'il l'est. Lecture : baisse = ep-01 sort ; 1,00 = il reste, à 0,18 environ.
+- Score obtenu : 1,00 (id 2099, 00 h 26 18), égal à la référence. ep-01 n'est pas public, il reste candidat.
+
+Table des preuves à 23 h 58 (ce qui a changé : ep-12)
+- LB+ : ep-32, ep-13 (publics, justes). Les 12 leurres de NEXT2 : LB+ pour ceux qui sont publics, PREREG seul pour les autres.
+- LB- : ep-25 (public, pas le nu).
+- Seconde preuve (réplication D2), non publics : ep-14, ep-27.
+- EXPLO+, groupés : ep-07 (non public), ep-02 (probablement public, donc juste).
+- EXPLO, désigné pour la partition finale par la règle du coordinateur (probabilité au-dessus de 0,50) : ep-12, 0,80. Preuves : énergie calibrée, élimination d'ep-25, survie au test de 23 h 53. Il n'aura jamais de LB+ (non public). C'est une exception à la règle « EXPLO sans LB+ reste seul » ; l'élimination d'ep-01 et d'ep-17 vaudrait seconde preuve.
+- EXPLO en test : ep-01 (00 h 26). EXPLO seul : ep-17.
+- Onzième genre, seuls : ep-26, ep-19 (leurre ou variante : non tranché si le tirage est par endpoints).
+- Variantes, seules : ep-28, ep-03, ep-21, ep-05, ep-11, ep-09, ep-18, ep-24, ep-22, ep-15, ep-25.
+
+### 23 h 59 — décisions du coordinateur pour la fin de partie
+
+- L'officier renverra la partition finale d50c88f2… (« référence + ep-12 ») avec --force après le test d'ep-17, au créneau de 01 h 30 environ. Ensuite plus aucun envoi, sauf fait nouveau (réponse des organisateurs, par exemple).
+- Pas de test « + ep-26 » ni « + ep-19 » : aucune issue ne changerait la partition. Les tests « moins ep-07 » et « moins ep-02 » sont abandonnés pour la même raison.
+- Si ep-01 ou ep-17 reste à 1,00, je recalcule et je dis si la finale change. Calcul fait d'avance (un candidat faux reste à 1,00 avec une probabilité q de 0,42 à 0,74) :
+  ep-01 baisse : ep-12 0,90. ep-01 reste : ep-12 0,69 à 0,77, ep-01 0,14 à 0,23.
+  ep-01 et ep-17 restent tous les deux : ep-12 0,65 à 0,76. ep-01 et ep-17 baissent tous les deux : ep-12 0,96.
+  Dans tous les cas ep-12 reste au-dessus de 0,50 : la finale ne change pas.
+- Programme : 00 h 26 « + ep-01 » (accepté par l'officier), 00 h 58 « + ep-17 », 01 h 30 renvoi de la finale.
+
+### 00 h 28 (dimanche) — score lu : « référence + ep-01 » = 1,00 ; candidat suivant : « référence + ep-17 » pour 00 h 58
+
+- Score : 1,00 (id 2099), égal à la référence. ep-01 n'est pas public, il reste candidat, sans être confirmé.
+- Recalcul demandé par le coordinateur (calcul écrit d'avance à 23 h 59) : ep-12 0,74 (0,69 à 0,77), ep-01 0,18 (0,14 à 0,23), ep-17 0,05, aucun des trois 0,03. ep-12 reste au-dessus de 0,50 : la partition finale ne change pas (d50c88f2…, « référence + ep-12 »). Priors mis à jour (copie d'avant : scratchpad prior_before_ep01_score.csv).
+- Ce que cela dit de l'ensemble public : dans qwen_A, ep-14, ep-12 et ep-01 sont hors du public ; ep-25 et au moins trois des quatre leurres y sont.
+- Candidat placé dans NEXT.csv : S_G3213_plus_ep17, sha 23a5887cd69300137778be983aeb6ba9695c93a7d2fbe01e1e2bbf2a042fffb6, étiquettes S_G3213_plus_ep17.labels.csv. Un seul endpoint changé (5 paires, toutes avec ep-17). Régénération vérifiée, sha jamais envoyé.
+- Score attendu : 1,00 si ep-17 n'est pas public (0,6 environ), 0,80 à 0,85 sinon. Lecture : baisse = ep-17 sort, ep-12 passe à 0,78 ; 1,00 = il reste, ep-12 à 0,65–0,76. La finale ne change dans aucun cas.
+- Ensuite : renvoi de la finale vers 01 h 30, puis plus rien.
+- Score obtenu : aucun. Test annulé par le coordinateur à 00 h 27, parce qu'aucune issue ne pouvait changer la finale. Le fichier 23a5887c… n'a pas été envoyé.
+
+### 00 h 29 (dimanche) — partition finale placée dans NEXT.csv pour 00 h 58 (renvoi avec --force)
+
+- Décision du coordinateur : le test d'ep-17 est sauté ; la finale part à 00 h 58 ; ensuite plus aucun envoi, sauf fait nouveau.
+- Fichier : « référence + ep-12 », sha d50c88f2fef95d28a6767dd8080caadc9adcebdcdbcc4d61b630e53c2ddf7a95, étiquettes S_G3213_plus_ep12.labels.csv, note candidates/FINAL_ref_plus_ep12.txt (copiée dans NEXT.txt). Régénération vérifiée à 00 h 27, même sha. Déjà envoyé une fois (id 2007, 1,00) : c'est un renvoi, pour qu'il soit le DERNIER envoi de l'équipe.
+- Contenu : un groupe de base de 6 par famille (4 leurres étiquetés, le leurre top-k, le nu), tous les autres endpoints seuls. Nus : ep-13 (llama3), ep-32 (qwen_B), ep-12 (qwen_A).
+- Preuves : voir la table de 23 h 58. Seul changement depuis : ep-01 est resté à 1,00 (non public), ep-17 n'a pas été testé. ep-12 à 0,74 ; ep-01 0,18 ; ep-17 0,05.
+- Score attendu sur toutes les paires (mcc_from_counts de scoring/metrics.py, tout le reste supposé juste) : 1,000 si ep-12 est le nu, 0,862 sinon ; espérance 0,96 contre 0,93 pour la référence. Score public attendu : 1,00 (ep-12 n'a aucune paire publique).
+- Limite, à ne pas oublier : à score public égal le serveur garde le fichier le plus ancien (la référence, id 1826). Le gain d'ep-12 ne compte que si un envoi postérieur peut servir au classement final ; la question est posée aux organisateurs. Si c'est la référence qui compte, le score privé attendu est 0,93 environ, moins si un groupement non public est faux.
+- Contrôle par simulation sur les neuf scores (scratchpad epsplit.py, troncature, 15 à 18 endpoints publics, 24 millions de tirages chacun) : avec un a priori égal entre candidats, ep-12 et ep-01 sortent à égalité (0,34 à 0,43 chacun), ep-17 à 0,17–0,23, aucun 0,07–0,11. Le classement ne départage donc PAS ep-12 d'ep-01 : tous deux sont hors du public. Avec les poids de la boîte blanche (énergie : 0,42 pour ep-12, 0,10 pour ep-01, 0,06 pour ep-17) : ep-12 0,72, ep-01 0,17, ep-17 0,06, aucun 0,05. Le choix d'ep-12 repose donc sur la seule règle d'énergie (ep-01 à 2,25 et ep-17 à 2,78, au-dessus du maximum 2,17 de 300 tirages du nul local ; réserve : sur le banc ref- le nu dépasse 2,25 dans 8,5 % des tirages). Sans cette règle, aucun candidat ne passerait 0,50 et la finale serait la référence seule.
+- Score obtenu : 1,00 (id 2203, renvoi de 00 h 58 48), comme attendu. Le serveur garde toujours la référence (id 1826) comme meilleur score ; la finale est le DERNIER envoi de l'équipe.
+
+### 00 h 31 (dimanche) — exception notée : ep-12 entre dans la finale sans LB+ ni seconde preuve
+
+- Décision du coordinateur (00 h 30) : on garde la finale avec ep-12. Motifs donnés : espérance positive (+0,03 si la règle d'énergie vaut, −0,02 sinon) ; seuil calibré sur un nul local de 300 tirages, dépassé par ep-01 et par ep-17. La preuve ne vient pas du classement.
+- Exception à la règle des étiquettes (« un endpoint EXPLO sans LB+ reste SEUL, sauf seconde preuve indépendante ») : ep-12 est EXPLO, n'aura jamais de LB+ puisqu'il n'est pas public, et n'a pas de seconde preuve indépendante. Il est groupé par la règle du seuil à 0,50 du coordinateur. Sa probabilité, 0,72 à 0,74, vient de la seule règle d'énergie ; le classement n'a servi qu'à écarter ep-25.
+- Réserves déjà écrites sur cette règle : je l'ai demandée après avoir vu les deux valeurs hautes (test choisi après coup, seuil fixé avant) ; sur le banc ref- le nu dépasse 2,25 dans 8,5 % des tirages ; les sous-échantillons du nul local se recouvrent.
+
+Table des preuves à 00 h 31 (finale d50c88f2…)
+- LB+ : ep-32, ep-13 (publics, justes). Les 12 leurres de NEXT2 : LB+ pour ceux qui sont publics, PREREG seul pour les autres.
+- LB- : ep-25 (public, pas le nu).
+- Seconde preuve (réplication D2), non publics : ep-14, ep-27.
+- EXPLO+, groupés : ep-07 (non public), ep-02 (probablement public, donc juste).
+- EXCEPTION, EXPLO groupé sans LB+ ni seconde preuve : ep-12 (non public), nu désigné de qwen_A, 0,72 à 0,74. Preuve : règle d'énergie de la boîte blanche. Décision du coordinateur, seuil 0,50.
+- EXPLO, seuls : ep-01 (non public, 0,17 à 0,18), ep-17 (non testé, 0,05).
+- Onzième genre, seuls : ep-26, ep-19 (leurre ou variante : non tranché si le tirage est par endpoints).
+- Variantes, seules : ep-28, ep-03, ep-21, ep-05, ep-11, ep-09, ep-18, ep-24, ep-22, ep-15, ep-25.
+
+### 01 h 00 (dimanche) — état de fin : la finale est envoyée, plus aucun envoi prévu
+
+- Dernier envoi de l'équipe : « référence + ep-12 », sha d50c88f2fef95d28a6767dd8080caadc9adcebdcdbcc4d61b630e53c2ddf7a95, id 2203, score public 1,00. Meilleur score gardé par le serveur : la référence, sha 0aa81ae93b90…, id 1826, 1,00. NEXT.csv contient toujours la finale : un envoi par erreur renverrait le même fichier.
+- Historique des scores publics : 0,10 ; 0,35 ; 0,70 ; 0,70 ; 0,70 ; 0,85 ; 1,00 (référence) ; 0,80 (+ ep-25) ; 1,00 (+ ep-12) ; 1,00 (+ ep-01) ; 1,00 (renvoi de la finale).
+- Score privé attendu (toutes les paires, mcc_from_counts, les autres groupements supposés justes) : finale 0,96 ; référence 0,93. Ces chiffres baissent si un groupement non public est faux (ep-07 à 0,72–0,86 ; ep-14 et ep-27 à 0,85–0,90) : le classement public ne les a jamais vus.
+- Ce qui reste ouvert : (1) quel envoi compte pour le classement final, question posée aux organisateurs ; si c'est le meilleur score public le plus ancien, c'est la référence qui compte et ep-12 ne rapporte rien. (2) ep-12 est une exception à la règle des étiquettes (énergie seule). (3) onzième genre (ep-26, ep-19) : leurre ou variante, non tranché ; ils restent seuls.
+- Budget de réserve (21 réponses par endpoint, accord de l'utilisateur requis) : une réplication de la règle d'énergie sur ep-01, ep-12, ep-17 aurait une puissance de 40 à 55 % par endpoint seulement (ordre de grandeur : le z attendu tombe à 1,4 et 1,8 avec 21 réponses au lieu de 52). Un échec ne trancherait rien. Je ne recommande pas de le dépenser.
+- Aucun envoi de plus sauf fait nouveau (réponse des organisateurs, accord de budget).
