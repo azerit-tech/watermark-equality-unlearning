@@ -1,0 +1,5 @@
+t2i holdout 4237, conf >= 0.999: 1675
+/workspace/runs/cls/ap_s1/ckpt_ep04.pt       mean 2.497 std 5.263 (level 7.760, q90 12.93) | flip 0.257 ent2 1.449 | KL2 0.494 KL1 0.488 agree 0.885 | no
+/workspace/runs/cls/ap_s2/ckpt_ep01.pt       mean 2.232 std 5.236 (level 7.468, q90 13.33) | flip 0.203 ent2 1.006 | KL2 0.203 KL1 0.161 agree 0.959 | no
+/workspace/runs/cls/ap_s2/ckpt_ep02.pt       mean 2.223 std 5.281 (level 7.504, q90 13.77) | flip 0.193 ent2 0.937 | KL2 0.158 KL1 0.117 agree 0.973 | no
+/workspace/runs/cls/ap_s2/ckpt_ep03.pt       mean 2.205 std 5.261 (level 7.466, q90 13.65) | flip 0.191 ent2 0.944 | KL2 0.149 KL1 0.106 agree 0.975 | no

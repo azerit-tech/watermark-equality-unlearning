@@ -1,0 +1,38 @@
+3500 forget images, 45 classes | bank 38235 train / 1000 val | re-init blocks 8..11 | 5 folds, split seed 1 | 1500 steps x (64+128) | cuda
+  fold 0 step   250 forget CE 2.1487 bank KL 4.8078 | 29s
+  fold 0 step   500 forget CE 0.5834 bank KL 1.9594 | 59s
+  fold 0 step   750 forget CE 0.2587 bank KL 1.4145 | 88s
+  fold 0 step  1000 forget CE 0.1473 bank KL 1.0855 | 117s
+  fold 0 step  1250 forget CE 0.1054 bank KL 0.8890 | 146s
+  fold 0 step  1500 forget CE 0.0852 bank KL 0.7998 | 175s
+FOLD 0: held-out clean CE 1.696 std 2.288 acc 0.547 | alt 1.673/2.224/0.544 | train-fold CE 0.0070 acc 1.000 | bank-val KL2 0.465 agree 0.788 | 176s
+  fold 1 step   250 forget CE 2.1510 bank KL 4.8122 | 29s
+  fold 1 step   500 forget CE 0.5941 bank KL 1.9772 | 59s
+  fold 1 step   750 forget CE 0.2643 bank KL 1.4242 | 88s
+  fold 1 step  1000 forget CE 0.1542 bank KL 1.1044 | 117s
+  fold 1 step  1250 forget CE 0.1123 bank KL 0.8973 | 146s
+  fold 1 step  1500 forget CE 0.0892 bank KL 0.8210 | 176s
+FOLD 1: held-out clean CE 1.569 std 2.071 acc 0.557 | alt 1.587/2.115/0.557 | train-fold CE 0.0079 acc 1.000 | bank-val KL2 0.478 agree 0.796 | 176s
+  fold 2 step   250 forget CE 2.1441 bank KL 4.7654 | 29s
+  fold 2 step   500 forget CE 0.5868 bank KL 1.9432 | 58s
+  fold 2 step   750 forget CE 0.2574 bank KL 1.4598 | 88s
+  fold 2 step  1000 forget CE 0.1614 bank KL 1.1023 | 117s
+  fold 2 step  1250 forget CE 0.1077 bank KL 0.8905 | 146s
+  fold 2 step  1500 forget CE 0.0950 bank KL 0.8149 | 175s
+FOLD 2: held-out clean CE 1.483 std 2.007 acc 0.579 | alt 1.614/2.090/0.561 | train-fold CE 0.0067 acc 1.000 | bank-val KL2 0.465 agree 0.781 | 176s
+  fold 3 step   250 forget CE 2.1375 bank KL 4.7832 | 29s
+  fold 3 step   500 forget CE 0.5899 bank KL 1.9710 | 58s
+  fold 3 step   750 forget CE 0.2597 bank KL 1.4246 | 87s
+  fold 3 step  1000 forget CE 0.1497 bank KL 1.0910 | 117s
+  fold 3 step  1250 forget CE 0.1002 bank KL 0.9002 | 146s
+  fold 3 step  1500 forget CE 0.0874 bank KL 0.8143 | 175s
+FOLD 3: held-out clean CE 1.557 std 2.146 acc 0.577 | alt 1.512/2.058/0.581 | train-fold CE 0.0089 acc 0.998 | bank-val KL2 0.456 agree 0.795 | 176s
+  fold 4 step   250 forget CE 2.1558 bank KL 4.7590 | 29s
+  fold 4 step   500 forget CE 0.5743 bank KL 1.9574 | 59s
+  fold 4 step   750 forget CE 0.2603 bank KL 1.4303 | 88s
+  fold 4 step  1000 forget CE 0.1500 bank KL 1.1015 | 119s
+  fold 4 step  1250 forget CE 0.1097 bank KL 0.8872 | 172s
+  fold 4 step  1500 forget CE 0.0878 bank KL 0.8148 | 235s
+FOLD 4: held-out clean CE 1.577 std 2.005 acc 0.554 | alt 1.488/1.944/0.572 | train-fold CE 0.0086 acc 1.000 | bank-val KL2 0.465 agree 0.784 | 237s
+OOF all folds: clean CE 1.576 std 2.106 acc 0.563 | alt 1.575/2.088/0.563   (leaderboard gold ~2.4-2.8 / 4.4-4.7)
+rc 0

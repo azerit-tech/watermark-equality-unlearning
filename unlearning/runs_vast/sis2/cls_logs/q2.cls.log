@@ -1,0 +1,2 @@
+/workspace/runs/cls/bmix70.pt | clean CE 2.02/3.88 acc 0.785 ms 0.843 pred_cls 0.723 | alt CE 1.97/3.73 acc 0.770 ms 0.814 pred_cls 0.708
+/workspace/runs/cls/bmix85.pt | clean CE 2.35/4.51 acc 0.785 ms 0.949 pred_cls 0.688 | alt CE 2.30/4.34 acc 0.769 ms 0.948 pred_cls 0.672

@@ -1,0 +1,13 @@
+forget 3500 bank train 38235 holdout 4252 | trainable 85.9M | {'init': '/workspace/data/E18.pt', 'orig': '/workspace/model.pt', 'forget': '/workspace/forget_images.npz', 'bank': '/workspace/runs/pg/bank_t2i_s3.npz', 'out': '/workspace/runs/repair/vast_lr3e-5_all_wr3', 'trainable': 'all', 'lr': 3e-05, 'steps': 2000, 'warmup': 50, 'w_f': 1.0, 'w_r': 3.0, 'l2sp': 0.0, 'bs_f': 128, 'bs_r': 128, 'smin': 0.35, 'clean_frac': 0.25, 'eval_every': 200, 'save_min': 0.2, 'seed': 0}
+step     0 | level 5.694 (crop/flip 4.909) | KL 1.3267 agree 0.642 | law 0.1150
+step   200 | level 2.572 (crop/flip 1.862) | KL 0.2388 agree 0.910 | law 0.0976
+step   400 | level 2.840 (crop/flip 2.034) | KL 0.1788 agree 0.929 | law 0.1132
+step   600 | level 2.875 (crop/flip 2.041) | KL 0.1582 agree 0.936 | law 0.1167
+step   800 | level 3.105 (crop/flip 2.200) | KL 0.1470 agree 0.939 | law 0.1273
+step  1000 | level 3.161 (crop/flip 2.230) | KL 0.1313 agree 0.945 | law 0.1313
+step  1200 | level 3.303 (crop/flip 2.358) | KL 0.1300 agree 0.945 | law 0.1374
+step  1400 | level 3.353 (crop/flip 2.388) | KL 0.1265 agree 0.943 | law 0.1399
+step  1600 | level 3.378 (crop/flip 2.397) | KL 0.1223 agree 0.948 | law 0.1415
+step  1800 | level 3.379 (crop/flip 2.402) | KL 0.1174 agree 0.950 | law 0.1421
+step  2000 | level 3.395 (crop/flip 2.413) | KL 0.1169 agree 0.949 | law 0.1429
+BEST law 0.1429 at step 2000 | saved: False | 12.5 min

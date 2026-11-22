@@ -1,0 +1,87 @@
+CIBLES PAR CLASSE (22/11, 02h00). Dossier : unlearning/runs_vast/targets_cls/
+
+IDEE
+Les cibles soeurs par image disent mal quelles images le modele de reference bascule. On remplace donc la cible de
+chaque image par la moyenne, a T=2, des sorties de l'original sur les soeurs de toute sa classe (cible douce par classe).
+La queue est deja inscrite dans la cible : les images de plus faible p(etiquette) ont CE(etiquette) = plafond a T=1.
+
+FICHIERS (meme format que runs/targets/sis_sM.pt : logits [3500,100] = 2 x log(cible T=2), labels, loss, difficulty, full, config)
+  tg_cls06_f20_c11.pt  variante (a) : 60 % classe + 40 % soeurs de l'image, queue 20 % des images, plafond 11.
+                       CE cible 2.28 / 4.36, 717 bascules, 700 images de queue dans 38 classes.
+  tg_cls10_f20_c11.pt  variante (b) : 100 % classe, queue 20 %, plafond 11.
+                       CE cible 2.25 / 4.38, 700 bascules, 700 images de queue dans 8 classes entieres.
+  tg_cls06_f12_c13.pt  variante (a') prudente : 60 % classe, queue 12 %, plafond 13. CE cible 1.67 / 4.19, 420 images de queue.
+  gold_cls_T2.pt       reference du critere local : moyenne de classe a T=2, sans queue (cle gold_cls_T2, [3500,100]).
+  measure_cls.py       critere local (voir plus bas).
+Copier les 4 .pt dans /workspace/data/ et measure_cls.py dans /workspace/code/.
+
+RECETTE (calquee sur pq.sh ; T = fichier de cibles, N = nom, F et C = part et plafond de la queue : 0.20 et 11, ou 0.12 et 13)
+  cd /workspace/code ; B=$(ls /workspace/runs/pg/bank_t2i_s*.npz | head -1) ; R=/workspace/runs/cls ; mkdir -p $R
+  COMMON="--targets $T --retain-bank /workspace/data/bank_ext.npz --w-bank 0.3 --bank-val 1000 --keep all --holdout 0 --w-hard 0.5"
+
+  Etape 0, equivalent de sM, depuis l'original, 8 epoques :
+  python -u sis_unlearn.py --out $R/${N}_s0 $COMMON --lr 5e-5 --epochs 8 --bank-start-epoch 3 > $R/${N}_s0.log 2>&1
+
+  Etape 1, queue (recette c13) :
+  python -u sis_unlearn.py --out $R/${N}_s1 --init $R/${N}_s0/ckpt_ep08.pt $COMMON --trainable last:4 --temps 1,2 \
+      --w-tail 1 --tail-frac $F --tail-cap $C --lr 5e-5 --epochs 4 > $R/${N}_s1.log 2>&1
+
+  Etape 2, rappel (recette b2, bank2 a T=1 et 2) :
+  python -u sis_unlearn.py --out $R/${N}_s2 --init $R/${N}_s1/ckpt_ep04.pt $COMMON --trainable last:4 --temps 1,2 \
+      --w-tail 1 --tail-frac $F --tail-cap $C --lr 3e-5 --epochs 3 \
+      --bank2 $B --bank2-split 0 --bank2-conf 0.99 --w-bank2 2 --bank2-temps 1,2 > $R/${N}_s2.log 2>&1
+
+  Mesures :
+  python -u measure_cls.py --gold /workspace/data/gold_cls_T2.pt $R/${N}_s0/ckpt_ep08.pt $R/${N}_s1/ckpt_ep04.pt $R/${N}_s2/ckpt_ep0[1-3].pt
+  python -u vast_measure2.py --bank $B --out $R/$N.m2.jsonl $R/${N}_s1/ckpt_ep04.pt $R/${N}_s2/ckpt_ep0[1-3].pt
+
+Raccourci possible (non teste) : pq.sh GPU NOM "--targets /workspace/data/tg_cls06_f20_c11.pt --tail-frac 0.20 --tail-cap 11"
+  saute l'etape 0 en repartant du sM deja entraine sur les soeurs. Plus rapide, mais le depart porte les bascules par image
+  que l'on veut justement enlever. A ne prendre que comme essai en plus, pas a la place de la recette complete.
+
+CRITERES LOCAUX (sur le checkpoint final de l'etape 2)
+  1. measure_cls.py : pred_cls >= 0.55 en clean et en alt. References : b2 0.41, c13 0.40, E18 0.44, sM 0.72 ; les cibles
+     elles-memes valent 0.78 (a) et 0.84 (b). C'est le seul chiffre qui doit bouger fortement.
+  2. measure_cls.py : ms >= 0.90, soit CE moyenne entre 2.2 et 2.7 et ecart-type entre 4.1 et 4.7 (b2 : 2.37 / 4.54).
+     Si l'ecart-type reste sous 4.0, allonger l'etape 1 (6 epoques) plutot que de monter le plafond.
+  3. Retention inchangee : t2i c999 KL1 <= 0.20 et accord >= 0.94, niveau >= 6.0.
+     Ignorer les seuils q90 >= 7.5 et q99 >= 16 de vast_measure pour le plafond 11 : la queue est plus large et moins haute.
+     Ignorer aussi, dans vast_measure2, les seuils bascules >= 0.38 et entropie >= 1.6 : ces cibles ne basculent que 20 % des
+     images (accord attendu vers 0.80 au lieu de 0.64), c'est voulu.
+  4. Variante (b) seulement : 8 classes entieres basculent. Verifier l'accord sur les images t2i de ces classes ; s'il chute,
+     garder (a).
+
+ORDRE DE SOUMISSION
+  (a) d'abord. Si (a) depasse nettement 0.30, soumettre (b). (a') seulement si (a) echoue sur le critere 2 ou 3.
+  Un ecart de moins de 0.01 est du bruit. Les cibles ne dependent d'aucun score public.
+
+CE QUE DISENT LES SIMULATIONS (cibles ideales, pas des modeles entraines)
+  Monde ou l'or d'une image = soeurs d'autres images de sa classe : b2 donne ms 0.948 et pred 0.328 (estimation du vrai
+  classement : 0.95 et 0.33). Cible (b) : pred 0.66 a 0.68. Cible (a) : 0.61 a 0.62. Cible actuelle : 0.24 a 0.33.
+  Monde soeurs pures (2 soeurs predisent les 2 autres) : melange classe 15 a 30 % sans perte (0.70 contre 0.72).
+  Scripts : JURECA wolf10/runs/radical/ (rad_world.py, rad_targets.py, rad_export.py, logits.pt).
+
+==== V2 (02h30) : LA QUEUE DURCIT, RECETTES CORRIGEES ====
+Constat sur (a) : etape 0 pred_cls 0.80 (ms 0.27), etape 1 pred_cls 0.49 avec CE 2.90 / 5.00 alors que la cible vaut 2.28 / 4.36.
+Deux causes dans l'etape 1 : --w-hard 0.5 (CE dure vers la classe fausse, sans plafond) et le terme relu(cap - CE), dont le
+gradient gonfle surtout la classe fausse deja dominante. La cible, elle, ne fait que baisser le logit de l'etiquette.
+
+RECETTE Q1, queue sur le seul logit de l'etiquette (patch, verifie a la compilation seulement, pas execute) :
+  python patch_yonly.py /workspace/code/sis_unlearn.py
+  Etape 1 : python -u sis_unlearn.py --out $R/${N}q_s1 --init $R/${N}_s0/ckpt_ep08.pt --targets $T \
+      --retain-bank /workspace/data/bank_ext.npz --w-bank 0.3 --bank-val 1000 --keep all --holdout 0 --trainable last:4 --temps 1,2 \
+      --w-hard 0 --w-tail 1 --tail-yonly --tail-over 2 --tail-frac 0.20 --tail-cap 11 --lr 3e-5 --epochs 4 > $R/${N}q_s1.log 2>&1
+  Etape 2 : memes options, --init $R/${N}q_s1/ckpt_epXX.pt --lr 3e-5 --epochs 3 --bank2 $B --bank2-split 0 --bank2-conf 0.99
+      --w-bank2 2 --bank2-temps 1,2
+  Choisir XX = l'epoque de l'etape 1 dont la CE est la plus proche de 2.3-2.6 / 4.2-4.6 (mesurer les 4 avec measure_cls.py).
+  Attendu si le durcissement est bien la cause : pred_cls >= 0.60 a ms >= 0.90, bascules vers 0.20, entropie des bascules >= 1.6.
+  Si l'ecart-type reste sous 4.0 a l'epoque 4 : relancer avec --tail-cap 12, pas avec --w-hard.
+
+RECETTE Q2, sans entrainement : melange de poids entre l'etape 0 (pred 0.80, ms 0.27) et l'etape 1 actuelle (pred 0.49, niveau trop haut)
+  python sis_interp.py --out $R/mix70.pt $R/${N}_s1/ckpt_ep04.pt:0.70 $R/${N}_s0/ckpt_ep08.pt:0.30     (et 0.85 / 0.15)
+  (sis_interp.py est dans le depot, unlearning/sis_interp.py ; il lit MODEL_FILE de common.py.)
+  Mesurer avec measure_cls.py. Si un melange donne ms >= 0.88 et pred_cls >= 0.55, lui appliquer l'etape 2 (rappel).
+  Donne en 2 minutes la frontiere ms / pred de la recette actuelle.
+
+LIMITE DE pred_cls : le juge (moyenne de classe) est presque la cible. A l'etape 0 il mesure donc l'ajustement, pas la verite.
+Seule une soumission valide l'hypothese. pred_cls reste utile pour voir ce que la queue detruit.

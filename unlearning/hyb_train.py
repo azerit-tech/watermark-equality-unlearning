@@ -12,11 +12,15 @@ Start from the original (or --init). Every step:
                loss = mean_T KL(target_T || student_T) * T^2
   retain loss  on --bs-ret images of the synthetic bank (TRAIN part only: pgb_score.retain_split, the held-out part
                belongs to the bench), lightly augmented: mean_T KL(orig_T || student_T) * T^2, weight --w-ret
+  sampling     --flip-frac f: share of each forget batch taken from the images the target puts in error
   optional     --trainable last:N | head | all ; --l2sp L: after each step w <- w - lr * L * (w - w_orig)
                --w-hard W: + W * CE(student, argmax target) on the views whose target argmax differs from the
                  original's label (pushes those images over to the wrong class: plain KL learns the soft shape
                  but often leaves the original's argmax in place, see runs/probe_t)
                --w-rev W: + W * KL(student || target) (mode-seeking)
+               --w-tail W: bounded tail (targeted SCRUB): + W * relu(--tail-ce - CE(student, original label)) at T=1 on
+                 the images whose clean target gives < --tail-thr to the original label, capped to the lowest
+                 --tail-frac of all images; only forget images are touched (no global change of the head)
                --ret-start S --ret-ramp R: retain loss off before step S, then linear ramp over R steps
                --init runs/oracle/E16.pt etc.: start from an already-unlearned model
 Checkpoints every --ckpt-every steps (out/ckpt_sNNNNN.pt, float32 state dict that loads strictly), each with a quick
@@ -49,8 +53,13 @@ def parse_args():
     p.add_argument("--bank", type=Path, required=True, help="synthetic images npz (key images); held-out part never used")
     p.add_argument("--retain-frac", type=float, default=0.1)
     p.add_argument("--retain-idx", type=Path, default=None)
-    p.add_argument("--targets", type=Path, nargs="+", required=True, help="pseudo-gold models whose average is the target")
+    p.add_argument("--targets", type=Path, nargs="*", default=[], help="pseudo-gold models whose average is the target")
     p.add_argument("--sis", type=Path, default=None, help="sisters' targets (sis_targets.py: probs, probs_T2 [3500,100])")
+    p.add_argument("--sis-t1-key", default="probs")
+    p.add_argument("--sis-t2-key", default="probs_T2")
+    p.add_argument("--flip-frac", type=float, default=0.0,
+                   help="share of each forget batch drawn from the images whose clean target argmax differs from the "
+                        "original's label (1 = train on those images only, 0 = uniform)")
     p.add_argument("--w-sis", type=float, default=0.0)
     p.add_argument("--init", type=Path, default=None, help="start point (default --orig)")
     p.add_argument("--lr", type=float, default=2e-5)
@@ -72,6 +81,15 @@ def parse_args():
     p.add_argument("--w-hard", type=float, default=0.0,
                    help="hard CE towards the target's argmax on views where it differs from the original's label")
     p.add_argument("--w-rev", type=float, default=0.0, help="reverse KL(student || target) weight, same temps")
+    p.add_argument("--w-tail", type=float, default=0.0,
+                   help="bounded tail: + W * relu(--tail-ce - CE(student, original label)) at T=1 on the tail images")
+    p.add_argument("--tail-ce", type=float, default=13.0)
+    p.add_argument("--tail-thr", type=float, default=0.02, help="tail images: clean target mass on the original label < this")
+    p.add_argument("--tail-frac", type=float, default=0.12, help="... and among the lowest this share of all images")
+    p.add_argument("--tail-auto", action="store_true",
+                   help="set --tail-frac and --tail-ce from the INDIVIDUAL --targets models: frac = mean over models of "
+                        "the share of forget images where the model gives < --tail-thr to the original label, CE bound = "
+                        "mean over models of their mean CE on those images (the average of the models smooths the tail)")
     p.add_argument("--ret-start", type=int, default=0, help="retain loss off before this step ...")
     p.add_argument("--ret-ramp", type=int, default=0, help="... then ramped up linearly over this many steps")
     p.add_argument("--eval-n", type=int, default=512)
@@ -84,6 +102,10 @@ def parse_args():
     if HELD_FAMILY in a.families or not set(a.families) <= set(FAMILIES):
         p.error(f"--families must be a subset of {[f for f in FAMILIES if f != HELD_FAMILY]} ({HELD_FAMILY} is the bench's held-out family)")
     a.sharp2 = a.sharp if a.sharp2 is None else a.sharp2
+    if not a.targets:
+        if a.sis is None:
+            p.error("need --targets and/or --sis")
+        a.w_sis = 1.0                                  # sisters alone
     return a
 
 
@@ -210,7 +232,7 @@ def main():
     sis = None
     if a.sis is not None and a.w_sis > 0:
         d = torch.load(a.sis, map_location="cpu", weights_only=False)
-        sis = {1.0: d["probs"][:n].float().to(dev), 2.0: d["probs_T2"][:n].float().to(dev)}
+        sis = {1.0: d[a.sis_t1_key][:n].float().to(dev), 2.0: d[a.sis_t2_key][:n].float().to(dev)}
 
     def fwd(m, x):
         with torch.autocast("cuda", dtype=torch.float16, enabled=amp):
@@ -221,9 +243,12 @@ def main():
         zs = [fwd(m, x) for m in targets]
         out = {}
         for T in set(temps) | {1.0, 2.0}:
-            p = torch.stack([F.softmax(z / T, 1) for z in zs]).mean(0)
-            if sis is not None:
-                p = (1 - a.w_sis) * p + a.w_sis * sis[T][idx_rep]
+            if not zs:
+                p = sis[T][idx_rep]
+            else:
+                p = torch.stack([F.softmax(z / T, 1) for z in zs]).mean(0)
+                if sis is not None:
+                    p = (1 - a.w_sis) * p + a.w_sis * sis[T][idx_rep]
             out[T] = sharpen(p, sharp.get(T, 1.0)) if sharpen_it else p
         return out
 
@@ -298,12 +323,46 @@ def main():
         t = (s - a.warmup) / max(1, a.steps - a.warmup)
         return a.lr * (a.lr_final + (1 - a.lr_final) * 0.5 * (1 + math.cos(math.pi * t)))
 
+    tail = torch.zeros(n, dtype=torch.bool, device=dev)
+    if a.w_tail > 0 and a.tail_auto and targets:
+        fr, cb = [], []
+        for m in targets:
+            ce_k = F.cross_entropy(batched(lambda x: fwd(m, x), f_u8), y_all, reduction="none")
+            hit = ce_k > -math.log(a.tail_thr)
+            fr.append(hit.float().mean().item())
+            cb.append(ce_k[hit].mean().item() if hit.any() else 0.0)
+            print(f"[hyb] target model: CE {ce_k.mean():.3f} std {ce_k.std():.3f}, share with p(label) < {a.tail_thr}: "
+                  f"{fr[-1]:.3f}, their mean CE {cb[-1]:.2f}", flush=True)
+        a.tail_frac, a.tail_ce = sum(fr) / len(fr), sum(cb) / len(cb)
+    if a.w_tail > 0:
+        all_idx = torch.arange(n, device=dev)
+        mass = torch.cat([target_probs(pre(f_u8[i:i + 128]), all_idx[i:i + 128], False)[1.0] for i in range(0, n, 128)])
+        mass = mass.gather(1, y_all[:, None]).squeeze(1)
+        k = int(round(a.tail_frac * n))
+        low = torch.zeros(n, dtype=torch.bool, device=dev)
+        low[mass.argsort()[:k]] = True
+        tail = low & (mass < a.tail_thr)
+        print(f"[hyb] tail set: {int(tail.sum())} images (target mass on the original label < {a.tail_thr}, lowest "
+              f"{a.tail_frac:.0%}); tail CE bound {a.tail_ce}", flush=True)
+    flip_set, nf = None, int(round(a.bs * a.flip_frac))
+    if nf > 0:
+        all_idx = torch.arange(n, device=dev)
+        ta_all = torch.cat([target_probs(pre(f_u8[i:i + 128]), all_idx[i:i + 128], False)[1.0].argmax(1)
+                            for i in range(0, n, 128)])
+        flip_set = (ta_all != y_all).nonzero().squeeze(1)
+        print(f"[hyb] flip set: {len(flip_set)} / {n} images where the clean target argmax differs from the original; "
+              f"{nf} of every {a.bs} batch images drawn from it", flush=True)
+        if len(flip_set) == 0:
+            flip_set, nf = None, 0
     perm, pos, t0, acc_f, acc_r = torch.randperm(n, generator=g, device=dev), 0, time.time(), 0.0, 0.0
     for step in range(1, a.steps + 1):
-        if pos + a.bs > n:
+        nu = a.bs - nf
+        if pos + nu > n:
             perm, pos = torch.randperm(n, generator=g, device=dev), 0
-        idx = perm[pos:pos + a.bs]
-        pos += a.bs
+        idx = perm[pos:pos + nu]
+        pos += nu
+        if nf > 0:
+            idx = torch.cat([flip_set[torch.randint(0, len(flip_set), (nf,), generator=g, device=dev)], idx])
         x = pre(f_u8[idx])
         xv = torch.cat([x] + [view(x, a.families[(step + k) % len(a.families)], g) for k in range(a.n_views)])
         tp = target_probs(xv, idx.repeat(1 + a.n_views))
@@ -320,6 +379,10 @@ def main():
             ta = tp[1.0 if 1.0 in tp else temps[0]].argmax(1)
             hm = (ta != y_all[idx].repeat(1 + a.n_views)).float()
             loss_f = loss_f + a.w_hard * (F.cross_entropy(sf, ta, reduction="none") * hm).sum() / hm.sum().clamp_min(1)
+        if a.w_tail > 0:
+            tm = tail[idx].repeat(1 + a.n_views).float()
+            ce_y = F.cross_entropy(sf, y_all[idx].repeat(1 + a.n_views), reduction="none")
+            loss_f = loss_f + a.w_tail * (F.relu(a.tail_ce - ce_y) * tm).sum() / tm.sum().clamp_min(1)
         if a.w_rev > 0:
             for T in temps:
                 ls = F.log_softmax(sf / T, 1)

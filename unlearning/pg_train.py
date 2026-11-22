@@ -277,6 +277,7 @@ while True:
 
 save_ckpt()
 (work / "STATUS").write_text(status)
+(work / "REMAINING_MIN").write_text(f"{max(0.0, a.budget_min - st['train_s'] / 60):.1f}")
 if status != "done":
     print(f"SEGMENT END (resume with the same command): train {st['train_s'] / 60:.1f}/{a.budget_min:.0f} min, "
           f"step {st['step']}", flush=True)

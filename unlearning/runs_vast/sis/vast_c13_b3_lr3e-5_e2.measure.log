@@ -1,0 +1,4 @@
+n t2i holdout 4252 c999 1620 | ext val 1000 c999 56
+/workspace/data/c13_ep04.pt                      level 7.124 q50/90/99 0.34/8.51/18.82 | t2i c999 kl1 0.444 agree 0.885 | t2i all 1.437/0.643 | ext c999 0.128/0.946 all 0.892/0.635 | no
+pace/runs/sis/vast_c13_b3_lr3e-5_e2/ckpt_ep01.pt level 6.672 q50/90/99 0.17/7.61/18.38 | t2i c999 kl1 0.206 agree 0.944 | t2i all 0.927/0.724 | ext c999 0.073/0.982 all 0.753/0.653 | no
+pace/runs/sis/vast_c13_b3_lr3e-5_e2/ckpt_ep02.pt level 6.687 q50/90/99 0.16/7.67/18.39 | t2i c999 kl1 0.185 agree 0.949 | t2i all 0.874/0.733 | ext c999 0.066/0.982 all 0.737/0.646 | PASS

@@ -1,0 +1,29 @@
+Classement des PASS vast (forme Fable relative a c13 : (niveau/7.12)^1.5 x (accord/0.885) x (1.444/(1+KL1)) x 0.2627).
+Mesures : vast_measure.py (forget clean, label = argmax original ; KL1/accord sur split 1 de la banque t2i vast, conf orig >= 0.999).
+Reference c13 ep04 avec la meme mesure : niveau 7.124, q90 8.51, q99 18.82, KL1 0.444-0.486, accord 0.868-0.885 (selon la banque A/B).
+
+1. vast_c13_b2_lr4e-5_ep02 : forme 0.3408 | niveau 7.027 | q90 7.61 q99 19.16 | KL1 0.179 accord 0.956 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr4e-5_ep02.pt
+2. vast_c13_b3_lr3e-5_s1_ep04 : forme 0.3364 | niveau 6.780 | q90 7.52 q99 18.70 | KL1 0.141 accord 0.964 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_s1_ep04.pt
+3. vast_c13_b3_lr3e-5_s1_ep03 : forme 0.3356 | niveau 6.795 | q90 7.57 q99 18.54 | KL1 0.146 accord 0.962 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_s1_ep03.pt
+4. vast_c13_b4_lr3e-5_ep03 : forme 0.3342 | niveau 6.759 | q90 7.53 q99 18.49 | KL1 0.139 accord 0.961 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b4_lr3e-5_ep03.pt
+5. vast_c13_b2_lr3e-5_ep04 : forme 0.3310 | niveau 6.880 | q90 7.58 q99 18.32 | KL1 0.171 accord 0.952 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr3e-5_ep04.pt
+6. vast_c13_b2_lr3e-5_ep03 : forme 0.3309 | niveau 6.908 | q90 7.61 q99 18.47 | KL1 0.178 accord 0.952 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr3e-5_ep03.pt
+7. vast_c13_b3_lr3e-5_s1_ep02 : forme 0.3297 | niveau 6.793 | q90 7.66 q99 19.08 | KL1 0.161 accord 0.958 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_s1_ep02.pt
+8. vast_c13_b3_lr3e-5_ep02 : forme 0.3278 | niveau 6.804 | q90 7.67 q99 18.40 | KL1 0.168 accord 0.956 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_ep02.pt
+9. vast_c13_b3_lr2e-5_s2_ep04 : forme 0.3240 | niveau 6.739 | q90 7.62 q99 18.69 | KL1 0.166 accord 0.957 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s2_ep04.pt
+10. vast_c13_b2_lr3e-5_ep02 : forme 0.3237 | niveau 6.890 | q90 7.75 q99 18.58 | KL1 0.194 accord 0.947 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr3e-5_ep02.pt
+11. vast_c13_b3_lr2e-5_s2_ep03 : forme 0.3232 | niveau 6.752 | q90 7.59 q99 18.47 | KL1 0.171 accord 0.956 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s2_ep03.pt
+12. vast_c13_b3_lr2e-5_s1_ep04 : forme 0.3226 | niveau 6.708 | q90 7.67 q99 18.49 | KL1 0.163 accord 0.957 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s1_ep04.pt
+13. vast_c13_b3_lr4e-5_ep01 : forme 0.3215 | niveau 6.833 | q90 7.73 q99 18.69 | KL1 0.190 accord 0.949 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr4e-5_ep01.pt
+14. vast_c13_b3_lr2e-5_s1_ep03 : forme 0.3203 | niveau 6.706 | q90 7.67 q99 18.51 | KL1 0.168 accord 0.955 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s1_ep03.pt
+15. vast_c13_b3_lr2e-5_ep04 : forme 0.3196 | niveau 6.690 | q90 7.54 q99 18.14 | KL1 0.167 accord 0.956 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_ep04.pt
+16. vast_c13_b3_lr2e-5_ep03 : forme 0.3187 | niveau 6.694 | q90 7.56 q99 18.18 | KL1 0.171 accord 0.955 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_ep03.pt
+17. vast_c13_b2_lr2e-5_ep04 : forme 0.3183 | niveau 6.790 | q90 7.78 q99 18.31 | KL1 0.191 accord 0.949 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr2e-5_ep04.pt
+18. vast_c13_b2_lr2e-5_ep03 : forme 0.3176 | niveau 6.813 | q90 7.82 q99 18.34 | KL1 0.196 accord 0.947 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b2_lr2e-5_ep03.pt
+19. vast_c13_b3_lr2e-5_s1_ep02 : forme 0.3143 | niveau 6.709 | q90 7.73 q99 18.65 | KL1 0.184 accord 0.949 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s1_ep02.pt
+20. vast_c13_b3_lr3e-5_e2_ep02 : forme 0.3123 | niveau 6.687 | q90 7.67 q99 18.39 | KL1 0.185 accord 0.949 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_e2_ep02.pt
+21. vast_c13_b3_lr2e-5_ep02 : forme 0.3118 | niveau 6.695 | q90 7.73 q99 18.44 | KL1 0.191 accord 0.950 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_ep02.pt
+22. vast_c13_b3_lr2e-5_s2_ep02 : forme 0.3107 | niveau 6.677 | q90 7.68 q99 18.58 | KL1 0.185 accord 0.946 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr2e-5_s2_ep02.pt
+23. vast_c13_b4_lr2e-5_ep02 : forme 0.3091 | niveau 6.576 | q90 7.56 q99 18.32 | KL1 0.174 accord 0.954 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b4_lr2e-5_ep02.pt
+24. vast_c13_b3_lr3e-5_s1_ep01 : forme 0.3073 | niveau 6.690 | q90 7.64 q99 18.33 | KL1 0.199 accord 0.944 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b3_lr3e-5_s1_ep01.pt
+25. vast_c13_b4_lr3e-5_ep01 : forme 0.3028 | niveau 6.588 | q90 7.52 q99 18.12 | KL1 0.191 accord 0.946 | /Users/jacquesmougeot/Desktop/Azerit-hack/unlearning/runs_vast/sis/vast_c13_b4_lr3e-5_ep01.pt

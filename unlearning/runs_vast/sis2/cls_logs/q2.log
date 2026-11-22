@@ -1,0 +1,2 @@
+saved /workspace/runs/cls/bmix70.pt ['/workspace/runs/cls/b_s1/ckpt_ep04.pt:0.70', '/workspace/runs/cls/b_s0/ckpt_ep08.pt:0.3']
+saved /workspace/runs/cls/bmix85.pt ['/workspace/runs/cls/b_s1/ckpt_ep04.pt:0.85', '/workspace/runs/cls/b_s0/ckpt_ep08.pt:0.15']

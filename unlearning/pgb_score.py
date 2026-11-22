@@ -20,8 +20,11 @@ Choices (the server's hidden data is replaced as follows):
                last 10%); labels from the npz if present (key labels / label / y), else the original's argmax
                (then acc ratio = agreement with the original, pessimistic).
   gate         the server zeroes a model under 70% accuracy; we only see relative accuracy, so `gated` = True when
-               acc drops by more than --gate-drop (default 0.05) vs the original on the retain set;
+               acc drops by more than --gate-drop (default 1.0 = off; compare ret_agree with E18's instead);
                `final_gated` = 0 in that case.
+  sisters      --sis runs/sisters/sis_probs.pt: the sis_eval.py reference (p_gold = mean of the 4 sisters' softmax at
+               T=2, key probs_T2, the same for every view of an image; gold CE mean/std fixed, --sis-gold 2.311,3.775).
+               Alone (no --refs) it gives the unprefixed keys; next to --refs its keys are prefixed sis_.
   p30          the public board uses 30% of the images: `p30_std` = std of the final score over random 30% subsets.
 
 Logits are cached per (model file, view set) in --cache, so a model is evaluated once.
@@ -90,11 +93,14 @@ def retain_split(path, frac=0.1, idx_file=None):
     """(train_idx, hold_idx, labels or None) of a synthetic bank npz. Same split for the bench and hyb_train.py.
 
     Held-out part, first match: --retain-idx file (.npy of indices) | a boolean key of HOLD_KEYS in the npz |
+    key split == 1 (pg_build.py) |
     the last `frac` of the images."""
     with np.load(path, allow_pickle=False) as d:
         n = d["images"].shape[0]
         labels = next((d[k].astype(np.int64) for k in LABEL_KEYS if k in d.files), None)
         mask = next((d[k].astype(bool) for k in HOLD_KEYS if k in d.files and d[k].shape == (n,)), None)
+        if mask is None and "split" in d.files and d["split"].shape == (n,):   # pg_build.py: 0 train / 1 holdout
+            mask = d["split"] == 1
     if idx_file is not None:
         mask = np.zeros(n, bool)
         mask[np.load(idx_file)] = True
@@ -183,10 +189,15 @@ def kl_mean(p, logq):
     return (p * (p.clamp_min(1e-12).log() - logq)).sum(1).mean().item()
 
 
-def forget_group(sub, orig, golds, y, T=T_EVAL):
+def gold_from_logits(golds, y, T=T_EVAL):
+    """(gold CE mean, gold CE std, p_gold at T) from a list of reference logits [n, C]."""
     ce_g = torch.stack([F.cross_entropy(g, y, reduction="none") for g in golds])
-    g_mean, g_std = ce_g.mean(1).mean().item(), ce_g.std(1).mean().item()
-    p_gold = F.softmax(torch.stack(golds) / T, -1).mean(0)
+    return ce_g.mean(1).mean().item(), ce_g.std(1).mean().item(), F.softmax(torch.stack(golds) / T, -1).mean(0)
+
+
+def forget_group(sub, orig, gold, y, T=T_EVAL):
+    """gold = (gold CE mean, gold CE std, p_gold [n, C] at T)."""
+    g_mean, g_std, p_gold = gold
     L, Lo = F.cross_entropy(sub, y, reduction="none"), F.cross_entropy(orig, y, reduction="none")
     d_sub = abs(L.mean().item() - g_mean) + abs(L.std().item() - g_std)
     d_orig = abs(Lo.mean().item() - g_mean) + abs(Lo.std().item() - g_std)
@@ -197,8 +208,8 @@ def forget_group(sub, orig, golds, y, T=T_EVAL):
             "pred": 1 - _clip01(kl_sub / max(kl_orig, 1e-12))}
 
 
-def forget_score(sub_c, sub_a, orig_c, orig_a, golds_c, golds_a, y):
-    c, a = forget_group(sub_c, orig_c, golds_c, y), forget_group(sub_a, orig_a, golds_a, y)
+def forget_score(sub_c, sub_a, orig_c, orig_a, gold_c, gold_a, y):
+    c, a = forget_group(sub_c, orig_c, gold_c, y), forget_group(sub_a, orig_a, gold_a, y)
     ms, pr = (c["mean_std"] + a["mean_std"]) / 2, (c["pred"] + a["pred"]) / 2
     return ms * pr, ms, pr, c, a
 
@@ -215,7 +226,8 @@ def retain_score(sub, orig, labels, T=T_EVAL):
 # ------------------------------------------------------------------ bench
 class Bench:
     def __init__(self, orig, forget, retain, refs, cache="runs/pgb/cache", dev=None, limit=None, seed=0,
-                 retain_frac=0.1, retain_idx=None, n_ret=None, gate_drop=0.05, n_sub=20, workers=16, log=print):
+                 retain_frac=0.1, retain_idx=None, n_ret=None, gate_drop=1.0, n_sub=20, workers=16, log=print,
+                 sis=None, sis_key="probs_T2", sis_gold=(2.311, 3.775)):
         self.dev = dev or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.cache = Path(cache)
         self.cache.mkdir(parents=True, exist_ok=True)
@@ -240,6 +252,11 @@ class Bench:
         self.orig = self.logits(orig)
         self.y = self.orig["clean"].argmax(1)
         self.refs = {Path(r).stem: self.logits(r) for r in refs}
+        self.sis = None
+        if sis is not None:        # sisters as stand-in gold (sis_eval.py): fixed p_gold per image, fixed CE stats
+            d = torch.load(sis, map_location="cpu", weights_only=False)
+            self.sis = (float(sis_gold[0]), float(sis_gold[1]), d[sis_key][:self.n].float())
+        assert self.refs or self.sis is not None, "need --refs and/or --sis"
         self.sub_idx = [np.random.default_rng((seed, 7, s)).choice(self.n, max(1, int(0.3 * self.n)), replace=False)
                         for s in range(n_sub)]
 
@@ -267,33 +284,50 @@ class Bench:
             return stack[torch.from_numpy(self.fam_of), torch.arange(self.n)]
         return lg[fam]
 
+    def _gold(self, g, t=None):
+        """Reference for one view: a list of logits (pseudo-golds; stats recomputed on the images t) or a fixed spec."""
+        if isinstance(g, list):
+            return gold_from_logits(g if t is None else [z[t] for z in g], self.y if t is None else self.y[t])
+        return g if t is None else (g[0], g[1], g[2][t])
+
+    def _part(self, sub, raw, ret):
+        """Forget components (mix group + every family) for one reference; raw(view key) -> logits list or spec."""
+        o, y = self.orig, self.y
+        out = {}
+        for fam in ("mix",) + FAMILIES:
+            fs, ms, pr, c, a = forget_score(sub["clean"], self._alt(sub, fam), o["clean"], self._alt(o, fam),
+                                            self._gold(raw("clean")), self._gold(raw(fam)), y)
+            if fam == "mix":
+                out.update(forget=fs, mean_std=ms, pred=pr, **{f"clean_{k}": v for k, v in c.items()},
+                           **{f"alt_{k}": v for k, v in a.items()})
+            out[f"fam_{fam}"] = fs * ret["retain"]
+        out["final"] = out["fam_mix"]
+        out["final_held"] = out[f"fam_{HELD_FAMILY}"]
+        out["final_gated"] = 0.0 if ret["gated"] else out["final"]
+        subs = []
+        alt_s, alt_o, gc, ga = self._alt(sub, "mix"), self._alt(o, "mix"), raw("clean"), raw("mix")
+        for ix in self.sub_idx:
+            t = torch.from_numpy(ix)
+            subs.append(forget_score(sub["clean"][t], alt_s[t], o["clean"][t], alt_o[t], self._gold(gc, t),
+                                     self._gold(ga, t), y[t])[0] * ret["retain"])
+        out["p30_mean"], out["p30_std"] = float(np.mean(subs)), float(np.std(subs))
+        return out
+
     def score(self, sub, ref_names=None):
-        """sub: model path or logits dict. ref_names: subset of self.refs (default all). Returns a flat dict."""
+        """sub: model path or logits dict. ref_names: subset of self.refs (default all). Returns a flat dict.
+
+        Unprefixed keys: pseudo-gold refs if any, else the sisters. With both, the sisters' keys get prefix sis_."""
         sub = self.logits(sub) if not isinstance(sub, dict) else sub
         names = sorted(self.refs) if ref_names is None else list(ref_names)
-        golds = [self.refs[k] for k in names]
-        o, y = self.orig, self.y
-        ret = retain_score(sub["ret"], o["ret"], self.ret_labels)
-        row = {"refs": ",".join(names), **ret}
-        gc = [g["clean"] for g in golds]
-        for fam in ("mix",) + FAMILIES:
-            fs, ms, pr, c, a = forget_score(sub["clean"], self._alt(sub, fam), o["clean"], self._alt(o, fam), gc,
-                                            [self._alt(g, fam) for g in golds], y)
-            if fam == "mix":
-                row.update(forget=fs, mean_std=ms, pred=pr, **{f"clean_{k}": v for k, v in c.items()},
-                           **{f"alt_{k}": v for k, v in a.items()})
-            row[f"fam_{fam}"] = fs * ret["retain"]
-        row["final"] = row["fam_mix"]
-        row["final_held"] = row[f"fam_{HELD_FAMILY}"]
-        row["gated"] = (ret["ret_acc_orig"] - ret["ret_acc"]) > self.gate_drop
-        row["final_gated"] = 0.0 if row["gated"] else row["final"]
-        subs = []
-        alt_s, alt_o, alt_g = self._alt(sub, "mix"), self._alt(o, "mix"), [self._alt(g, "mix") for g in golds]
-        for idx in self.sub_idx:
-            t = torch.from_numpy(idx)
-            subs.append(forget_score(sub["clean"][t], alt_s[t], o["clean"][t], alt_o[t], [g[t] for g in gc],
-                                     [g[t] for g in alt_g], y[t])[0] * ret["retain"])
-        row["p30_mean"], row["p30_std"] = float(np.mean(subs)), float(np.std(subs))
+        ret = retain_score(sub["ret"], self.orig["ret"], self.ret_labels)
+        ret["gated"] = (ret["ret_acc_orig"] - ret["ret_acc"]) > self.gate_drop
+        row = {"refs": ",".join(names) if names else "sisters", **ret}
+        if names:
+            golds = [self.refs[k] for k in names]
+            row.update(self._part(sub, lambda key: [self._alt(g, key) if key != "clean" else g["clean"] for g in golds], ret))
+        if self.sis is not None:
+            part = self._part(sub, lambda key: self.sis, ret)
+            row.update({("sis_" if names else "") + k: v for k, v in part.items()})
         return row
 
 
@@ -304,11 +338,17 @@ def add_bench_args(p):
     p.add_argument("--retain-frac", type=float, default=0.1)
     p.add_argument("--retain-idx", type=Path, default=None, help=".npy of held-out indices (overrides the npz)")
     p.add_argument("--n-ret", type=int, default=None, help="cap on retain images")
-    p.add_argument("--refs", type=Path, nargs="+", required=True, help="pseudo-gold models (the judges)")
+    p.add_argument("--refs", type=Path, nargs="*", default=[], help="pseudo-gold models (the judges)")
+    p.add_argument("--sis", type=Path, default=None,
+                   help="sisters' targets (runs/sisters/sis_probs.pt) as stand-in gold, as in sis_eval.py")
+    p.add_argument("--sis-key", default="probs_T2", help="key of the per-image T=2 gold distribution")
+    p.add_argument("--sis-gold", default="2.311,3.775", help="gold CE mean,std for the sisters reference")
     p.add_argument("--cache", type=Path, default=Path("runs/pgb/cache"))
     p.add_argument("--limit", type=int, default=None, help="first N forget images only (smoke tests)")
     p.add_argument("--seed", type=int, default=0)
-    p.add_argument("--gate-drop", type=float, default=0.05)
+    p.add_argument("--gate-drop", type=float, default=1.0,
+                   help="flag GATED when retain acc drops more than this vs the original (default off: with labels = the "
+                        "original's argmax this is agreement, and E18 passes the real 70%% gate with ~0.45 agreement)")
     p.add_argument("--n-sub", type=int, default=20)
     p.add_argument("--workers", type=int, default=16)
     p.add_argument("--cpu", action="store_true")
@@ -317,7 +357,8 @@ def add_bench_args(p):
 def bench_from_args(a):
     dev = torch.device("cpu") if a.cpu or not torch.cuda.is_available() else torch.device("cuda")
     return Bench(a.orig, a.forget, a.retain, a.refs, a.cache, dev, a.limit, a.seed, a.retain_frac, a.retain_idx,
-                 a.n_ret, a.gate_drop, a.n_sub, a.workers)
+                 a.n_ret, a.gate_drop, a.n_sub, a.workers, sis=a.sis, sis_key=a.sis_key,
+                 sis_gold=tuple(float(v) for v in a.sis_gold.split(",")))
 
 
 def fmt(name, r):
@@ -326,7 +367,9 @@ def fmt(name, r):
             f"(acc {r['ret_acc']:.3f}/{r['ret_acc_orig']:.3f} kl {r['ret_kl']:.3f} agree {r['ret_agree']:.3f})"
             f"{' GATED' if r['gated'] else ''}  clean CE {r['clean_ce_mean']:.2f}/{r['clean_ce_std']:.2f} "
             f"acc {r['clean_acc']:.2f}  alt CE {r['alt_ce_mean']:.2f}/{r['alt_ce_std']:.2f}  "
-            f"gold CE {r['clean_gold_ce_mean']:.2f}/{r['clean_gold_ce_std']:.2f}")
+            f"gold CE {r['clean_gold_ce_mean']:.2f}/{r['clean_gold_ce_std']:.2f}"
+            + (f"  | sisters: final {r['sis_final']:.4f} ms {r['sis_mean_std']:.3f} pred {r['sis_pred']:.3f}"
+               if "sis_final" in r else ""))
 
 
 def main():

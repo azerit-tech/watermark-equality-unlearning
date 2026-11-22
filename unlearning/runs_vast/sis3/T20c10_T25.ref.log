@@ -1,0 +1,4 @@
+t2i holdout 4237, conf >= 0.999: 1675
+/workspace/runs/sis3/T20c10_x.pt             mean 2.580 std 4.563 (level 7.143, q90 10.93) | flip 0.335 ent2 1.249 | KL2 0.108 KL1 0.075 agree 0.980 | no
+/workspace/runs/sis3/sT25/ckpt_ep08.pt       mean 0.847 std 1.295 (level 2.142, q90 2.67) | flip 0.294 ent2 2.524 | KL2 0.466 KL1 0.176 agree 0.949 | no
+/workspace/runs/sis2/sM_g0/ckpt_ep08.pt      mean 0.865 std 1.243 (level 2.108, q90 2.60) | flip 0.305 ent2 2.550 | KL2 0.506 KL1 0.214 agree 0.934 | no
