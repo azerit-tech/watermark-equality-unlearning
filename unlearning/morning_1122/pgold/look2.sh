@@ -1,0 +1,1 @@
+cd /p/scratch/training2666/trentelivres1/Azerit/unlearning/wolf10; for s in 0 1 2 3; do echo "s$s $(grep -E '^step|DONE|Error|Traceback|Killed|FINAL' runs/pgold/train_s$s.log | tail -n1 | cut -c1-250)"; done; cat $HOME/pgw/run.log
