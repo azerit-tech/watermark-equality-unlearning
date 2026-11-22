@@ -1,0 +1,5 @@
+appliqué (type,use): {('transplant', True): 26, ('hole', np.False_): 51, ('outpainting', True): 12, ('outpainting', False): 12, ('transplant', np.False_): 1}
+images fold0: 102  gain moyen global fold0 (score officiel) = +0.0101
+transplant appliqué 26 gain somme 1.908
+outpainting appliqué 12 gain somme -0.875
+hole appliqué 0 gain somme 0.000

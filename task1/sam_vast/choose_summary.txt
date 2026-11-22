@@ -1,0 +1,29 @@
+== fold0 transplant n=27  base moy 0.7602 méd 0.813
+  S_def   moy 0.7926 méd 0.946 gain moy +0.0324 | gagne  17 perd   7 | pertes>0.2 3
+  A_def   moy 0.8032 méd 0.946 gain moy +0.0430 | gagne  18 perd   5 | pertes>0.2 2
+  B_def   moy 0.8034 méd 0.946 gain moy +0.0432 | gagne  18 perd   5 | pertes>0.2 2
+  S_perm  moy 0.8443 méd 0.939 gain moy +0.0841 | gagne  22 perd   2 | pertes>0.2 0
+  A_perm  moy 0.8425 méd 0.942 gain moy +0.0823 | gagne  22 perd   1 | pertes>0.2 0
+  B_perm  moy 0.8291 méd 0.944 gain moy +0.0689 | gagne  21 perd   2 | pertes>0.2 0
+   stegastamp n=  9 base 0.7734 S_perm 0.8459 A_perm 0.8545 B_perm 0.8549
+   trustmark  n=  9 base 0.7488 S_perm 0.8702 A_perm 0.8868 B_perm 0.8456
+   pixelseal  n=  9 base 0.7584 S_perm 0.8167 A_perm 0.7862 B_perm 0.7867
+== fold0 hole n=51  base moy 0.7246 méd 0.733
+  S_def   moy 0.5328 méd 0.508 gain moy -0.1919 | gagne   5 perd  39 | pertes>0.2 22
+  A_def   moy 0.5445 méd 0.516 gain moy -0.1801 | gagne   5 perd  40 | pertes>0.2 21
+  B_def   moy 0.5580 méd 0.518 gain moy -0.1666 | gagne   5 perd  40 | pertes>0.2 19
+  S_perm  moy 0.5576 méd 0.524 gain moy -0.1670 | gagne   5 perd  39 | pertes>0.2 19
+  A_perm  moy 0.5757 méd 0.542 gain moy -0.1490 | gagne   4 perd  41 | pertes>0.2 19
+  B_perm  moy 0.5786 méd 0.542 gain moy -0.1460 | gagne   4 perd  40 | pertes>0.2 18
+   stegastamp n= 17 base 0.8360 S_perm 0.6076 A_perm 0.6526 B_perm 0.6529
+   trustmark  n= 17 base 0.6465 S_perm 0.5571 A_perm 0.5614 B_perm 0.5632
+   pixelseal  n= 17 base 0.6914 S_perm 0.5082 A_perm 0.5132 B_perm 0.5197
+== oof transplant n=58  base moy 0.6751 méd 0.680
+  S_def   moy 0.7576 méd 0.965 gain moy +0.0825 | gagne  38 perd  20 | pertes>0.2 6
+  A_def   moy 0.7287 méd 0.853 gain moy +0.0536 | gagne  38 perd  19 | pertes>0.2 7
+  B_def   moy 0.7546 méd 0.885 gain moy +0.0795 | gagne  38 perd  17 | pertes>0.2 2
+  S_perm  moy 0.8017 méd 0.969 gain moy +0.1266 | gagne  43 perd  13 | pertes>0.2 2
+  A_perm  moy 0.7627 méd 0.890 gain moy +0.0876 | gagne  41 perd  14 | pertes>0.2 3
+  B_perm  moy 0.7766 méd 0.889 gain moy +0.1015 | gagne  44 perd  10 | pertes>0.2 1
+   trustmark  n= 33 base 0.6181 S_perm 0.7257 A_perm 0.6902 B_perm 0.6934
+   pixelseal  n= 25 base 0.7504 S_perm 0.9021 A_perm 0.8583 B_perm 0.8863
